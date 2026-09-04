@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Libro de Reclamaciones — Inmobiliaria Casa Grande</title>
+<meta name="description" content="Libro de Reclamaciones virtual de Inmobiliaria Casa Grande, conforme al D.S. 011-2011-PCM. Registre aquí su reclamo o queja." />
+<meta name="robots" content="index, follow" />
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="legalbody">
+
+<!--
+  ═══════════════════════════════════════════════════════════════════
+  DÓNDE LLEGAN LOS RECLAMOS
+  ───────────────────────────────────────────────────────────────────
+  El formulario envía a la dirección que esté en la constante ENDPOINT
+  (más abajo, en el script). Funciona en cualquier hosting, Cloudflare
+  Pages incluido.
+
+  Mientras ENDPOINT esté vacío, el envío abre el correo del usuario con
+  el reclamo ya redactado hacia el correo de la empresa: no se pierde,
+  pero depende de que la persona pulse enviar.
+
+  Para que quede registrado automáticamente, crear una cuenta gratuita
+  en Web3Forms o Formspree y pegar aquí la URL que den. Ambos avisan
+  por correo en cuanto entra un reclamo, que es lo que hace falta para
+  responder dentro de los 30 días de ley.
+  ═══════════════════════════════════════════════════════════════════
+-->
+
+<header class="lhead">
+  <a href="index.html" class="lhead__brand">
+    <span class="marca marca--legal"><img src="img/logo-marca-claro.png" alt="" aria-hidden="true" class="marca__sig" width="340" height="341" />
+    <span class="marca__txt"><img src="img/logo-texto-claro.png" alt="Casa Grande" class="marca__nom" width="900" height="159" /><em>Inmobiliaria</em></span></span>
+  </a>
+  <a href="index.html" class="lhead__back">← Volver al inicio</a>
+</header>
+
+<main class="legal">
+  <div class="wrap wrap--narrow">
+
+    <p class="eyebrow">— Conforme al D.S. N.° 011-2011-PCM</p>
+    <h1 class="display display--md">Libro de <em>Reclamaciones</em></h1>
+    <p class="legal__fecha">Hoja de reclamación virtual · <span id="hojaNum">—</span></p>
+
+    <div class="lr__prov">
+      <h2>Datos del proveedor</h2>
+      <ul class="legal__datos">
+        <li><b>Nombre comercial:</b> Inmobiliaria Casa Grande</li>
+        <li><b>Razón social:</b> CONISER CASA GRANDE S.A.C.</li>
+        <li><b>RUC:</b> 20608988859</li>
+        <li><b>Dirección:</b> Av. Nicolás de Piérola N.° 690, Chiclayo, Lambayeque</li>
+      </ul>
+    </div>
+
+    <div class="legal__box legal__box--aviso">
+      <p><b>Reclamo</b> es su disconformidad con el producto o el servicio recibido.
+      <b>Queja</b> es su malestar con la atención, sin relación directa con el producto.</p>
+      <p>Responderemos su reclamo en un plazo máximo de <b>treinta (30) días calendario</b>.
+      Presentar este reclamo <b>no le impide</b> acudir a otras vías de solución de
+      controversias, ni es requisito previo para denunciar ante INDECOPI.</p>
+    </div>
+
+    <!-- ══ FORMULARIO ══ -->
+    <form class="lr" id="lrForm" name="libro-reclamaciones" method="POST">
+      <input type="hidden" name="hoja" id="hojaCampo" value="" />
+      <p class="lr__hp"><label>No llenar este campo: <input name="bot-field" /></label></p>
+
+      <h2>1. Identificación del consumidor</h2>
+      <div class="lr__grid">
+        <label class="lrf"><span>Nombres y apellidos *</span>
+          <input type="text" name="nombre" id="nombre" required autocomplete="name" /></label>
+
+        <label class="lrf"><span>Tipo de documento *</span>
+          <select name="tipoDoc" id="tipoDoc" required>
+            <option value="DNI">DNI</option>
+            <option value="Carné de extranjería">Carné de extranjería</option>
+            <option value="Pasaporte">Pasaporte</option>
+            <option value="RUC">RUC</option>
+          </select></label>
+
+        <label class="lrf"><span>Número de documento *</span>
+          <input type="text" name="numDoc" id="numDoc" required inputmode="numeric" /></label>
+
+        <label class="lrf"><span>Teléfono *</span>
+          <input type="tel" name="telefono" id="telefono" required autocomplete="tel" /></label>
+
+        <label class="lrf lrf--full"><span>Correo electrónico *</span>
+          <input type="email" name="correo" id="correo" required autocomplete="email" /></label>
+
+        <label class="lrf lrf--full"><span>Domicilio *</span>
+          <input type="text" name="domicilio" id="domicilio" required autocomplete="street-address" /></label>
+      </div>
+
+      <label class="check lr__menor">
+        <input type="checkbox" name="esMenor" id="esMenor" value="Sí" />
+        <span>Soy menor de edad y quien presenta este reclamo es mi padre, madre o apoderado</span>
+      </label>
+      <div class="lr__grid lr__tutor" id="bloqueTutor" hidden>
+        <label class="lrf lrf--full"><span>Nombre del padre, madre o apoderado</span>
+          <input type="text" name="tutor" id="tutor" /></label>
+      </div>
+
+      <h2>2. Identificación del bien contratado</h2>
+      <div class="lr__grid">
+        <label class="lrf"><span>Tipo *</span>
+          <select name="tipoBien" id="tipoBien" required>
+            <option value="Producto">Producto (lote de terreno)</option>
+            <option value="Servicio">Servicio</option>
+          </select></label>
+
+        <label class="lrf"><span>Proyecto</span>
+          <select name="proyecto" id="proyecto">
+            <option value="">No corresponde</option>
+            <option value="Las Gaviotas de Reque">Las Gaviotas de Reque</option>
+            <option value="Alameda Real · Pimentel">Alameda Real · Pimentel</option>
+          </select></label>
+
+        <label class="lrf"><span>Monto reclamado (S/)</span>
+          <input type="text" name="monto" id="monto" inputmode="decimal" placeholder="Opcional" /></label>
+
+        <label class="lrf"><span>Fecha de la contratación</span>
+          <input type="date" name="fechaContrato" id="fechaContrato" /></label>
+
+        <label class="lrf lrf--full"><span>Descripción del bien o servicio *</span>
+          <input type="text" name="descripcionBien" id="descripcionBien" required
+                 placeholder="Ej.: Lote 12, Manzana B, Las Gaviotas de Reque" /></label>
+      </div>
+
+      <h2>3. Detalle de la reclamación</h2>
+      <fieldset class="lr__tipo">
+        <legend>Tipo de solicitud *</legend>
+        <label class="radio"><input type="radio" name="tipo" value="Reclamo" checked />
+          <span><b>Reclamo</b> — disconformidad con el producto o servicio</span></label>
+        <label class="radio"><input type="radio" name="tipo" value="Queja" />
+          <span><b>Queja</b> — malestar con la atención recibida</span></label>
+      </fieldset>
+
+      <label class="lrf lrf--full"><span>Detalle *</span>
+        <textarea name="detalle" id="detalle" rows="6" required
+                  placeholder="Cuéntenos con el mayor detalle posible qué ocurrió, cuándo y con quién."></textarea></label>
+
+      <label class="lrf lrf--full"><span>Su pedido concreto *</span>
+        <textarea name="pedido" id="pedido" rows="3" required
+                  placeholder="¿Qué solución espera de nuestra parte?"></textarea></label>
+
+      <label class="check">
+        <input type="checkbox" name="aceptaLR" id="aceptaLR" required />
+        <span>Declaro que la información brindada es verdadera y acepto el tratamiento de mis
+        datos personales conforme a la <a href="politica-privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span>
+      </label>
+
+      <button type="submit" class="btn btn--gold btn--full" id="lrBtn"><span>Enviar mi reclamo</span></button>
+      <p class="formnote" id="lrNota"></p>
+    </form>
+
+    <!-- ══ CONFIRMACIÓN ══ -->
+    <div class="lr__ok" id="lrOk" hidden>
+      <h2>Su reclamo fue registrado</h2>
+      <p>Guarde este código, es su constancia:</p>
+      <p class="lr__cod" id="lrCod">—</p>
+      <p>Le responderemos al correo que nos indicó, en un plazo máximo de
+      <b>30 días calendario</b>. Le recomendamos imprimir o guardar esta página como copia.</p>
+      <div class="lr__acc">
+        <button type="button" class="btn btn--gold" id="lrPrint"><span>Imprimir mi hoja</span></button>
+        <a href="index.html" class="btn btn--ghost btn--osc"><span>Volver al inicio</span></a>
+      </div>
+    </div>
+
+    <div class="legal__cierre">
+      <p>También puede presentar su reclamo de forma presencial en Av. Nicolás de Piérola
+      N.° 690, Chiclayo, de lunes a viernes de 9:00 a. m. a 6:00 p. m.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="lfoot">
+  <div class="wrap">
+    <p>Inmobiliaria Casa Grande · CONISER CASA GRANDE S.A.C. · RUC 20608988859 · Av. Nicolás de Piérola N.° 690, Chiclayo</p>
+    <p class="foot__links">
+      <a href="politica-privacidad.html">Política de privacidad</a> ·
+      <a href="terminos.html">Términos y condiciones</a> ·
+      <a href="libro-reclamaciones.html">Libro de Reclamaciones</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ⚠ PEGAR AQUÍ la URL del servicio de formularios (Web3Forms, Formspree…).
+     Vacío = el reclamo se envía por correo desde el propio usuario. */
+  const ENDPOINT = '';
+
+  const form  = document.getElementById('lrForm');
+  const nota  = document.getElementById('lrNota');
+  const btn   = document.getElementById('lrBtn');
+  const okBox = document.getElementById('lrOk');
+
+  /* Número correlativo de la hoja. La norma pide que cada hoja esté numerada;
+     usamos fecha + secuencia local para que el consumidor tenga una constancia. */
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  const serie = p(d.getHours()) + p(d.getMinutes()) + p(Math.floor(Math.random() * 100));
+  const hoja  = `CG-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${serie}`;
+  document.getElementById('hojaNum').textContent = 'N.° ' + hoja;
+  document.getElementById('hojaCampo').value = hoja;
+
+  /* Los datos del apoderado solo se piden si el consumidor es menor de edad */
+  const esMenor = document.getElementById('esMenor');
+  const bloque  = document.getElementById('bloqueTutor');
+  esMenor.addEventListener('change', () => {
+    bloque.hidden = !esMenor.checked;
+    document.getElementById('tutor').required = esMenor.checked;
+  });
+
+  document.getElementById('lrPrint').addEventListener('click', () => window.print());
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    nota.classList.remove('err');
+    nota.textContent = 'Enviando…';
+    btn.disabled = true;
+
+    const datos = new FormData(form);
+
+    try {
+      if (!ENDPOINT) throw new Error('sin endpoint configurado');
+      const r = await fetch(ENDPOINT, { method: 'POST', body: datos });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+
+      form.hidden = true;
+      okBox.hidden = false;
+      document.getElementById('lrCod').textContent = hoja;
+      okBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      /* Respaldo: si el envío falla (sin endpoint configurado, o caída
+         del servicio), el reclamo NO se pierde: se abre el correo ya redactado. */
+      btn.disabled = false;
+      nota.classList.add('err');
+      nota.innerHTML = 'No pudimos registrar el reclamo automáticamente. ' +
+        'Se abrirá su correo con los datos ya escritos para que pueda enviarlo. ' +
+        'Si no se abre, escriba a casagrandesac.grupoinmobiliario@gmail.com';
+
+      const lineas = [];
+      lineas.push('HOJA DE RECLAMACIÓN N.° ' + hoja);
+      lineas.push('Fecha: ' + d.toLocaleDateString('es-PE'));
+      lineas.push('');
+      for (const [k, v] of datos.entries()) {
+        if (k === 'bot-field' || !v) continue;
+        lineas.push(k.toUpperCase() + ': ' + v);
+      }
+      const cuerpo = encodeURIComponent(lineas.join('\n'));
+      const asunto = encodeURIComponent('Libro de Reclamaciones — ' + hoja);
+      window.location.href =
+        'mailto:casagrandesac.grupoinmobiliario@gmail.com?subject=' + asunto + '&body=' + cuerpo;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

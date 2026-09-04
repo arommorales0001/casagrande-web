@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Cuando exista el dominio, añadir aquí:
+# Sitemap: https://TUDOMINIO.pe/sitemap.xml
