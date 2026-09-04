@@ -975,7 +975,8 @@ ul{ list-style:none; }
 .hero__cta--brand .btn--azul{ background:#0A2359; border-color:#0A2359; }
 .hero__cta--brand .btn--ghost{ background:rgba(255,255,255,.92); border-color:rgba(255,255,255,.92); color:var(--marca); }
 @media (max-width:900px){
-  .hero__cta--brand{ position:static; margin:0 var(--pad) 1.4rem; justify-content:center; transform:none; }
+  .hero__cta--brand{ position:static !important; margin:0 var(--pad) 1.4rem !important; justify-content:center; transform:none; flex-wrap:wrap !important; }
+  .hero__cta--brand .btn{ font-size:.85rem; padding:.7rem 1.2rem; }
 }
 .hero__foto img{ object-position:44% 45%; }
 
