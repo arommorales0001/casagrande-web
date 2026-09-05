@@ -887,9 +887,11 @@ ul{ list-style:none; }
 @media (max-width:1100px){
   .header__top{ display:none; }
 }
+@media (max-width:1100px){
+  .header__cta{ display:none; }
+}
 @media (max-width:560px){
   .header__main{ padding:.7rem var(--pad); }
-  .header__cta{ display:none; }
 }
 .topnav__lab{ font-size:.78rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--crema); }
 
@@ -975,7 +977,7 @@ ul{ list-style:none; }
 .hero .hero__cta.hero__cta--brand{ position:absolute; right:1.5rem; bottom:.3rem; z-index:3; margin:0; display:flex; flex-direction:row !important; flex-wrap:nowrap !important; gap:.6rem; align-items:center; }
 .hero__cta--brand .btn--azul{ background:#0A2359; border-color:#0A2359; }
 .hero__cta--brand .btn--ghost{ background:rgba(255,255,255,.92); border-color:rgba(255,255,255,.92); color:var(--marca); }
-@media (max-width:900px){
+@media (max-width:1100px){
   .hero--full{ padding-top:0; }
   .hero--full .hero__foto{ aspect-ratio:auto; min-height:clamp(220px,50vw,360px); }
   .hero--full .hero__foto img{ object-fit:cover; object-position:center 30%; }
