@@ -90,12 +90,12 @@ function terminarCarga() {
   });
   setTimeout(abrirPromo, 900);   // el anuncio sale cuando ya se ve la portada
 }
-// Se espera a que el logo termine de dibujarse (unos 1,9 s desde que abre)
+// El logo se dibuja en unos 1,9 s y queda completo un segundo más.
 addEventListener('load', () => {
-  const falta = Math.max(500, 1950 - performance.now());
+  const falta = Math.max(1500, 2950 - performance.now());
   setTimeout(terminarCarga, falta);
 });
-setTimeout(terminarCarga, 3200);   // tope de seguridad
+setTimeout(terminarCarga, 4200);   // tope de seguridad, con el segundo adicional
 
 /* ───────────────────────────────────────────────
    ANUNCIO DE LA RULETA (Mes Morado)
