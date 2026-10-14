@@ -1,0 +1,40 @@
+/* Tipografía común a todas las páginas de Casa Grande. */
+:root{
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --serif:var(--sans);
+}
+html body, html body *{ font-family:var(--sans) !important; }
+html body{ font-weight:400; }
+input, select, textarea, button{ font-family:var(--sans) !important; }
+h1, h2, h3, h4, h5, h6, .display, .tapa h1, .gracias h2{
+  font-weight:800 !important; font-style:normal; line-height:1.2; letter-spacing:-.025em;
+}
+h1 em, h2 em, h3 em, h4 em, .display em{
+  font-family:var(--sans); font-style:normal !important; font-weight:inherit !important;
+}
+p{
+  text-align:justify !important; text-align-last:left;
+  text-justify:inter-word; hyphens:auto; overflow-wrap:break-word;
+}
+.minihead{ font-style:normal; font-weight:700; }
+.frase p{
+  white-space:normal; font-style:normal;
+  font-size:clamp(1.05rem,2.2vw,1.8rem); line-height:1.55;
+}
+.frase em{ font-style:normal; }
+.counter b{ font-weight:800; line-height:1.2; letter-spacing:-.04em; }
+.contacto__head{ flex-wrap:wrap; }
+#contacto .rotulo{
+  flex:1 1 18rem; min-width:0; max-width:100%;
+  font-size:clamp(1.5rem,2.7vw,2.75rem); line-height:1.25;
+  letter-spacing:-.025em;
+}
+#contacto .rotulo em{ white-space:normal; }
+.carga__inmobiliaria{
+  font-size:clamp(.85rem,3.3vw,1.15rem); font-weight:700; letter-spacing:.08em;
+}
+@media(max-width:640px){
+  .display{ font-size:clamp(1.65rem,7vw,2.5rem); }
+  .display--md{ font-size:clamp(1.5rem,6vw,2rem); }
+  #contacto .rotulo{ font-size:clamp(1.45rem,6.5vw,2rem); }
+}
