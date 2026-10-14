@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- La ruleta vive en /ruleta-app/: sus archivos se piden desde ahí. -->
+    <base href="/ruleta-app/" />
+    <title>Ruleta de Premios — Mes Morado | Casa Grande Inmobiliaria</title>
+    <meta name="description" content="Todo el mes de octubre: compra tu lote, gira la ruleta y recibe tu premio. Descuentos del 10% y 15%, Gift Card y premio sorpresa." />
+    <meta property="og:title" content="Ruleta de Premios — Casa Grande Inmobiliaria" />
+    <meta property="og:description" content="En el Mes Morado, tu confianza tiene premio. Compra tu lote, gira la ruleta y recibe tu premio." />
+    <meta property="og:image" content="https://inmobiliariacasagrande.com/img/flyer-ruleta.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <script defer src="assets/index-BSR-W-h0-cg2.js"></script>
+    <link rel="stylesheet" href="assets/index-B5e4GH_E.css">
+  </head>
+  <body class="bg-[#F9F8F6] text-[#151B42] antialiased selection:bg-[#B18A49] selection:text-white">
+    <div id="root"></div>
+<script>
+/* Cada participante de la ruleta entra solo a LoteControl, como el formulario
+   de Refiere y Gana. La ruleta guarda sus datos en este navegador (mismo
+   dominio que esta página); aquí se leen y se mandan dos veces: al
+   registrarse y al ganar. Si el sistema no responde, se reintenta luego. */
+(() => {
+  'use strict';
+  const API = 'https://app.inmobiliariacasagrande.com/api/ruleta';
+  const ENVIADOS = 'cg_enviados_lotecontrol';
+  let ocupado = false, esperarHasta = 0;
+
+  const leer = (clave, vacio) => {
+    try { return JSON.parse(localStorage.getItem(clave)) ?? vacio; } catch (_) { return vacio; }
+  };
+
+  async function sincronizar() {
+    if (ocupado || Date.now() < esperarHasta) return;
+    ocupado = true;
+    try {
+      const enviados = leer(ENVIADOS, {});
+      const lista = [].concat(leer('cg_participants_history', []), leer('cg_current_participant', null) || []);
+      const porId = new Map();
+      lista.forEach(p => { if (p && p.id) porId.set(p.id, Object.assign({}, porId.get(p.id), p)); });
+
+      for (const p of porId.values()) {
+        const gano = p.prizeWon && !p.prizeWon.isRetry && p.couponCode;
+        const premio = gano ? (p.prizeWon.fullTitle || p.prizeWon.label || 'Premio') : '';
+        const hecho = enviados[p.id] || {};
+        if (hecho.premio || (!premio && hecho.registro)) continue;
+
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            participanteId: p.id, nombre: p.name || '', telefono: p.phone || '',
+            correo: p.email || '', premio, codigo: gano ? p.couponCode : ''
+          })
+        });
+        // 400 = datos que el sistema no acepta: reintentar no los arregla.
+        if (!r.ok && r.status !== 400) throw new Error('respuesta ' + r.status);
+        enviados[p.id] = { registro: true, premio: !!premio };
+        localStorage.setItem(ENVIADOS, JSON.stringify(enviados));
+      }
+    } catch (_) {
+      esperarHasta = Date.now() + 30000;
+    } finally {
+      ocupado = false;
+    }
+  }
+
+  addEventListener('storage', e => { if (e.key && e.key.startsWith('cg_') && e.key !== ENVIADOS) sincronizar(); });
+  setInterval(sincronizar, 4000);
+  sincronizar();
+})();
+</script>
+  
+</body>
+</html>

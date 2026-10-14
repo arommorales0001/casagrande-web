@@ -979,9 +979,9 @@ ul{ list-style:none; }
 .hero__cta--brand .btn--ghost{ background:rgba(255,255,255,.92); border-color:rgba(255,255,255,.92); color:var(--marca); }
 @media (max-width:1100px){
   .hero--full{ padding-top:0; }
-  .hero--full .hero__foto{ aspect-ratio:auto; min-height:clamp(220px,50vw,360px); }
+  .hero--full .hero__foto{ aspect-ratio:auto; min-height:clamp(340px,52vh,540px); }
   .hero--full .hero__foto img{ object-fit:cover; object-position:center 30%; }
-  .hero__cta--brand{ position:static !important; margin:0 var(--pad) 1.4rem !important; justify-content:center; transform:none; flex-wrap:wrap !important; }
+  .hero__cta--brand{ position:static !important; margin:.6rem var(--pad) .6rem !important; justify-content:center; transform:none; flex-wrap:wrap !important; }
   .hero__cta--brand .btn{ font-size:.82rem; padding:.7rem 1.2rem; flex:1 1 auto; min-width:0; text-align:center; }
 }
 @media (max-width:480px){
@@ -1773,10 +1773,125 @@ ul{ list-style:none; }
 
 #contacto .formtip{ margin-top:.2rem; }
 
+/* ── MÓVIL: botones pegados a la foto, cinta sin hueco ── */
+@media (max-width:600px){
+  .header__cta{ display:none !important; }
+  .hero--full .hero__foto{ margin-bottom:0; }
+  .hero__cta--brand{
+    flex-direction:row !important; flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    margin:.8rem var(--pad) .6rem !important; gap:.5rem;
+  }
+  .hero__cta--brand .btn{
+    flex:1 1 0; text-align:center; justify-content:center;
+    font-size:.74rem; padding:.8rem .6rem;
+    border-radius:12px;
+  }
+  .hero__cta--brand .btn__ico{ display:none; }
+  .ventajas{ padding-top:.4rem !important; }
+}
+
 /* "Inmobiliaria" debajo del logo, como en la cabecera */
 .contacto__marca{ display:flex; flex-direction:column; align-items:center; gap:.5rem; flex:none; }
 .contacto__marca em{
   font-family:var(--sans); font-style:normal; font-weight:500;
   font-size:.92rem; letter-spacing:.3em; text-transform:uppercase;
   color:#FFFFFF; padding-left:.3em;
+}
+
+/* ═══════════ PORTADA: DOS MITADES IGUALES ═══════════
+   Se quitó la foto ancha de la familia. La portada son ahora dos cuadrados
+   del mismo tamaño, pegados uno al lado del otro y sin nada de crema entre
+   medio: a la izquierda el anuncio "Refiere y Gana", que lleva al
+   formulario, y a la derecha el arte de "Nuevas Historias".
+
+   Las dos imágenes son 1:1, así que en dos columnas iguales entran enteras:
+   no se recorta ni el monto del bono ni la palabra "Historias". */
+.hero--full .hero__foto{
+  display:grid; grid-template-columns:1fr 1fr;
+  aspect-ratio:2 / 1; height:auto; min-height:0;
+  position:relative; overflow:hidden; background:var(--crema-2);
+}
+.hero--full .hero__foto > *{ position:relative; min-width:0; }
+.hero--full .hero__foto img{
+  position:static; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+}
+
+/* El anuncio ya no flota encima: es la mitad izquierda de la portada. */
+.anuncio{
+  position:relative; left:auto; top:auto; transform:none;
+  display:block; width:auto; aspect-ratio:auto;
+  border-radius:0; box-shadow:none; overflow:hidden;
+  transition:opacity .3s var(--ease);
+}
+.anuncio:hover{ transform:none; box-shadow:none; opacity:.94; }
+.anuncio:active{ transform:none; opacity:.88; }
+
+/* "Participar" abajo del anuncio, sobre un velo, para que se note que se
+   toca sin tapar ningún dato del arte. */
+.anuncio__cta{
+  position:absolute; left:0; right:0; bottom:0; z-index:2;
+  padding:1.6rem .8rem .55rem;
+  background:linear-gradient(0deg, rgba(10,35,89,.92) 0%, rgba(10,35,89,.72) 48%, rgba(10,35,89,0) 100%);
+  color:#fff; text-align:center;
+  font-family:var(--sans); font-weight:600; font-size:.72rem;
+  letter-spacing:.18em; text-transform:uppercase;
+}
+@media (max-width:600px){
+  .anuncio__cta{ font-size:.6rem; letter-spacing:.12em; padding:1.2rem .4rem .45rem; }
+}
+
+/* La cabecera va fija encima de todo: sin este hueco se comería la parte
+   alta de la portada. */
+@media (max-width:1100px){
+  .hero--full{ padding-top:67px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .anuncio{ transition:none; }
+}
+
+/* En pantalla grande dos cuadrados a todo el ancho darían una portada
+   altísima, así que se limita el ancho del bloque y queda centrado. */
+@media (min-width:1101px){
+  .hero--full .hero__foto{ max-width:1180px; margin:0 auto; }
+}
+
+/* ── Anuncios del inicio: ruleta y Refiere y Gana ──
+   En computadora, los dos lado a lado y a la misma altura. Cada uno tiene
+   su X y se cierra por separado. */
+.promo{ position:fixed; inset:0; z-index:350; display:flex; align-items:center; justify-content:center;
+        gap:clamp(1.2rem,3vw,2.6rem); padding:clamp(2.6rem,5vw,3rem) clamp(1rem,4vw,2rem);
+        background:rgba(21,15,62,.82); backdrop-filter:blur(4px);
+        opacity:0; transition:opacity .3s var(--ease); }
+.promo[hidden]{ display:none; }
+.promo.on{ opacity:1; }
+.promo__caja{ position:relative; flex:0 1 auto; min-width:0;
+              transform:translateY(14px) scale(.97); transition:transform .45s var(--ease); }
+.promo.on .promo__caja{ transform:none; }
+.promo__caja.cerrada{ display:none; }
+.promo__caja a{ display:block; border-radius:14px; overflow:hidden; box-shadow:0 30px 80px -25px #000; }
+.promo__caja img{ display:block; width:auto; height:min(80vh,640px); height:min(80dvh,640px); max-width:44vw; object-fit:contain; }
+.promo__x{ position:absolute; top:-14px; right:-14px; z-index:2; width:40px; height:40px; border-radius:50%;
+           display:grid; place-items:center; border:0; cursor:pointer;
+           background:#fff; color:var(--azul); font:400 1.7rem/1 var(--sans);
+           box-shadow:0 6px 18px -6px rgba(0,0,0,.55); transition:transform .2s var(--ease); }
+.promo__x:hover{ transform:scale(1.08); }
+.promo__x:focus-visible{ outline:2px solid var(--oro); outline-offset:3px; }
+/* En celular no entran los dos: se ven de a uno. Al cerrar el primero
+   aparece el segundo. La X va encima del anuncio para no tapar el arte. */
+@media (max-width:760px){
+  .promo__caja:not(.cerrada) ~ .promo__caja{ display:none; }
+  .promo__caja img{ height:auto; max-height:calc(84dvh - 50px); max-width:90vw; }
+  .promo__x{ top:-50px; right:0; }
+}
+
+/* ═══════════ PORTADA: UNA SOLA IMAGEN ═══════════
+   El banner "Nuevas Historias" a todo el ancho y completo, sin recortes,
+   en computadora y en celular. */
+.hero--full .hero__foto.hero__foto--una{
+  display:block; aspect-ratio:2400 / 887; height:auto; min-height:0; overflow:hidden;
+}
+.hero--full .hero__foto.hero__foto--una img{
+  width:100%; height:100%; object-fit:cover; object-position:center;
 }

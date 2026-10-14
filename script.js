@@ -88,6 +88,7 @@ function terminarCarga() {
     el.style.transitionDelay = (parseFloat(el.dataset.delay || 0)) + 's';
     el.classList.add('is-in');
   });
+  setTimeout(abrirPromo, 900);   // el anuncio sale cuando ya se ve la portada
 }
 // Se espera a que el logo termine de dibujarse (unos 1,9 s desde que abre)
 addEventListener('load', () => {
@@ -95,6 +96,33 @@ addEventListener('load', () => {
   setTimeout(terminarCarga, falta);
 });
 setTimeout(terminarCarga, 3200);   // tope de seguridad
+
+/* ───────────────────────────────────────────────
+   ANUNCIO DE LA RULETA (Mes Morado)
+   Sale en cada visita. Se cierra con la X, tocando fuera o con Escape.
+─────────────────────────────────────────────── */
+const promo = document.getElementById('promo');
+function abrirPromo() {
+  if (!promo || !promo.hidden) return;
+  promo.hidden = false;
+  requestAnimationFrame(() => promo.classList.add('on'));
+  document.body.style.overflow = 'hidden';
+}
+function cerrarPromo() {
+  if (!promo || promo.hidden) return;
+  promo.classList.remove('on');
+  document.body.style.overflow = '';
+  setTimeout(() => { promo.hidden = true; }, 300);
+}
+if (promo) {
+  // Cada X cierra solo su anuncio; con los dos cerrados se va la ventana.
+  promo.querySelectorAll('.promo__x').forEach(x => x.addEventListener('click', () => {
+    x.closest('.promo__caja').classList.add('cerrada');
+    if (!promo.querySelector('.promo__caja:not(.cerrada)')) cerrarPromo();
+  }));
+  promo.addEventListener('click', e => { if (e.target === promo) cerrarPromo(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarPromo(); });
+}
 
 /* ───────────────────────────────────────────────
    3. APARICIONES AL DESLIZAR

@@ -14,13 +14,25 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="img/portada-familia.jpg">
+<link rel="preload" as="image" href="img/portada-nuevas-historias.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-<link rel="stylesheet" href="styles.css?v=20260905" />
+<link rel="stylesheet" href="styles.css?v=20261009a" />
+
+<!-- Colores y tipografía exclusivos de la pantalla de carga -->
+<style>
+  .loader{ background:#FFFFFF; }
+  .carga__rotulo{ display:flex; flex-direction:column; align-items:center; gap:.45rem; }
+  .carga__rotulo img{ height:auto; object-fit:contain; }
+  .carga__inmobiliaria{
+    color:#2D2753; font-family:"Bebas Neue", Impact, sans-serif;
+    font-size:clamp(1.25rem,5vw,1.75rem); font-weight:400;
+    line-height:1; letter-spacing:.08em; padding-left:.08em;
+  }
+</style>
 
 <!-- Datos estructurados: ayuda a que Google entienda qué se vende y dónde -->
 <script type="application/ld+json">
@@ -31,7 +43,7 @@
   "legalName":"CONISER CASA GRANDE S.A.C.",
   "foundingDate":"2022-02-01",
   "description":"Venta de lotes en Reque y Pimentel, Chiclayo, con financiamiento directo.",
-  "telephone":"+51966468241",
+  "telephone":"+51986498284",
   "email":"casagrandesac.grupoinmobiliario@gmail.com",
   "address":{"@type":"PostalAddress","streetAddress":"Av. Nicolás de Piérola 690","addressLocality":"Chiclayo","addressRegion":"Lambayeque","addressCountry":"PE"},
   "areaServed":["Reque","Pimentel","Chiclayo"],
@@ -50,14 +62,21 @@
     <div class="carga">
       <svg class="carga__svg" viewBox="0 0 620 622" aria-hidden="true">
         <defs>
+          <filter id="cargaAzul" color-interpolation-filters="sRGB">
+            <feFlood flood-color="#2D2753"/>
+            <feComposite in2="SourceAlpha" operator="in"/>
+          </filter>
           <mask id="cargaTrazo1"><circle class="carga__pluma carga__pluma--1" cx="310" cy="311" r="230"/></mask>
           <mask id="cargaTrazo2"><circle class="carga__pluma carga__pluma--2" cx="310" cy="311" r="230"/></mask>
         </defs>
         <image href="img/carga-arco.png"    x="0" y="0" width="620" height="622" mask="url(#cargaTrazo2)"/>
-        <image href="img/carga-signo.png"   x="0" y="0" width="620" height="622" mask="url(#cargaTrazo1)"/>
+        <image href="img/carga-signo.png"   x="0" y="0" width="620" height="622" mask="url(#cargaTrazo1)" filter="url(#cargaAzul)"/>
         <image href="img/carga-cuadros.png" x="0" y="0" width="620" height="622" class="carga__cuadros"/>
       </svg>
-      <img src="img/logo-texto-claro.png" alt="Inmobiliaria Casa Grande" class="carga__nombre" width="900" height="159" />
+      <div class="carga__rotulo carga__nombre">
+        <img src="img/logo-texto.png" alt="Casa Grande" width="900" height="159" />
+        <span class="carga__inmobiliaria">INMOBILIARIA</span>
+      </div>
     </div>
     <div class="loader__bar"><span></span></div>
   </div>
@@ -119,7 +138,7 @@
       <a href="https://www.tiktok.com/@casa.grande.inmob" target="_blank" rel="noopener" aria-label="TikTok" data-ev="red_tiktok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3v11.5a2.6 2.6 0 1 1-1.8-2.5V8.9a5.7 5.7 0 1 0 4.8 5.6V9.4a7.3 7.3 0 0 0 4.2 1.3V7.7a4.3 4.3 0 0 1-3.2-1.9z"/></svg></a>
     </div>
     <p>Av. Nicolás de Piérola 690 — Chiclayo</p>
-    <p>966 468 241 · Lun a Vie, 9 a. m. – 6 p. m.</p>
+    <p>986 498 284 · Lun a Vie, 9 a. m. – 6 p. m.</p>
   </div>
 </div>
 
@@ -127,8 +146,11 @@
 
 <!-- ═══════════ PORTADA ═══════════ -->
 <section class="hero hero--full" id="inicio">
-  <div class="hero__foto">
-    <img src="img/portada-familia-nueva.jpg" alt="Creamos espacios donde comienzan Nuevas Historias — Alameda Real y Las Gaviotas de Reque" width="1800" height="665" fetchpriority="high" />
+  <!-- Portada: una sola imagen a todo el ancho. Los anuncios (ruleta y
+       Refiere y Gana) salen aparte, en la ventana del inicio. -->
+  <div class="hero__foto hero__foto--una">
+    <img src="img/portada-nuevas-historias.jpg" width="2400" height="887" fetchpriority="high"
+         alt="Creamos espacios donde comienzan Nuevas Historias — Alameda Real de Pimentel y Las Gaviotas de Reque" />
   </div>
 
   <div class="hero__cta hero__cta--brand fade" data-delay="1.15">
@@ -444,7 +466,7 @@
 
         <div class="piecols__c">
           <h3>Contacto</h3>
-          <p>966 468 241</p>
+          <p>986 498 284</p>
           <p>Av. Nicolás de Piérola Nro. 690,<br>Chiclayo</p>
           <p>casagrandesac.grupoinmobiliario<br>@gmail.com</p>
         </div>
@@ -531,6 +553,26 @@
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l-7 7h4v7h6v-7h4z"/></svg>
 </button>
 
+<!-- Anuncios del inicio: salen en cada visita al terminar la pantalla de
+     carga. Cada uno tiene su X; al cerrar los dos, se va la ventana. En
+     celular se ven de a uno: al cerrar el primero aparece el segundo. -->
+<div class="promo" id="promo" role="dialog" aria-modal="true" aria-label="Anuncios de Casa Grande" hidden>
+  <div class="promo__caja">
+    <button type="button" class="promo__x" aria-label="Cerrar anuncio de la ruleta">×</button>
+    <a href="ruleta.html" data-ev="anuncio_ruleta">
+      <img src="img/flyer-ruleta.jpg" width="726" height="908"
+           alt="En el Mes Morado, tu confianza tiene premio. Todo el mes de octubre: compra tu lote, gira la ruleta y recibe tu premio. Toca para participar." />
+    </a>
+  </div>
+  <div class="promo__caja">
+    <button type="button" class="promo__x" aria-label="Cerrar anuncio de Refiere y Gana">×</button>
+    <a href="refiere.html" data-ev="anuncio_referidos">
+      <img src="img/flyer-refiere.jpg" width="1024" height="1536"
+           alt="Refiere y Gana — gana S/ 200 si no eres cliente o S/ 300 si ya eres cliente por cada referido que compre su lote; tu referido gana S/ 200. Toca para llenar el formulario." />
+    </a>
+  </div>
+</div>
+
 <div class="lightbox" id="lightbox">
   <button class="lb__x" id="lbClose" aria-label="Cerrar">×</button>
   <button class="lb__nav lb__prev" id="lbPrev" aria-label="Anterior">‹</button>
@@ -540,6 +582,7 @@
   <button class="lb__nav lb__next" id="lbNext" aria-label="Siguiente">›</button>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=20261009a"></script>
+
 </body>
 </html>
