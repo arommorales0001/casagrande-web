@@ -66,12 +66,16 @@
             <feFlood flood-color="#2D2753"/>
             <feComposite in2="SourceAlpha" operator="in"/>
           </filter>
+          <filter id="cargaGris" color-interpolation-filters="sRGB">
+            <feFlood flood-color="#6F7173"/>
+            <feComposite in2="SourceAlpha" operator="in"/>
+          </filter>
           <mask id="cargaTrazo1"><circle class="carga__pluma carga__pluma--1" cx="310" cy="311" r="230"/></mask>
           <mask id="cargaTrazo2"><circle class="carga__pluma carga__pluma--2" cx="310" cy="311" r="230"/></mask>
         </defs>
-        <image href="img/carga-arco.png"    x="0" y="0" width="620" height="622" mask="url(#cargaTrazo2)"/>
+        <image href="img/carga-arco.png"    x="0" y="0" width="620" height="622" mask="url(#cargaTrazo2)" filter="url(#cargaGris)"/>
         <image href="img/carga-signo.png"   x="0" y="0" width="620" height="622" mask="url(#cargaTrazo1)" filter="url(#cargaAzul)"/>
-        <image href="img/carga-cuadros.png" x="0" y="0" width="620" height="622" class="carga__cuadros"/>
+        <image href="img/carga-cuadros.png" x="0" y="0" width="620" height="622" class="carga__cuadros" filter="url(#cargaGris)"/>
       </svg>
       <div class="carga__rotulo carga__nombre">
         <img src="img/logo-texto.png" alt="Casa Grande" width="900" height="159" />
