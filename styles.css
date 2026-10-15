@@ -2018,3 +2018,22 @@ ul{ list-style:none; }
   .header--inline .marca__txt em{ letter-spacing:1.7px; }
   .header--inline .header__cta{ padding:0 9px; }
 }
+
+/* Banda de ventajas compacta, con los bordes cerca del contenido. */
+.ventajas{ padding:8px 0; }
+.ventajas .cinta .vent{
+  flex-basis:clamp(210px,18vw,250px);
+  padding:8px 14px; gap:8px;
+}
+.ventajas .cinta .vent > svg{ width:20px; height:20px; }
+.ventajas .cinta .vent span{ font-size:11px; line-height:1.45; }
+.ventajas .cinta .vent b{
+  font-size:10.5px; line-height:1.35; margin-bottom:2px;
+}
+@media(max-width:600px){
+  .ventajas{ padding-bottom:6px; }
+  .ventajas .cinta .vent{ padding:6px 12px; }
+  .ventajas .cinta .vent > svg{ width:18px; height:18px; }
+  .ventajas .cinta .vent span{ font-size:10.75px; line-height:1.4; }
+  .ventajas .cinta .vent b{ font-size:10px; }
+}
