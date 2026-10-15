@@ -1384,7 +1384,8 @@ ul{ list-style:none; }
      el recorte deja transparente lo que sobresale (ascendentes y cursivas). */
   padding:.22em .2em .18em .12em;
   margin:-.22em -.2em -.18em -.12em;
-  animation:brillo-plata 5.5s linear infinite;
+  animation:brillo-plata 5.5s linear 1 forwards;
+  animation-play-state:paused;
 }
 @keyframes brillo-plata{
   from{ background-position:120% 0; }
@@ -1406,7 +1407,8 @@ ul{ list-style:none; }
   background-position:120% 0;
   -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent;
-  animation:brillo-plata 5.5s linear infinite;
+  animation:brillo-plata 5.5s linear 1 forwards;
+  animation-play-state:paused;
 }
 @media (prefers-reduced-motion: reduce){
   #proyectos > .wrap > .sechead .display em .w > i{ animation:none; background-position:38% 0; }
@@ -1417,6 +1419,12 @@ ul{ list-style:none; }
   #proyectos > .wrap > .sechead .display em .w > i{
     -webkit-text-fill-color:#4E5158; color:#4E5158; background-image:none;
   }
+}
+
+/* El destello se inicia al revelar el título y no se repite al volver a verlo. */
+#proyectos > .wrap > .sechead .display.is-in em,
+#proyectos > .wrap > .sechead .display.is-in em .w > i{
+  animation-play-state:running;
 }
 
 /* ── Beneficios: un punto más grandes y con más cuerpo ── */
