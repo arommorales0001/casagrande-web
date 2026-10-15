@@ -9,7 +9,9 @@
    espacios. Perú = 51.                                                       */
 const WHATSAPP = '51986498284';
 
-const MENSAJE_BASE =
+const proyectoActual = document.body.dataset.project;
+const MENSAJE_BASE = proyectoActual ?
+  `¡Hola! Estoy interesado(a) en ${proyectoActual}. Me gustaría conocer disponibilidad, condiciones de compra y coordinar una visita.` :
   '¡Hola! 👋 Estoy interesado(a) en conocer los proyectos de Inmobiliaria Casa Grande. ' +
   'Me gustaría recibir información sobre los lotes disponibles, precios, formas de ' +
   'financiamiento y agendar una asesoría personalizada. ¡Quedo atento(a)!';
@@ -72,12 +74,12 @@ document.querySelectorAll('[data-slide]').forEach(titulo => {
    2. PANTALLA DE CARGA
 ─────────────────────────────────────────────── */
 const loader = document.getElementById('loader');
-const barraCarga = loader.querySelector('.loader__bar span');
-requestAnimationFrame(() => { barraCarga.style.width = '100%'; });
+const barraCarga = loader?.querySelector('.loader__bar span');
+if (barraCarga) requestAnimationFrame(() => { barraCarga.style.width = '100%'; });
 
 let cargaTerminada = false;
 function terminarCarga() {
-  if (cargaTerminada) return;
+  if (!loader || cargaTerminada) return;
   cargaTerminada = true;
   loader.classList.add('done');
   setTimeout(() => { loader.style.display = 'none'; }, 1100);
@@ -91,11 +93,13 @@ function terminarCarga() {
   setTimeout(abrirPromo, 900);   // el anuncio sale cuando ya se ve la portada
 }
 // El logo se dibuja en unos 1,9 s y queda completo un segundo más.
+if (loader) {
 addEventListener('load', () => {
   const falta = Math.max(1500, 2950 - performance.now());
   setTimeout(terminarCarga, falta);
 });
 setTimeout(terminarCarga, 4200);   // tope de seguridad, con el segundo adicional
+}
 
 /* ───────────────────────────────────────────────
    ANUNCIO DE LA RULETA (Mes Morado)
@@ -309,14 +313,17 @@ activarInclinacion();
 ─────────────────────────────────────────────── */
 const enlacesNav = [...document.querySelectorAll('.nav__a')];
 const secciones = enlacesNav
-  .map(a => document.querySelector(a.getAttribute('href')))
-  .filter(Boolean);
+  .map(a => {
+    const href = a.getAttribute('href');
+    return href?.startsWith('#') ? document.querySelector(href) : null;
+  });
 
 function marcarSeccion() {
   const linea = scrollY + alto() * 0.35;      // línea imaginaria a un tercio de pantalla
   let actual = -1;
-  secciones.forEach((sec, i) => { if (sec.offsetTop <= linea) actual = i; });
-  enlacesNav.forEach((a, i) => a.classList.toggle('activo', i === actual));
+  secciones.forEach((sec, i) => { if (sec && sec.offsetTop <= linea) actual = i; });
+  enlacesNav.forEach((a, i) => a.classList.toggle('activo', i === actual ||
+    (actual === -1 && proyectoActual && a.getAttribute('href') === '/#proyectos')));
 }
 
 /* ───────────────────────────────────────────────
@@ -431,6 +438,9 @@ function recogerImagenes() {
   galeria = [...document.querySelectorAll('[data-lb]')].filter(f => f.offsetParent !== null);
   galeria.forEach((fig, i) => {
     fig.onclick = () => abrirVisor(i);
+    fig.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirVisor(i); }
+    };
   });
 }
 recogerImagenes();
@@ -446,12 +456,17 @@ function abrirVisor(i) {
   const cap = fig.querySelector('figcaption');
   lbCap.textContent = cap ? cap.textContent : (img.alt || '');
   lbCount.textContent = (indice + 1) + ' / ' + galeria.length;
+  const yaAbierto = lb.classList.contains('on');
   lb.classList.add('on');
+  lb.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  if (!yaAbierto) document.getElementById('lbClose').focus();
 }
 function cerrarVisor() {
   lb.classList.remove('on');
+  lb.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  if (galeria[indice]?.hasAttribute('tabindex')) galeria[indice].focus();
 }
 
 document.getElementById('lbClose').onclick = cerrarVisor;
@@ -460,6 +475,12 @@ document.getElementById('lbNext').onclick = e => { e.stopPropagation(); abrirVis
 lb.addEventListener('click', e => { if (e.target === lb || e.target === lbImg) cerrarVisor(); });
 addEventListener('keydown', e => {
   if (!lb.classList.contains('on')) return;
+  if (e.key === 'Tab') {
+    const botones = [...lb.querySelectorAll('button')];
+    const primero = botones[0], ultimo = botones[botones.length - 1];
+    if (e.shiftKey && document.activeElement === primero) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+  }
   if (e.key === 'Escape') cerrarVisor();
   if (e.key === 'ArrowLeft') abrirVisor(indice - 1);
   if (e.key === 'ArrowRight') abrirVisor(indice + 1);
