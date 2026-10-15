@@ -2045,3 +2045,6 @@ ul{ list-style:none; }
   .ventajas .cinta .vent span{ font-size:10.75px; line-height:1.4; }
   .ventajas .cinta .vent b{ font-size:10px; }
 }
+
+/* Ajuste de posición del encabezado de proyectos. */
+#proyectos > .wrap > .sechead{ position:relative; top:-20px; }
