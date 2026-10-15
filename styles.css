@@ -2020,7 +2020,7 @@ ul{ list-style:none; }
 }
 
 /* Banda de ventajas compacta, con los bordes cerca del contenido. */
-.ventajas{ padding:8px 0; margin-block:5px; }
+.ventajas{ padding:8px 0; margin-block:15px; }
 .ventajas .cinta .vent{
   flex-basis:clamp(210px,18vw,250px);
   padding:8px 14px; gap:8px;
