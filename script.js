@@ -333,11 +333,14 @@ burger.addEventListener('click', () => {
   const abierto = document.body.classList.toggle('open');
   document.body.style.overflow = abierto ? 'hidden' : '';
   burger.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+  burger.setAttribute('aria-expanded', String(abierto));
 });
 document.querySelectorAll('.drawer a').forEach(a => {
   a.addEventListener('click', () => {
     document.body.classList.remove('open');
     document.body.style.overflow = '';
+    burger.setAttribute('aria-label', 'Abrir menú');
+    burger.setAttribute('aria-expanded', 'false');
   });
 });
 
