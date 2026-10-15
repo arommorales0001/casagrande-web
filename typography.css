@@ -20,6 +20,8 @@ p{
 .frase p{
   white-space:normal; font-style:normal;
   font-size:clamp(1.05rem,2.2vw,1.8rem); line-height:1.55;
+  text-align:center !important; text-align-last:center;
+  text-wrap:balance; hyphens:none;
 }
 .frase em{ font-style:normal; }
 .counter b{ font-weight:800; line-height:1.2; letter-spacing:-.04em; }
