@@ -106,3 +106,58 @@
 #contacto .piecols__c{min-width:0;}
 #contacto .piecols__c p{overflow-wrap:anywhere;}
 @media(max-width:900px){.project-page #contacto .form{order:-1;}}
+
+/* Galerías de los proyectos: carrusel manual con miniaturas. */
+.project-carousel{margin-top:25px;min-width:0;}
+.project-carousel__stage{position:relative;min-width:0;}
+.project-detail .project-carousel .project-carousel__track{
+ display:flex;gap:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+ scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;
+ border-radius:14px;background:#eeecf2;margin:0;isolation:isolate;
+}
+.project-carousel__track::-webkit-scrollbar{display:none;}
+.project-detail .project-carousel .shot{
+ flex:0 0 100%;min-width:0;grid-column:auto;scroll-snap-align:start;scroll-snap-stop:always;
+ height:clamp(290px,43vw,610px);display:flex;flex-direction:column;overflow:hidden;
+ border-radius:0;cursor:zoom-in;transform:none!important;transition:none;
+}
+.project-detail .project-carousel .shot img{
+ flex:1;min-height:0;display:block;width:100%;height:0;aspect-ratio:auto;
+ object-fit:contain;transform:none!important;filter:none!important;transition:none;
+}
+.project-detail .project-carousel .shot::after{display:none;}
+.project-detail .project-carousel .shot figcaption{
+ position:static;flex:none;transform:none;padding:13px 68px;background:#21194d;color:#fff;
+ font-size:12px;line-height:1.5;letter-spacing:0;text-transform:none;min-height:44px;
+}
+.project-carousel__arrow{
+ position:absolute;top:calc(50% - 22px);z-index:3;width:46px;height:46px;
+ display:grid;place-items:center;border-radius:50%;background:#21194deb;color:white;
+ box-shadow:0 3px 14px #1e155826;border:1px solid #ffffff60;
+ transition:background .2s,opacity .2s;
+}
+.project-carousel__arrow--prev{left:13px;}
+.project-carousel__arrow--next{right:13px;}
+.project-carousel__arrow svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.project-carousel__arrow:hover:not(:disabled){background:#36256d;}
+.project-carousel__arrow:disabled{opacity:.28;cursor:default;}
+.project-carousel__meta{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:11px;color:#756d81;padding:13px 1px;}
+.project-carousel__hint{display:none;}
+.project-carousel__thumbs{display:flex;gap:10px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#b4a9c4 transparent;padding:3px 3px 10px;overscroll-behavior-x:contain;}
+.project-carousel__thumb{flex:0 0 88px;width:88px;height:64px;border:2px solid transparent;padding:3px;border-radius:9px;background:#ebe7f1;overflow:hidden;opacity:.6;transition:opacity .2s,border-color .2s;}
+.project-carousel__thumb img{width:100%;height:100%;object-fit:cover;border-radius:4px;}
+.project-carousel__thumb[aria-current="true"]{border-color:#21194d;opacity:1;background:#fff;}
+.project-carousel__thumb:hover{opacity:1;}
+.project-carousel button:focus-visible,.project-carousel__track:focus-visible{outline:3px solid #bfa15d;outline-offset:3px;}
+.project-detail .project-carousel .shot:focus-visible{outline:3px solid #bfa15d;outline-offset:-4px;}
+@media(max-width:700px){
+ .project-detail .project-carousel .shot{height:310px;}
+ .project-detail .project-carousel .shot figcaption{padding:11px 16px;font-size:10px;min-height:42px;}
+ .project-carousel__arrow{width:44px;height:44px;top:calc(50% - 40px);}
+ .project-carousel__arrow--prev{left:8px;}.project-carousel__arrow--next{right:8px;}
+ .project-carousel__meta{font-size:10px;padding:12px 0;}
+ .project-carousel__hint{display:inline;font-size:9px;}
+ .project-carousel__thumbs{gap:7px;}
+ .project-carousel__thumb{flex-basis:66px;width:66px;height:50px;}
+}
+@media(prefers-reduced-motion:reduce){.project-detail .project-carousel .project-carousel__track{scroll-behavior:auto;}.project-carousel button{transition:none;}}

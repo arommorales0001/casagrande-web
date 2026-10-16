@@ -426,6 +426,67 @@ botonesProy.forEach(btn => {
 addEventListener('load', colocarTinta);
 setTimeout(colocarTinta, 300);
 
+/* Galerías: navegación manual, teclado y desplazamiento táctil nativo. */
+document.querySelectorAll('[data-carousel]').forEach(carousel => {
+  const track = carousel.querySelector('.project-carousel__track');
+  const slides = [...track.querySelectorAll('[data-carousel-slide]')];
+  const previous = carousel.querySelector('[data-carousel-prev]');
+  const next = carousel.querySelector('[data-carousel-next]');
+  const thumbs = [...carousel.querySelectorAll('[data-carousel-go]')];
+  const thumbRow = carousel.querySelector('.project-carousel__thumbs');
+  const counter = carousel.querySelector('[data-carousel-current]');
+  let current = 0, frame = 0;
+  const update = () => {
+    const index = Math.max(0, Math.min(slides.length - 1,
+      Math.round(track.scrollLeft / (track.clientWidth || 1))));
+    current = index;
+    previous.disabled = index === 0;
+    next.disabled = index === slides.length - 1;
+    counter.textContent = String(index + 1);
+    slides.forEach((slide, i) => {
+      slide.tabIndex = i === index ? 0 : -1;
+      slide.setAttribute('aria-hidden', String(i !== index));
+    });
+    thumbs.forEach((thumb, i) => thumb.setAttribute('aria-current', String(i === index)));
+    const thumb = thumbs[index];
+    if (thumb) {
+      const left = thumb.offsetLeft - thumbRow.offsetLeft;
+      if (left < thumbRow.scrollLeft) thumbRow.scrollTo({ left, behavior: 'auto' });
+      else if (left + thumb.offsetWidth > thumbRow.scrollLeft + thumbRow.clientWidth)
+        thumbRow.scrollTo({ left: left + thumb.offsetWidth - thumbRow.clientWidth, behavior: 'auto' });
+    }
+  };
+  const go = (index, instant = false) => {
+    const target = Math.max(0, Math.min(slides.length - 1, index));
+    track.scrollTo({ left: target * track.clientWidth,
+      behavior: instant || menosMovimiento ? 'instant' : 'smooth' });
+  };
+  previous.addEventListener('click', () => go(current - 1));
+  next.addEventListener('click', () => go(current + 1));
+  thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => go(i)));
+  track.addEventListener('scroll', () => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => { frame = 0; update(); });
+  }, { passive: true });
+  track.addEventListener('keydown', e => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(slides.length - 1);
+    else go(current + (e.key === 'ArrowRight' ? 1 : -1));
+  });
+  track.addEventListener('focusin', e => {
+    const slide = e.target.closest('[data-carousel-slide]');
+    if (slide && slides.indexOf(slide) !== current) go(slides.indexOf(slide), true);
+  });
+  let resizeFrame = 0;
+  new ResizeObserver(() => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => go(current, true));
+  }).observe(track);
+  update();
+});
+
 /* ───────────────────────────────────────────────
    10. VISOR DE IMÁGENES (lightbox)
 ─────────────────────────────────────────────── */
