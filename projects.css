@@ -161,3 +161,43 @@
  .project-carousel__thumb{flex-basis:66px;width:66px;height:50px;}
 }
 @media(prefers-reduced-motion:reduce){.project-detail .project-carousel .project-carousel__track{scroll-behavior:auto;}.project-carousel button{transition:none;}}
+
+/* Ambos proyectos: galería compacta justo debajo de los beneficios. */
+:is(#p-alameda,#p-gaviotas) .proj__cols{align-items:start;}
+:is(#p-alameda,#p-gaviotas) .proj__cols>div{min-width:0;}
+:is(#p-alameda,#p-gaviotas) .project-detail__gallery{margin-top:32px;}
+:is(#p-alameda,#p-gaviotas) .project-detail__gallery .project-carousel{margin-top:0;}
+:is(#p-alameda,#p-gaviotas) .project-detail__gallery .shot{height:clamp(300px,27vw,370px);}
+@media(max-width:900px){
+ :is(#p-alameda,#p-gaviotas) .project-detail__gallery .shot{height:clamp(310px,52vw,430px);}
+}
+@media(max-width:700px){
+ :is(#p-alameda,#p-gaviotas) .project-detail__gallery{margin-top:26px;}
+ :is(#p-alameda,#p-gaviotas) .project-detail__gallery .shot{height:340px;}
+}
+
+/* Encuadre de la exposición: recorta el tercio superior del techo
+   solo en el carrusel; la fotografía original se conserva para ampliarla. */
+#p-alameda .shot--event .project-carousel__event{
+ display:flex;justify-content:center;flex:1;min-height:0;overflow:hidden;
+}
+#p-alameda .shot--event .project-carousel__event-frame{
+ display:block;position:relative;height:100%;aspect-ratio:675 / 800;
+ max-width:100%;overflow:hidden;
+}
+#p-alameda .project-carousel .shot--event .project-carousel__event-frame img{
+ position:absolute;left:0;bottom:0;width:100%;height:150%;max-width:none;
+ flex:none;object-fit:fill;object-position:center;
+}
+
+/* Reque: mapa más amplio y portada sin imagen repetida. */
+.project-page--gaviotas .project-intro__actions{margin-bottom:0;}
+#p-gaviotas.project-detail{padding-top:32px;}
+#p-gaviotas .project-detail__map{width:100%;margin:0;border-radius:12px;cursor:zoom-in;}
+#p-gaviotas .project-detail__map img{width:100%;height:auto;transform:none;}
+@media(min-width:901px){
+ #p-gaviotas .proj__cols{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);}
+}
+@media(max-width:700px){
+ #p-gaviotas.project-detail{padding-top:26px;}
+}

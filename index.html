@@ -66,13 +66,14 @@
   "sameAs":["https://www.facebook.com/casagrandesac.inmobiliaria","https://www.instagram.com/casagrande_inmobiliaria"]
 }
 </script>
-<link rel="stylesheet" href="/typography.css?v=20261015-frase-centrada" />
 <link rel="icon" href="/favicon.ico?v=20261015-logo" sizes="16x16 32x32 48x48" type="image/x-icon">
 <link rel="icon" href="/favicon-casa-grande-20261015.svg" sizes="any" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=20261015-logo" sizes="180x180">
 <link rel="stylesheet" href="projects.css?v=20261015-carruseles" />
+<link rel="stylesheet" href="home.css?v=20261016-guia-proyectos" />
+<link rel="stylesheet" href="/typography.css?v=20261016-menu17" />
 </head>
-<body>
+<body class="home-page type-system">
 
 <!-- ═══════════ PANTALLA DE CARGA ═══════════ -->
 <div class="loader" id="loader">
@@ -120,9 +121,9 @@
 
     <nav class="nav">
       <a href="#proyectos" class="nav__a">Proyectos</a>
-      <a href="#nosotros"  class="nav__a">Nosotros</a>
       <a href="#familias"  class="nav__a">Familias</a>
       <a href="#contacto"  class="nav__a">Contacto</a>
+      <a href="somos.html"  class="nav__a">Somos</a>
     </nav>
 
     <div class="header__actions">
@@ -143,11 +144,11 @@
 <!-- Menú móvil -->
 <div class="drawer" id="drawer">
   <nav>
-    <a href="#nosotros">Nosotros</a>
-    <a href="#proyectos">Proyectos</a>
-    <a href="#familias">Familias</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#familias">Familias</a>
+      <a href="#contacto">Contacto</a>
+      <a href="somos.html">Somos</a>
+    </nav>
   <div class="drawer__foot">
     <div class="redes redes--drawer">
       <a href="https://www.facebook.com/casagrandesac.inmobiliaria" target="_blank" rel="noopener" aria-label="Facebook" data-ev="red_facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.2v3.2h2.8V21h3.4z"/></svg></a>
@@ -163,6 +164,7 @@
 
 <!-- ═══════════ PORTADA ═══════════ -->
 <section class="hero hero--full" id="inicio">
+  <h1 class="visually-hidden">Casa Grande: tu nuevo hogar está más cerca de lo que crees</h1>
   <!-- Portada: una sola imagen a todo el ancho. Los anuncios (ruleta y
        Refiere y Gana) salen aparte, en la ventana del inicio. -->
   <div class="hero__foto hero__foto--una">
@@ -209,9 +211,18 @@
 
 <!-- ═══════════ PROYECTOS: ELEGIR ANTES DE VER EL DETALLE ═══════════ -->
 <section class="sec project-catalog" id="proyectos"><div class="wrap">
-  <header class="sechead"><p class="eyebrow fade">— Nuestros proyectos</p>
-    <h2 class="display" data-slide>Dos ubicaciones, <em>una misma promesa</em></h2>
-    <p class="project-catalog__intro">Elige un proyecto y descubre sus características, ubicación y galería.</p>
+  <header class="sechead catalog-head"><div><p class="eyebrow">Nuestros proyectos</p>
+    <h2 class="home-title">Dos ubicaciones,<br><em>una misma promesa.</em></h2>
+    <p class="project-catalog__intro">Encuentra el lugar para tu próximo proyecto de vida. Explora sus características, ubicación y galería.</p></div>
+  <aside class="project-guide" id="como-empezar" aria-label="Guía para conocer un proyecto">
+  <div class="journey-steps" role="group" aria-label="Elegir paso">
+    <button type="button" data-journey-step="0" aria-pressed="true" aria-controls="journey-panel"><span>01</span>Elige</button>
+    <button type="button" data-journey-step="1" aria-pressed="false" aria-controls="journey-panel"><span>02</span>Consulta</button>
+    <button type="button" data-journey-step="2" aria-pressed="false" aria-controls="journey-panel"><span>03</span>Visita</button>
+  </div>
+  <div class="journey-panel" id="journey-panel" aria-live="polite" aria-atomic="true"><span class="visually-hidden" data-journey-label>Paso 1 de 3</span><h3 data-journey-title>Elige tu proyecto</h3><p data-journey-copy>Conoce Alameda Real y Las Gaviotas de Reque. Elige cuál quieres visitar.</p></div>
+  <div class="journey-footer"><a href="#proyectos" class="home-text-link" data-journey-link>Ver proyectos <span aria-hidden="true">↗</span></a><div class="journey-controls" role="group" aria-label="Avanzar por los pasos"><button type="button" data-journey-prev aria-label="Paso anterior" aria-controls="journey-panel" disabled>←</button><button type="button" data-journey-next aria-label="Siguiente paso" aria-controls="journey-panel">→</button></div></div>
+</aside>
   </header>
   <div class="project-grid"><article class="project-card project-card--alameda">
   <a class="project-card__link" href="alameda-real.html" aria-label="Ver proyecto: Alameda Real" data-ev="ver_proyecto_alameda">
@@ -228,163 +239,71 @@
     <span class="project-card__button">Ver proyecto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span></div>
   </a>
 </article></div>
-  <p class="project-catalog__note">Las imágenes y renders son referenciales y pueden variar en la ejecución del proyecto. Consulta disponibilidad y condiciones vigentes.</p>
 </div></section>
 
-<!-- ═══════════ NOSOTROS ═══════════ -->
-<section class="sec sec--cream" id="nosotros">
-  <div class="wrap grid2">
-    <div>
-      <p class="eyebrow fade">— Quiénes somos</p>
-      <h2 class="display" data-slide>
-        Proyectos con visión
-        <em>de futuro</em>
-      </h2>
-      <p class="text fade">
-        En Inmobiliaria Casa Grande desarrollamos proyectos inmobiliarios con visión a futuro,
-        creando oportunidades de inversión para familias, emprendedores y empresarios en
-        distintas regiones del Perú.
-      </p>
-      <p class="text fade" data-delay=".1">
-        Nuestro compromiso es ofrecer proyectos con alto potencial de valorización, respaldo
-        legal y una atención cercana durante todo el proceso.
-      </p>
-
-      <ul class="reasons">
-        <li class="fade" data-delay=".1"><span>01</span> Proyectos ubicados en zonas con alta proyección de crecimiento y valorización.</li>
-        <li class="fade" data-delay=".2"><span>02</span> Financiamiento directo y asesoría personalizada durante todo el proceso de compra.</li>
-        <li class="fade" data-delay=".3"><span>03</span> Compromiso con la transparencia y el respaldo legal de cada proyecto.</li>
-      </ul>
-
-      <!-- Misión y visión, tomadas del brochure corporativo -->
-      <div class="mv">
-        <div class="mv__i fade">
-          <h4 class="minihead">Misión</h4>
-          <p>Brindar a las familias y a los inversionistas la oportunidad de acceder a terrenos y propiedades de alta proyección, con facilidades de pago y un servicio personalizado, generando confianza, seguridad y valor a largo plazo.</p>
-        </div>
-        <div class="mv__i fade" data-delay=".1">
-          <h4 class="minihead">Visión</h4>
-          <p>Ser la inmobiliaria líder en la región, reconocida por transformar terrenos en oportunidades de vida y de inversión, contribuyendo al desarrollo urbanístico y al bienestar de las comunidades.</p>
-        </div>
-      </div>
-    </div>
-
-    <figure class="framed fade" data-delay=".15">
-      <img src="img/presentacion-alameda.jpg" alt="Familias asistiendo a la presentación del proyecto Alameda Real en Pimentel" data-par="0.06" loading="lazy" decoding="async" width="1400" height="1050" />
-      <figcaption>Presentación del proyecto · Alameda Real, Pimentel</figcaption>
-    </figure>
+<!-- Familias: fotos reales con mensajes de marca, no citas atribuidas a clientes -->
+<section class="sec home-families" id="familias"><div class="wrap">
+  <header class="families-head"><div><p class="eyebrow">Familias Casa Grande</p><h2 class="home-title">Lo importante<br><em>son las personas.</em></h2></div><p>Una mirada a los momentos que compartimos durante la atención y entrega de documentos a nuestras familias.</p></header>
+  <div class="family-carousel" data-family-carousel role="region" aria-roledescription="carrusel" aria-label="Familias de Casa Grande">
+    <div class="family-track" data-family-track tabindex="0" aria-label="Fotografías de familias. Usa las flechas izquierda y derecha"><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="1 de 7">
+      <figure class="family-photo" data-lb tabindex="0" role="button" aria-label="Ampliar fotografía: Clienta recibiendo su documentación frente al plano del proyecto"><img src="img/familia-07.jpg" alt="Clienta recibiendo su documentación frente al plano del proyecto" loading="lazy" decoding="async"><figcaption class="visually-hidden">Clienta recibiendo su documentación frente al plano del proyecto</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>Un nuevo comienzo merece un acompañamiento cercano.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="2 de 7">
+      <figure class="family-photo" data-lb tabindex="-1" role="button" aria-label="Ampliar fotografía: Clienta con su contrato firmado"><img src="img/familia-01.jpg" alt="Clienta con su contrato firmado" loading="lazy" decoding="async"><figcaption class="visually-hidden">Clienta con su contrato firmado</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>Cada paso cuenta cuando construyes tu futuro.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="3 de 7">
+      <figure class="family-photo" data-lb tabindex="-1" role="button" aria-label="Ampliar fotografía: Clienta recibiendo su expediente"><img src="img/familia-03.jpg" alt="Clienta recibiendo su expediente" loading="lazy" decoding="async"><figcaption class="visually-hidden">Clienta recibiendo su expediente</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>La confianza se construye con información clara.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="4 de 7">
+      <figure class="family-photo" data-lb tabindex="-1" role="button" aria-label="Ampliar fotografía: Cliente en el terreno del proyecto"><img src="img/familia-04.jpg" alt="Cliente en el terreno del proyecto" loading="lazy" decoding="async"><figcaption class="visually-hidden">Cliente en el terreno del proyecto</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>Tu próximo proyecto de vida empieza con una decisión.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="5 de 7">
+      <figure class="family-photo" data-lb tabindex="-1" role="button" aria-label="Ampliar fotografía: Cliente joven con su contrato"><img src="img/familia-06.jpg" alt="Cliente joven con su contrato" loading="lazy" decoding="async"><figcaption class="visually-hidden">Cliente joven con su contrato</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>Detrás de cada proyecto hay una nueva historia.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="6 de 7">
+      <figure class="family-photo" data-lb tabindex="-1" role="button" aria-label="Ampliar fotografía: Clienta con su documentación"><img src="img/familia-02.jpg" alt="Clienta con su documentación" loading="lazy" decoding="async"><figcaption class="visually-hidden">Clienta con su documentación</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>Un lugar propio abre nuevas posibilidades.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article><article class="family-slide" data-family-slide role="group" aria-roledescription="diapositiva" aria-label="7 de 7">
+      <figure class="family-photo" data-lb tabindex="-1" role="button" aria-label="Ampliar fotografía: Clienta atendida por un asesor"><img src="img/familia-05.jpg" alt="Clienta atendida por un asesor" loading="lazy" decoding="async"><figcaption class="visually-hidden">Clienta atendida por un asesor</figcaption><span class="family-photo__expand" aria-hidden="true">Ampliar ↗</span></figure>
+      <div class="family-message"><span class="home-kicker">Nuestro compromiso</span><h3 data-family-phrase>Estamos cerca para acompañar tu próximo gran paso.</h3><p>Acompañamos decisiones importantes con atención cercana y transparencia.</p><div class="family-signature"><span class="family-signature__line"></span><strong>Casa Grande Inmobiliaria</strong><span>Momentos compartidos con nuestras familias</span></div></div>
+    </article></div>
+    <div class="family-controls"><span class="family-count" role="status" aria-live="polite"><b data-family-current>01</b><span aria-hidden="true"> / </span><span class="visually-hidden"> de </span>07</span><div class="family-dots" role="group" aria-label="Elegir fotografía"><button type="button" data-family-go="0" aria-label="Ver fotografía 1" aria-current="true"></button><button type="button" data-family-go="1" aria-label="Ver fotografía 2" aria-current="false"></button><button type="button" data-family-go="2" aria-label="Ver fotografía 3" aria-current="false"></button><button type="button" data-family-go="3" aria-label="Ver fotografía 4" aria-current="false"></button><button type="button" data-family-go="4" aria-label="Ver fotografía 5" aria-current="false"></button><button type="button" data-family-go="5" aria-label="Ver fotografía 6" aria-current="false"></button><button type="button" data-family-go="6" aria-label="Ver fotografía 7" aria-current="false"></button></div><div class="family-arrows"><button type="button" data-family-prev aria-label="Fotografía anterior">←</button><button type="button" data-family-next aria-label="Fotografía siguiente">→</button></div></div>
   </div>
+</div></section>
 
-  <div class="wrap counters">
-    <div class="counter fade"><b data-num="2022">0</b><span>Iniciamos operaciones</span></div>
-    <div class="counter fade" data-delay=".08"><b data-num="100" data-suf="+">0</b><span>Familias que ya confiaron</span></div>
-    <div class="counter fade" data-delay=".16"><b data-num="2">0</b><span>Proyectos en venta</span></div>
-    <div class="counter fade" data-delay=".24"><b data-num="90" data-suf=" m²">0</b><span>Lotes desde</span></div>
-  </div>
-
-  <div class="wrap">
-    <p class="legalnote fade">
-      Proyectos con respaldo legal, documentación en regla y procesos transparentes
-      para que inviertas con total confianza.
-    </p>
-  </div>
-</section>
-
-<!-- ═══════════ FAMILIAS ═══════════ -->
-<section class="sec sec--cream" id="familias">
-  <div class="wrap">
-    <header class="sechead sechead--center">
-      <p class="eyebrow fade">— Entregas</p>
-      <h2 class="display" data-slide>Familias que ya <em>confiaron en nosotros</em></h2>
-      <p class="text text--center fade">Más de 100 familias ya recibieron su título de propiedad con Casa Grande.</p>
-    </header>
-
-    <div class="fam">
-      <figure class="famcard fade" data-lb><img src="img/familia-07.jpg" alt="Clienta recibiendo su documentación frente al plano del proyecto" loading="lazy" decoding="async" /></figure>
-      <figure class="famcard fade" data-delay=".06" data-lb><img src="img/familia-01.jpg" alt="Clienta con su contrato firmado" loading="lazy" decoding="async" /></figure>
-      <figure class="famcard fade" data-delay=".12" data-lb><img src="img/familia-03.jpg" alt="Clienta recibiendo su expediente" loading="lazy" decoding="async" /></figure>
-      <figure class="famcard fade" data-delay=".18" data-lb><img src="img/familia-04.jpg" alt="Cliente en el terreno del proyecto" loading="lazy" decoding="async" /></figure>
-      <figure class="famcard fade" data-delay=".24" data-lb><img src="img/familia-06.jpg" alt="Cliente joven con su contrato" loading="lazy" decoding="async" /></figure>
-      <figure class="famcard fade" data-delay=".30" data-lb><img src="img/familia-02.jpg" alt="Clienta con su documentación" loading="lazy" decoding="async" /></figure>
-      <figure class="famcard fade" data-delay=".36" data-lb><img src="img/familia-05.jpg" alt="Clienta atendida por un asesor" loading="lazy" decoding="async" /></figure>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ PREGUNTAS ═══════════ -->
-<section class="sec" id="preguntas">
-  <div class="wrap wrap--narrow">
-    <header class="sechead sechead--center">
-      <p class="eyebrow fade">— Preguntas frecuentes</p>
-      <h2 class="display" data-slide>Lo que más <em>nos preguntan</em></h2>
-    </header>
-
-    <div class="faq" id="faq">
-      <div class="fq fade">
-        <button class="fq__q" aria-expanded="false">¿Qué documentos recibo al comprar?<i></i></button>
-        <div class="fq__a"><p>Recibes tu título de propiedad y todos los documentos en regla.</p></div>
-      </div>
-      <div class="fq fade" data-delay=".05">
-        <button class="fq__q" aria-expanded="false">¿Puedo visitar el proyecto?<i></i></button>
-        <div class="fq__a"><p>Sí. Atendemos de lunes a viernes, con previa coordinación por WhatsApp.</p></div>
-      </div>
-      <div class="fq fade" data-delay=".1">
-        <button class="fq__q" aria-expanded="false">¿Puedo adelantar cuotas o cancelar antes?<i></i></button>
-        <div class="fq__a"><p>Sí, puedes adelantar tus pagos o cancelar el saldo cuando lo desees.</p></div>
-      </div>
-      <div class="fq fade" data-delay=".25">
-        <button class="fq__q" aria-expanded="false">¿Qué medios de pago aceptan?<i></i></button>
-        <div class="fq__a"><p>Aceptamos transferencias y depósitos bancarios.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═══════════ CONTACTO ═══════════ -->
 <section class="sec sec--dark" id="contacto">
-  <div class="wrap grid2">
-    <div>
-      <p class="eyebrow fade">— Contacto</p>
-      <div class="contacto__head">
-        <span class="contacto__marca fade">
-          <img src="img/logo-completo-claro.png" alt="Inmobiliaria Casa Grande" class="contacto__logo" width="560" height="572" />
-          <em>Inmobiliaria</em>
-        </span>
-        <h2 class="display rotulo" data-slide>Conversemos sobre <em>tu inversión</em></h2>
+  <div class="wrap grid2 contact-layout--questions">
+    <div class="contact-copy contact-copy--questions">
+      <p class="eyebrow">Hablemos de tu próximo paso</p>
+      <h2 class="home-title">Tu próximo gran paso<br><em>empieza aquí.</em></h2>
+      <p class="contact-lead">Cuéntanos qué estás buscando. Te ayudamos a conocer los proyectos, resolver tus dudas y coordinar una visita.</p>
+      <section class="contact-questions" id="preguntas" aria-labelledby="contact-questions-title"><h3 id="contact-questions-title">Preguntas frecuentes</h3>
+<div class="faq" id="faq">
+      <div class="fq">
+        <button class="fq__q" aria-expanded="false" aria-controls="faq-respuesta-1">¿Qué documentos recibo al comprar?<i></i></button>
+        <div class="fq__a" id="faq-respuesta-1"><p>Recibes tu título de propiedad y todos los documentos en regla.</p></div>
       </div>
-
-      <div class="piecols fade" data-delay=".25">
-        <div class="piecols__c">
-          <p class="piecols__marca">Inmobiliaria Casa Grande</p>
-          <p>RUC: 20608988859</p>
-          <div class="piecols__redes">
-            <a href="https://www.facebook.com/casagrandesac.inmobiliaria" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.2v3.2h2.8V21h3.4z"/></svg></a>
-            <a href="https://www.instagram.com/casagrande_inmobiliaria" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c-2.7 0-3 0-4 .06-1.1.05-1.8.22-2.4.47-.7.26-1.2.6-1.8 1.2-.6.6-.94 1.1-1.2 1.8-.25.6-.42 1.3-.47 2.4C2 9.1 2 9.4 2 12s0 2.9.06 4c.05 1.1.22 1.8.47 2.4.26.7.6 1.2 1.2 1.8.6.6 1.1.94 1.8 1.2.6.25 1.3.42 2.4.47 1.1.06 1.4.06 4 .06s2.9 0 4-.06c1.1-.05 1.8-.22 2.4-.47.7-.26 1.2-.6 1.8-1.2.6-.6.94-1.1 1.2-1.8.25-.6.42-1.3.47-2.4.06-1.1.06-1.4.06-4s0-2.9-.06-4c-.05-1.1-.22-1.8-.47-2.4a4.9 4.9 0 0 0-1.2-1.8 4.9 4.9 0 0 0-1.8-1.2c-.6-.25-1.3-.42-2.4-.47-1.1-.06-1.4-.06-4-.06zm0 1.8c2.7 0 3 0 4 .06 1 .04 1.5.2 1.9.34.5.18.8.4 1.1.75.35.35.57.65.75 1.1.15.4.3.9.34 1.9.06 1 .06 1.3.06 4s0 3-.06 4c-.04 1-.2 1.5-.34 1.9-.18.5-.4.8-.75 1.1-.35.35-.65.57-1.1.75-.4.15-.9.3-1.9.34-1 .06-1.3.06-4 .06s-3 0-4-.06c-1-.04-1.5-.2-1.9-.34-.5-.18-.8-.4-1.1-.75a3 3 0 0 1-.75-1.1c-.15-.4-.3-.9-.34-1.9-.06-1-.06-1.3-.06-4s0-3 .06-4c.04-1 .2-1.5.34-1.9.18-.5.4-.8.75-1.1.35-.35.65-.57 1.1-.75.4-.15.9-.3 1.9-.34 1-.06 1.3-.06 4-.06zm0 3.06a5.14 5.14 0 1 0 0 10.28 5.14 5.14 0 0 0 0-10.28zm0 8.48a3.34 3.34 0 1 1 0-6.68 3.34 3.34 0 0 1 0 6.68zm6.54-8.68a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/></svg></a>
-            <a href="https://www.tiktok.com/@casa.grande.inmob" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3v11.5a2.6 2.6 0 1 1-1.8-2.5V8.9a5.7 5.7 0 1 0 4.8 5.6V9.4a7.3 7.3 0 0 0 4.2 1.3V7.7a4.3 4.3 0 0 1-3.2-1.9z"/></svg></a>
-          </div>
-        </div>
-
-        <div class="piecols__c">
-          <h3>Contacto</h3>
-          <p>986 498 284</p>
-          <p>Av. Nicolás de Piérola Nro. 690,<br>Chiclayo</p>
-          <p>casagrandesac.grupoinmobiliario<br>@gmail.com</p>
-        </div>
-
-        <div class="piecols__c">
-          <h3>Legales</h3>
-          <p><a href="politica-privacidad.html">Política de privacidad</a></p>
-          <p><a href="terminos.html">Términos y condiciones</a></p>
-          <p><a href="libro-reclamaciones.html">Libro de Reclamaciones</a></p>
-        </div>
-
-        <p class="piecols__copy">© 2026 Inmobiliaria Casa Grande. Todos los derechos reservados.</p>
+      <div class="fq" data-delay=".05">
+        <button class="fq__q" aria-expanded="false" aria-controls="faq-respuesta-2">¿Puedo visitar el proyecto?<i></i></button>
+        <div class="fq__a" id="faq-respuesta-2"><p>Sí. Atendemos de lunes a viernes, con previa coordinación por WhatsApp.</p></div>
       </div>
+      <div class="fq" data-delay=".1">
+        <button class="fq__q" aria-expanded="false" aria-controls="faq-respuesta-3">¿Puedo adelantar cuotas o cancelar antes?<i></i></button>
+        <div class="fq__a" id="faq-respuesta-3"><p>Sí, puedes adelantar tus pagos o cancelar el saldo cuando lo desees.</p></div>
+      </div>
+      <div class="fq" data-delay=".25">
+        <button class="fq__q" aria-expanded="false" aria-controls="faq-respuesta-4">¿Qué medios de pago aceptan?<i></i></button>
+        <div class="fq__a" id="faq-respuesta-4"><p>Aceptamos transferencias y depósitos bancarios.</p></div>
+      </div>
+    </div>
+</section>
     </div>
 
     <!-- Formulario corto: tres campos. Lo demás se pregunta por WhatsApp. -->
-    <form class="form fade" data-delay=".15" id="form" novalidate>
-      <p class="form__tit">Quiero información</p>
+    <form class="form" id="form" novalidate>
+      <p class="form__tit">Encuentra tu próximo espacio</p><p class="form__intro">Elige un proyecto y conversemos por WhatsApp.</p>
       <div class="fld"><input id="nombre" type="text" required placeholder=" " autocomplete="name"><label for="nombre">Nombre completo *</label></div>
       <div class="fld"><input id="celular" type="tel" required placeholder=" " inputmode="tel" autocomplete="tel"><label for="celular">Celular / WhatsApp *</label></div>
 
@@ -434,15 +353,44 @@
       <label class="check"><input type="checkbox" id="acepta"><span>Acepto la <a href="politica-privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y el tratamiento de mis datos para recibir información.</span></label>
 
       <button type="submit" class="btn btn--gold btn--full" data-ev="form_envio"><span>Enviar por WhatsApp</span></button>
-      <p class="formnote" id="formNote"></p>
+      <p class="formnote" id="formNote" role="status" aria-live="polite"></p>
       <p class="formtip">Te respondemos el mismo día.</p>
     </form>
+      <div class="contact-direct contact-direct--row"><a href="#" data-wa><span>Atención por WhatsApp</span><strong>986 498 284 <span aria-hidden="true">↗</span></strong></a><div><span>Visítanos en Chiclayo</span><strong>Av. Nicolás de Piérola 690</strong><span>Lunes a viernes · 9 a. m. a 6 p. m.</span></div></div>
   </div>
 </section>
 
 </main>
 
 <!-- ═══════════ PIE ═══════════ -->
+<footer class="home-footer"><div class="wrap">      <div class="piecols" data-delay=".25">
+        <div class="piecols__c">
+          <p class="piecols__marca">Inmobiliaria Casa Grande</p>
+          <p>RUC: 20608988859</p>
+          <div class="piecols__redes">
+            <a href="https://www.facebook.com/casagrandesac.inmobiliaria" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.2v3.2h2.8V21h3.4z"/></svg></a>
+            <a href="https://www.instagram.com/casagrande_inmobiliaria" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c-2.7 0-3 0-4 .06-1.1.05-1.8.22-2.4.47-.7.26-1.2.6-1.8 1.2-.6.6-.94 1.1-1.2 1.8-.25.6-.42 1.3-.47 2.4C2 9.1 2 9.4 2 12s0 2.9.06 4c.05 1.1.22 1.8.47 2.4.26.7.6 1.2 1.2 1.8.6.6 1.1.94 1.8 1.2.6.25 1.3.42 2.4.47 1.1.06 1.4.06 4 .06s2.9 0 4-.06c1.1-.05 1.8-.22 2.4-.47.7-.26 1.2-.6 1.8-1.2.6-.6.94-1.1 1.2-1.8.25-.6.42-1.3.47-2.4.06-1.1.06-1.4.06-4s0-2.9-.06-4c-.05-1.1-.22-1.8-.47-2.4a4.9 4.9 0 0 0-1.2-1.8 4.9 4.9 0 0 0-1.8-1.2c-.6-.25-1.3-.42-2.4-.47-1.1-.06-1.4-.06-4-.06zm0 1.8c2.7 0 3 0 4 .06 1 .04 1.5.2 1.9.34.5.18.8.4 1.1.75.35.35.57.65.75 1.1.15.4.3.9.34 1.9.06 1 .06 1.3.06 4s0 3-.06 4c-.04 1-.2 1.5-.34 1.9-.18.5-.4.8-.75 1.1-.35.35-.65.57-1.1.75-.4.15-.9.3-1.9.34-1 .06-1.3.06-4 .06s-3 0-4-.06c-1-.04-1.5-.2-1.9-.34-.5-.18-.8-.4-1.1-.75a3 3 0 0 1-.75-1.1c-.15-.4-.3-.9-.34-1.9-.06-1-.06-1.3-.06-4s0-3 .06-4c.04-1 .2-1.5.34-1.9.18-.5.4-.8.75-1.1.35-.35.65-.57 1.1-.75.4-.15.9-.3 1.9-.34 1-.06 1.3-.06 4-.06zm0 3.06a5.14 5.14 0 1 0 0 10.28 5.14 5.14 0 0 0 0-10.28zm0 8.48a3.34 3.34 0 1 1 0-6.68 3.34 3.34 0 0 1 0 6.68zm6.54-8.68a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/></svg></a>
+            <a href="https://www.tiktok.com/@casa.grande.inmob" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3v11.5a2.6 2.6 0 1 1-1.8-2.5V8.9a5.7 5.7 0 1 0 4.8 5.6V9.4a7.3 7.3 0 0 0 4.2 1.3V7.7a4.3 4.3 0 0 1-3.2-1.9z"/></svg></a>
+          </div>
+        </div>
+
+        <div class="piecols__c">
+          <h3>Contacto</h3>
+          <p>986 498 284</p>
+          <p>Av. Nicolás de Piérola Nro. 690,<br>Chiclayo</p>
+          <p>casagrandesac.grupoinmobiliario<br>@gmail.com</p>
+        </div>
+
+        <div class="piecols__c">
+          <h3>Legales</h3>
+          <p><a href="politica-privacidad.html">Política de privacidad</a></p>
+          <p><a href="terminos.html">Términos y condiciones</a></p>
+          <p><a href="libro-reclamaciones.html">Libro de Reclamaciones</a></p>
+        </div>
+
+        <p class="piecols__copy">© 2026 Inmobiliaria Casa Grande. Todos los derechos reservados.</p>
+      </div>
+</div></footer>
 
 
 <a href="#" class="wafloat" data-wa data-ev="wa_flotante" aria-label="Escribir por WhatsApp">
@@ -482,7 +430,8 @@
   <button class="lb__nav lb__next" id="lbNext" aria-label="Siguiente">›</button>
 </div>
 
-<script src="script.js?v=20261015-carruseles"></script>
+<script src="script.js?v=20261016-pagina-somos"></script>
+<script src="home.js?v=20261016-guia-proyectos"></script>
 
 </body>
 </html>

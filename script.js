@@ -321,9 +321,17 @@ const secciones = enlacesNav
 function marcarSeccion() {
   const linea = scrollY + alto() * 0.35;      // línea imaginaria a un tercio de pantalla
   let actual = -1;
-  secciones.forEach((sec, i) => { if (sec && sec.offsetTop <= linea) actual = i; });
-  enlacesNav.forEach((a, i) => a.classList.toggle('activo', i === actual ||
-    (actual === -1 && proyectoActual && a.getAttribute('href') === '/#proyectos')));
+  let posicionActual = -Infinity;
+  // La posición de la sección determina el estado, aunque Somos sea el último enlace.
+  secciones.forEach((sec, i) => {
+    if (sec && sec.offsetTop <= linea && sec.offsetTop > posicionActual) {
+      actual = i;
+      posicionActual = sec.offsetTop;
+    }
+  });
+  enlacesNav.forEach((a, i) => a.classList.toggle('activo', Boolean(i === actual ||
+    (actual === -1 && (a.getAttribute('aria-current') === 'page' ||
+      (proyectoActual && a.getAttribute('href') === '/#proyectos'))))));
 }
 
 /* ───────────────────────────────────────────────
