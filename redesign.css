@@ -197,6 +197,50 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 
 .families-note .signature{font-size:calc(var(--text-caption) + 2px);}
 
+/* Familias: fotografía estable y lectura alineada con el encabezado. */
+.families-intro{padding-bottom:72px;}
+.families-intro .section-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:32px;margin-bottom:40px;}
+.families-intro .section-heading>div{min-width:0;}
+.families-intro .section-heading h1{font-size:48px;line-height:1.16;}
+.families-intro .section-heading .text-link{font-size:14px;gap:20px;margin:0 0 5px;white-space:nowrap;}
+.families-editorial{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center;}
+.families-editorial .gallery-widget--family{width:100%;max-width:none;margin:0;}
+.families-note{padding:0;container-type:normal;}
+.families-note h2{font-size:38px;line-height:1.22;margin-bottom:26px;}
+.families-note p{max-width:none;font-size:18px;line-height:1.8;}
+.families-note .signature{font-size:16px;line-height:1.6;margin-top:30px;}
+@media(max-width:1150px){
+ .families-intro .section-heading h1{font-size:42px;}
+ .families-editorial{gap:48px;}
+ .families-note h2{font-size:34px;}
+ .families-note p{font-size:17px;}
+}
+@media(max-width:900px){
+ .families-intro .section-heading{grid-template-columns:1fr;gap:22px;}
+ .families-intro .section-heading>div+div{margin:0;}
+ .families-intro .section-heading .text-link{margin:0;}
+ .families-editorial{gap:36px;}
+ .families-note h2{font-size:30px;}
+ .families-note p{font-size:16px;line-height:1.8;}
+}
+@media(max-width:800px){
+ .families-editorial{grid-template-columns:minmax(0,1fr);gap:32px;max-width:552px;margin-inline:auto;}
+ .families-intro .section-heading{margin-bottom:32px;}
+ .families-note h2{font-size:34px;}
+}
+@media(max-width:640px){
+ .families-intro{padding-bottom:48px;}
+ .families-intro .section-heading h1{font-size:34px;line-height:1.2;}
+ .families-intro .section-heading .text-link{font-size:13px;}
+ .families-note h2{font-size:29px;margin-bottom:20px;}
+ .families-note p{font-size:16px;}
+ .families-note .signature{font-size:15px;margin-top:24px;}
+}
+@media(max-width:360px){
+ .families-intro .section-heading h1{font-size:31px;}
+ .families-note h2{font-size:26px;}
+}
+
 .home-experience .section-heading>div{width:100%;}
 .home-experience .section-heading p{max-width:none;margin-top:20px;}
 
@@ -259,3 +303,83 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 @media(max-width:640px){.footer-legal-links{font-size:10px;gap:14px;}}
 
 .footer-ruc{display:block;white-space:nowrap;}
+
+/* Páginas de proyecto: datos agrupados y dos columnas con una jerarquía común. */
+.project-page-head{padding-bottom:24px;}
+.project-head-main p{max-width:740px;font-size:16px;line-height:1.65;}
+.project-facts{grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:24px;margin-top:28px;padding:24px;border:1px solid var(--line);border-radius:12px;background:#ffffffd9;}
+.project-facts>div{min-width:0;padding-right:16px;}
+.project-facts strong{font-size:26px;line-height:1.25;}
+.project-facts span{font-size:12px;margin-top:5px;}
+.project-facts .button{font-size:14px;min-height:50px;padding:14px 22px;gap:24px;}
+.project-tabs{gap:28px;}
+.project-tabs>button{font-size:15px;line-height:1.5;padding:20px 16px;}
+.project-tab-panel{padding-top:30px;}
+.project-overview{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:28px;align-items:stretch;}
+.project-benefits{display:flex;flex-direction:column;min-width:0;}
+.project-section-title{font-size:30px;color:var(--blue);margin:0;}
+.project-benefits .benefit-list{gap:12px;margin:20px 0 24px;}
+.project-benefits .benefit-list>li{gap:12px;font-size:15px;line-height:1.7;}
+.project-benefits .benefit-list>li>svg{flex:0 0 24px;width:24px;height:24px;margin-top:1px;padding:5px;border-radius:50%;background:var(--blue);color:white;}
+.project-benefits>.gallery-widget{margin-top:auto;}
+.project-benefits .gallery-widget--compact .carousel-image{height:auto;aspect-ratio:16/9;}
+.project-benefits .gallery-widget--compact .carousel-image:not(.is-event)>img{object-fit:cover;}
+.project-workspace .project-benefits .gallery-disclaimer{margin-top:10px;text-align:left;font-size:10px;line-height:1.6;}
+.project-overview>.project-side{display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:white;}
+.project-side .location-heading{margin-bottom:18px;}
+.project-side .location-heading h3{font-size:28px;margin:0 0 3px;}
+.project-side .location-heading p{font-size:14px;line-height:1.6;color:var(--gray);margin:0;}
+.project-side>.text-link{align-self:flex-start;margin-top:auto;padding-top:18px;font-size:13px;gap:14px;}
+.project-side .project-video-picker{gap:8px;}
+.project-side .project-video-picker button{font-size:12px;}
+.location-panel>.location-heading p{font-size:15px;color:var(--gray);margin-top:8px;}
+@media(max-width:1150px){
+ .project-facts{gap:18px;padding:20px;}
+ .project-facts strong{font-size:23px;}
+ .project-facts .button{font-size:13px;padding-inline:18px;gap:16px;}
+ .project-head-main p{font-size:15px;}
+ .project-overview{gap:24px;}
+ .project-overview>.project-side{padding:20px;}
+}
+@media(max-width:900px){
+ .project-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+ .project-facts>div:last-of-type{border-right:0;}
+ .project-facts .button{grid-column:1/-1;justify-self:stretch;}
+ .project-tabs{gap:16px;}
+ .project-tabs>button{font-size:14px;padding-inline:12px;}
+ .project-benefits .benefit-list>li{font-size:14px;}
+ .project-section-title,.project-side .location-heading h3{font-size:27px;}
+}
+@media(max-width:800px){
+ .project-overview{grid-template-columns:1fr;gap:28px;}
+ .project-benefits>.gallery-widget{margin-top:0;}
+ .project-overview>.project-side{padding:22px;}
+ .project-side>.text-link{margin-top:0;}
+}
+@media(max-width:640px){
+ .project-head-main{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:14px 16px;align-items:center;}
+ .project-head-main>div{display:contents;}
+ .project-head-main .eyebrow{grid-column:1;grid-row:1;margin:0;font-size:9px;}
+ .project-head-main h1{grid-column:1/-1;grid-row:2;margin:0;font-size:34px;line-height:1.15;}
+ .project-head-main p{grid-column:1/-1;grid-row:3;font-size:14px;line-height:1.7;}
+ .project-page-logo{grid-column:2;grid-row:1;width:72px;height:58px;margin:0;}
+ .project-facts{grid-template-columns:1fr;padding:6px 18px 18px;gap:0;margin-top:24px;}
+ .project-facts>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:12px;padding:14px 0;border-right:0;border-bottom:1px solid var(--line);}
+ .project-facts strong{grid-column:2;grid-row:1;font-size:18px;overflow-wrap:normal;}
+ .project-facts span{grid-column:1;grid-row:1;font-size:12px;margin:0;}
+ .project-facts .button{margin-top:18px;font-size:13px;min-height:48px;justify-content:center;}
+ .project-tabs{gap:0;}
+ .project-tabs>button{padding:18px 8px;font-size:13px;}
+ .project-tab-panel{padding-top:26px;}
+ .project-section-title,.project-side .location-heading h3{font-size:26px;}
+ .project-benefits .benefit-list{gap:12px;margin:18px 0 24px;}
+ .project-overview>.project-side{padding:20px;}
+ .project-side>.text-link{font-size:12px;}
+}
+@media(max-width:360px){
+ .project-head-main h1{font-size:31px;}
+ .project-facts{padding-inline:16px;}
+ .project-facts strong{font-size:16px;}
+ .project-facts span{font-size:10px;}
+ .project-tabs>button{font-size:12px;padding-inline:6px;}
+}
