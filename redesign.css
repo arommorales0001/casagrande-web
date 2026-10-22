@@ -262,47 +262,64 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
   .home-experience .experience-about{justify-self:center;}
 }
 
-/* Navegación horizontal en el pie, sin la frase central. */
-.footer-top{grid-template-columns:1fr auto 1fr;}
-.footer-top .footer-links{flex-direction:row;align-items:center;justify-content:center;gap:22px;padding-top:12px;}
-.footer-top .footer-brand{display:flex;flex-direction:column;align-items:center;justify-self:start;width:224px;max-width:100%;text-align:justify;}
-@media(max-width:900px){
-  .footer-top{grid-template-columns:1fr 1fr;}
-  .footer-top .footer-navigation{grid-column:1/-1;grid-row:2;}
-  .footer-top .footer-links{padding-top:0;}
-}
-@media(max-width:640px){.footer-top .footer-links{gap:18px;}}
-
-.footer-navigation .footer-promotions{flex-direction:row;align-items:center;justify-content:center;gap:22px;margin-top:20px;}
-
-.footer-copyright{display:block;max-width:100%;margin-top:18px;font-size:8px;line-height:1.7;color:#a9a7b1;}
-.footer-bottom{justify-content:flex-end;}
-
-.footer-top .footer-links{font-size:15px;}
-.footer-navigation .footer-promotions .footer-secondary{font-size:13px;}
-@media(max-width:640px){.footer-top .footer-links{font-size:14px;gap:14px;}}
-
-.footer-brand .footer-contact{margin-top:14px;align-self:stretch;justify-self:auto;grid-column:auto;grid-row:auto;text-align:center;}
+/* Pie compartido: lectura uniforme, tres columnas y espacio para WhatsApp. */
+.site-footer{--footer-text:16px;background:var(--blue);color:#e1dfeb;padding:48px 0 32px;}
+.footer-top{grid-template-columns:minmax(280px,1fr) auto minmax(220px,1fr);align-items:start;gap:40px;padding-bottom:0;}
+.footer-top .footer-brand{display:flex;flex-direction:column;align-items:flex-start;justify-self:start;width:300px;max-width:100%;text-align:justify;}
+.site-footer .brand{width:300px;gap:14px;}
+.site-footer .brand-symbol{width:64px;height:64px;}
+.site-footer .brand-name>img{width:222px;}
+.site-footer .brand-name>span{font-size:9px;}
+.footer-top .footer-navigation{min-width:0;grid-column:2;grid-row:1;}
+.footer-top .footer-links{flex-direction:row;align-items:center;justify-content:center;gap:28px;padding-top:14px;font-size:18px;font-weight:500;line-height:1.6;color:#fff;}
+.footer-navigation .footer-promotions{flex-direction:row;align-items:center;justify-content:center;gap:28px;margin-top:30px;}
+.footer-navigation .footer-promotions .footer-secondary{font-size:var(--footer-text);line-height:1.6;color:inherit;white-space:nowrap;}
+.footer-copyright{display:block;max-width:100%;margin-top:22px;}
+.footer-ruc{display:block;white-space:nowrap;}
+.footer-brand .footer-contact{margin-top:18px;align-self:stretch;justify-self:auto;grid-column:auto;grid-row:auto;}
 .footer-brand .footer-contact p{margin:0 0 12px;}
-@media(max-width:900px){.footer-top .footer-brand{grid-column:1;grid-row:1;}}
-
-/* Datos del pie con la misma tipografía que la dirección. */
-.footer-brand .footer-copyright,.footer-brand .footer-contact{width:100%;font-family:var(--body);font-size:12px;font-weight:400;line-height:1.65;color:#b7b5be;text-align:justify;}
+.footer-brand .footer-copyright,.footer-brand .footer-contact{width:100%;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.65;color:inherit;text-align:justify;}
 .footer-brand .footer-contact p,.footer-brand .footer-contact>a{font:inherit;color:inherit;text-align:justify;}
 .footer-brand .footer-contact>a{display:block;}
-.footer-brand .footer-contact>a svg{display:inline-block;width:12px;height:12px;margin-left:10px;vertical-align:-1px;}
-@media(max-width:1150px){.footer-top .footer-brand{width:196px;}}
-@media(max-width:640px){.footer-top .footer-brand{width:192px;}.footer-brand .footer-copyright,.footer-brand .footer-contact{font-size:10px;}}
-@media(max-width:360px){.footer-top .footer-brand{width:158px;}}
-
-/* Libro y enlaces legales en la columna derecha del pie. */
-.footer-legal{display:flex;flex-direction:column;align-items:center;justify-self:end;gap:14px;padding-top:12px;margin-right:64px;max-width:100%;}
-.footer-legal-links{display:flex;align-items:center;justify-content:center;gap:18px;font-family:var(--body);font-size:12px;font-weight:400;line-height:1.65;color:#b7b5be;}
-.footer-legal-links a:hover{color:#fff;}
-@media(max-width:900px){.footer-legal{grid-column:2;grid-row:1;margin-right:24px;}}
-@media(max-width:640px){.footer-legal-links{font-size:10px;gap:14px;}}
-
-.footer-ruc{display:block;white-space:nowrap;}
+.footer-brand .footer-contact>a svg{display:inline-block;width:16px;height:16px;margin-left:10px;vertical-align:-2px;}
+.footer-legal{display:flex;flex-direction:column;align-items:center;justify-self:end;grid-column:3;grid-row:1;gap:18px;padding-top:6px;margin-right:64px;width:192px;max-width:100%;}
+.footer-complaints img{width:140px;}
+.footer-legal-links{display:flex;align-items:center;justify-content:center;gap:22px;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.65;color:inherit;}
+.footer-legal-links a:hover,.footer-contact a:hover{color:#fff;}
+@media(max-width:1150px){
+ .footer-top{gap:28px;}
+ .footer-top .footer-links{font-size:17px;gap:22px;}
+ .footer-top .footer-brand,.site-footer .brand{width:280px;}
+ .site-footer .brand{gap:12px;}
+ .site-footer .brand-symbol{width:60px;height:60px;}
+ .site-footer .brand-name>img{width:208px;}
+ .footer-legal{margin-right:44px;}
+}
+@media(max-width:1100px){
+ .footer-top{grid-template-columns:minmax(0,1fr) auto;gap:32px 40px;}
+ .footer-top .footer-brand{grid-column:1;grid-row:1;}
+ .footer-top .footer-navigation{grid-column:1/-1;grid-row:2;}
+ .footer-top .footer-links{padding-top:0;}
+ .footer-navigation .footer-promotions{margin-top:22px;}
+ .footer-legal{grid-column:2;grid-row:1;}
+}
+@media(max-width:640px){
+ .site-footer{padding:40px 0 88px;}
+ .footer-top{grid-template-columns:minmax(0,1fr);gap:32px;}
+ .footer-top .footer-brand{justify-self:center;width:300px;}
+ .site-footer .brand{width:280px;}
+ .footer-top .footer-navigation{grid-column:1;grid-row:2;}
+ .footer-top .footer-links{font-size:var(--footer-text);gap:14px;}
+ .footer-navigation .footer-promotions{gap:22px;margin-top:20px;}
+ .footer-legal{grid-column:1;grid-row:3;justify-self:center;margin:0;padding:0;}
+ .footer-legal-links{gap:22px;}
+}
+@media(max-width:360px){
+ .site-footer{--footer-text:15px;}
+ .footer-top .footer-brand{width:280px;}
+ .footer-top .footer-links{font-size:14px;gap:12px;}
+ .footer-navigation .footer-promotions{gap:16px;}
+}
 
 /* Páginas de proyecto: datos agrupados y dos columnas con una jerarquía común. */
 .project-page-head{padding-bottom:24px;}
