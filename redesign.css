@@ -401,19 +401,24 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
  .project-tabs>button{font-size:12px;padding-inline:6px;}
 }
 
-/* Entrada de títulos: aparición gradual y un desplazamiento breve, una sola vez. */
-.title-reveal{--title-duration:900ms;--title-distance:18px;opacity:0;transform:translate3d(0,var(--title-distance),0);filter:blur(2px);transition:opacity var(--title-duration) cubic-bezier(.22,1,.36,1),transform var(--title-duration) cubic-bezier(.22,1,.36,1),filter 700ms cubic-bezier(.22,1,.36,1);transition-delay:var(--title-delay,80ms);}
-h1.title-reveal{--title-duration:1050ms;--title-distance:22px;}
-h3.title-reveal{--title-duration:760ms;--title-distance:14px;}
-.title-reveal.is-visible{opacity:1;transform:none;filter:none;}
+/* Revelado editorial: máscaras, profundidad leve y secuencia por línea. */
+.title-reveal{--title-duration:1100ms;--title-depth:18deg;--title-skew:3deg;--title-blur:5px;}
+h1.title-reveal{--title-duration:1250ms;--title-depth:22deg;}
+h3.title-reveal{--title-duration:900ms;--title-depth:14deg;--title-skew:2deg;--title-blur:3px;}
+.title-word{display:inline-block;vertical-align:top;overflow:hidden;overflow:clip;perspective:700px;padding:.06em .04em .14em;margin:-.06em -.04em -.14em;}
+.title-word-ink{display:block;transform-origin:0 100%;backface-visibility:hidden;opacity:0;transform:translate3d(0,118%,0) rotateX(var(--title-depth)) rotateZ(2deg) skewY(var(--title-skew));filter:blur(var(--title-blur));transition:transform var(--title-duration) cubic-bezier(.16,1,.3,1),opacity 650ms cubic-bezier(.16,1,.3,1),filter 850ms cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--title-delay,60ms) + var(--word-delay,0ms));}
+.title-reveal.is-visible .title-word-ink{opacity:1;transform:none;filter:none;}
+.title-reveal.is-visible:not(.is-settled) .title-word-ink{will-change:transform,opacity;}
 @media(max-width:640px){
- :is(h1,h2,h3).title-reveal{--title-duration:760ms;--title-distance:12px;filter:none;}
+ :is(h1,h2,h3).title-reveal{--title-duration:950ms;--title-depth:12deg;--title-skew:2deg;--title-blur:2px;}
 }
 @media(prefers-reduced-motion:reduce){
- .title-reveal{opacity:1!important;transform:none!important;filter:none!important;transition:none!important;}
+ .title-word{overflow:visible!important;}
+ .title-word-ink{opacity:1!important;transform:none!important;filter:none!important;transition:none!important;}
 }
 @media print{
- .title-reveal{opacity:1!important;transform:none!important;filter:none!important;transition:none!important;}
+ .title-word{overflow:visible!important;}
+ .title-word-ink{opacity:1!important;transform:none!important;filter:none!important;transition:none!important;}
 }
 
 /* Guía de proyectos compacta, con pictogramas del mismo azul de la marca. */

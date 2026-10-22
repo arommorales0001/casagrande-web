@@ -8,15 +8,69 @@
   const arrow = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.6"/></svg>';
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // Una entrada por título, sin duplicar el movimiento de su contenedor.
-  // Sin JavaScript, sin observador o con movimiento reducido, el texto queda visible.
+  // Revelado tipográfico por líneas y palabras. Al terminar se restaura el texto
+  // original para conservar su composición, selección y lectura habitual.
   if (!reduced && 'IntersectionObserver' in window) {
     const titles = $$('main h1, main h2, main h3').filter(element => !element.classList.contains('visually-hidden'));
     const reveals = $$('[data-reveal]').filter(element => !element.matches('h1,h2,h3') && !element.querySelector('h1,h2,h3'));
     const targets = [...reveals, ...titles];
+    const titleWords = new Map();
+    const titleTimers = new Map();
+    const settleTitle = element => {
+      clearTimeout(titleTimers.get(element));
+      titleTimers.delete(element);
+      (titleWords.get(element) || []).forEach(word => word.replaceWith(document.createTextNode(word.textContent)));
+      titleWords.delete(element);
+      element.normalize();
+      element.classList.add('is-settled');
+    };
+    const prepareTitle = element => {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, {
+        acceptNode: node => node.nodeValue.trim() && !node.parentElement.closest('svg,[aria-hidden="true"],.visually-hidden') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+      });
+      const nodes = [];
+      const words = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node => {
+        const fragment = document.createDocumentFragment();
+        node.nodeValue.split(/(\s+)/).forEach(part => {
+          if (!part.trim()) { fragment.append(document.createTextNode(part)); return; }
+          const mask = document.createElement('span');
+          const ink = document.createElement('span');
+          mask.className = 'title-word';
+          ink.className = 'title-word-ink';
+          ink.textContent = part;
+          mask.append(ink);
+          fragment.append(mask);
+          words.push(mask);
+        });
+        node.replaceWith(fragment);
+      });
+      titleWords.set(element, words);
+      element.classList.add('title-reveal');
+    };
+    const revealTitle = element => {
+      const words = titleWords.get(element);
+      if (!words?.length) return;
+      const tops = words.map(word => word.getBoundingClientRect().top);
+      const compact = innerWidth <= 640;
+      const wordStep = compact ? 38 : element.tagName === 'H3' ? 45 : 65;
+      const lineStep = compact ? 130 : 180;
+      let previousTop = tops[0], line = 0, position = 0, lastDelay = 0;
+      words.forEach((word, index) => {
+        if (Math.abs(tops[index] - previousTop) > 3) { line++; position = 0; previousTop = tops[index]; }
+        const delay = Math.min(line * lineStep + position++ * wordStep, 600);
+        word.style.setProperty('--word-delay', delay + 'ms');
+        lastDelay = Math.max(lastDelay, delay);
+      });
+      const duration = parseFloat(getComputedStyle(element).getPropertyValue('--title-duration')) || 1100;
+      const delay = parseFloat(element.style.getPropertyValue('--title-delay')) || 0;
+      titleTimers.set(element, setTimeout(() => settleTitle(element), duration + delay + lastDelay + 120));
+    };
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
+        revealTitle(entry.target);
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       });
@@ -29,14 +83,17 @@
     titles.forEach(element => {
       const group = element.closest('.project-cards,.experience-grid,.assurance-row,.values-grid');
       const position = group ? [...group.querySelectorAll('h1,h2,h3')].indexOf(element) : 0;
-      element.classList.add('title-reveal');
-      element.style.setProperty('--title-delay', (group ? position % 3 * 90 : 80) + 'ms');
+      prepareTitle(element);
+      element.style.setProperty('--title-delay', (group ? position % 3 * 120 : 60) + 'ms');
       observer.observe(element);
     });
     motionPreference.addEventListener('change', event => {
       if (!event.matches) return;
       observer.disconnect();
-      targets.forEach(element => element.classList.add('is-visible'));
+      targets.forEach(element => {
+        element.classList.add('is-visible');
+        if (titleWords.has(element)) settleTitle(element);
+      });
     });
   }
 
