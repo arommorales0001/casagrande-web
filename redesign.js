@@ -2,24 +2,41 @@
   'use strict';
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  const reduced = motionPreference.matches;
   const projectData = JSON.parse($('#project-data')?.textContent || '[]');
   const arrow = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.6"/></svg>';
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // La aparición sucede una sola vez. El contenido sigue visible sin JavaScript.
+  // Una entrada por título, sin duplicar el movimiento de su contenedor.
+  // Sin JavaScript, sin observador o con movimiento reducido, el texto queda visible.
   if (!reduced && 'IntersectionObserver' in window) {
+    const titles = $$('main h1, main h2, main h3').filter(element => !element.classList.contains('visually-hidden'));
+    const reveals = $$('[data-reveal]').filter(element => !element.matches('h1,h2,h3') && !element.querySelector('h1,h2,h3'));
+    const targets = [...reveals, ...titles];
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       });
-    }, { threshold: .08, rootMargin: '0px 0px -25px 0px' });
-    $$('[data-reveal]').forEach((element, index) => {
+    }, { threshold: .12, rootMargin: '0px 0px -28px 0px' });
+    reveals.forEach((element, index) => {
       element.classList.add('will-reveal');
       element.style.setProperty('--reveal-delay', (index % 3) * 65 + 'ms');
       observer.observe(element);
+    });
+    titles.forEach(element => {
+      const group = element.closest('.project-cards,.experience-grid,.assurance-row,.values-grid');
+      const position = group ? [...group.querySelectorAll('h1,h2,h3')].indexOf(element) : 0;
+      element.classList.add('title-reveal');
+      element.style.setProperty('--title-delay', (group ? position % 3 * 90 : 80) + 'ms');
+      observer.observe(element);
+    });
+    motionPreference.addEventListener('change', event => {
+      if (!event.matches) return;
+      observer.disconnect();
+      targets.forEach(element => element.classList.add('is-visible'));
     });
   }
 
