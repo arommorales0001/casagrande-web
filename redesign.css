@@ -415,3 +415,34 @@ h3.title-reveal{--title-duration:760ms;--title-distance:14px;}
 @media print{
  .title-reveal{opacity:1!important;transform:none!important;filter:none!important;transition:none!important;}
 }
+
+/* Guía de proyectos compacta, con pictogramas del mismo azul de la marca. */
+.project-assurance{padding:40px 0;}
+.project-assurance .assurance-row{grid-template-columns:.65fr repeat(3,minmax(0,1fr));gap:28px;align-items:start;}
+.project-assurance .assurance-row>.eyebrow{max-width:150px;margin:22px 0 0;line-height:1.65;}
+.assurance-row .assurance-step{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;min-width:0;padding:0;border:0;}
+.assurance-row .assurance-icon{position:static;display:grid;place-items:center;width:44px;height:44px;margin:12px 0 0;border:1px solid #21184f16;border-radius:10px;background:#21184f08;color:var(--blue);}
+.assurance-icon svg{display:block;width:29px;height:29px;stroke-linecap:round;stroke-linejoin:round;}
+.assurance-copy{min-width:0;}
+.assurance-index{display:block;margin-bottom:6px;color:#8b8797;font-size:10px;line-height:1.6;}
+.project-assurance .assurance-row h3{font-size:22px;margin-bottom:8px;}
+.project-assurance .assurance-row p{max-width:240px;font-size:15px;line-height:1.7;}
+@media(max-width:1100px){
+ .project-assurance .assurance-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;}
+ .project-assurance .assurance-row>.eyebrow{grid-column:1/-1;max-width:none;margin:0;}
+ .assurance-row .assurance-step{grid-template-columns:36px minmax(0,1fr);gap:12px;}
+ .assurance-row .assurance-icon{width:36px;height:36px;margin-top:16px;border-radius:8px;}
+ .assurance-icon svg{width:25px;height:25px;}
+ .project-assurance .assurance-row h3{font-size:19px;}
+ .project-assurance .assurance-row p{font-size:14px;}
+}
+@media(max-width:800px){
+ .project-assurance{padding:32px 0;}
+ .project-assurance .assurance-row{grid-template-columns:minmax(0,1fr);gap:20px;}
+ .project-assurance .assurance-row>.eyebrow{grid-column:auto;}
+ .assurance-row .assurance-step{grid-template-columns:44px minmax(0,1fr);gap:14px;padding-top:18px;border-top:1px solid var(--line);}
+ .assurance-row .assurance-icon{width:44px;height:44px;margin-top:12px;border-radius:10px;}
+ .assurance-icon svg{width:29px;height:29px;}
+ .project-assurance .assurance-row h3{font-size:21px;}
+ .project-assurance .assurance-row p{max-width:none;font-size:14px;}
+}
