@@ -61,7 +61,7 @@
     const close = $('[data-wa-chat-close]', whatsappChat);
     const form = $('[data-wa-chat-form]', whatsappChat);
     const input = $('input[name="consulta"]', form);
-    const reopenDelay = 15_000;
+    const reopenDelay = 45_000;
     const storageKey = 'cg-whatsapp-reopen-at';
     let reopenTimer;
     const readDeadline = () => {
