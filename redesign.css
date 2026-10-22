@@ -451,3 +451,64 @@ h3.title-reveal{--title-duration:900ms;--title-depth:14deg;--title-skew:2deg;--t
  .project-assurance .assurance-row h3{font-size:21px;}
  .project-assurance .assurance-row p{max-width:none;font-size:14px;}
 }
+
+/* Tarjetas de proyectos: imagen uniforme, lectura clara y una acción consistente. */
+.home-projects .section-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:36px;margin-bottom:34px;}
+.home-projects .section-heading h2{max-width:none;font-size:clamp(42px,4.4vw,60px);font-weight:700;line-height:1.12;color:var(--blue);}
+.home-projects .section-heading .text-link{font-size:16px;gap:26px;margin:0 0 5px;white-space:nowrap;}
+.project-cards{gap:28px;align-items:stretch;}
+.project-card{border-radius:12px;}
+.project-card-link{display:flex;flex-direction:column;height:100%;}
+.project-card .project-card-image{aspect-ratio:8/5;flex:none;}
+.project-card .location-label{top:18px;left:18px;padding:8px 13px;font-size:12px;gap:7px;}
+.project-card .location-label svg{width:15px;height:15px;}
+.project-card .image-note{top:18px;right:18px;padding:4px 8px;border-radius:4px;font-size:11px;}
+.project-card-copy{display:grid;grid-template-columns:minmax(0,1fr) 80px;align-items:center;gap:18px;padding:24px 24px 20px;flex:1;}
+.project-card-copy>div{min-width:0;}
+.project-card-copy h3{font-size:32px;line-height:1.2;margin-bottom:8px;}
+.project-card-copy p{font-size:16px;line-height:1.6;}
+.project-card .project-logo{width:80px;height:68px;}
+.project-card-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;margin:0 24px 20px;padding:16px 0 0;font-size:14px;line-height:1.5;color:var(--blue);}
+.project-card-foot>span.project-card-cta{display:inline-flex;align-items:center;justify-content:center;gap:18px;min-height:48px;padding:12px 18px;border-radius:7px;background:var(--blue);color:white;font-size:14px;font-weight:500;line-height:1.5;white-space:nowrap;transition:background .25s;}
+.project-card-foot .project-card-cta svg{width:19px;height:19px;transition:transform .3s var(--ease);}
+.project-card-link:hover .project-card-cta{background:#362967;}
+.project-card-link:hover .project-card-cta svg{transform:translate(2px,-2px);}
+.project-card-link:focus-visible{outline-offset:-4px;}
+@media(max-width:1150px){
+ .project-card-copy{grid-template-columns:minmax(0,1fr) 68px;gap:14px;padding:22px 22px 18px;}
+ .project-card-copy h3{font-size:28px;}
+ .project-card-copy p{font-size:15px;}
+ .project-card .project-logo{width:68px;height:60px;}
+ .project-card-foot{margin-inline:22px;font-size:13px;gap:12px;}
+ .project-card-foot>span.project-card-cta{font-size:13px;gap:12px;padding-inline:15px;}
+}
+@media(min-width:801px) and (max-width:1000px){
+ .project-cards{gap:22px;}
+ .project-card-copy{grid-template-columns:minmax(0,1fr) 60px;gap:12px;padding:22px 20px 18px;}
+ .project-card-copy h3{font-size:26px;}
+ .project-card-copy p{font-size:14px;}
+ .project-card .project-logo{width:60px;height:54px;}
+ .project-card-foot{grid-template-columns:1fr;margin-inline:20px;gap:14px;}
+ .project-card-foot>span.project-card-cta{width:100%;}
+}
+@media(max-width:800px){
+ .home-projects .section-heading{grid-template-columns:1fr;gap:22px;margin-bottom:28px;}
+ .home-projects .section-heading>div+div{margin-top:0;}
+ .home-projects .section-heading h2{font-size:42px;}
+ .home-projects .section-heading .text-link{font-size:15px;margin:0;}
+ .project-cards{grid-template-columns:minmax(0,1fr);max-width:600px;margin-inline:auto;gap:26px;}
+}
+@media(max-width:480px){
+ .home-projects .section-heading h2{font-size:clamp(26px,8.1vw,36px);line-height:1.17;}
+ .project-card-copy{grid-template-columns:minmax(0,1fr) 60px;gap:12px;min-height:134px;padding:22px 20px 18px;}
+ .project-card-copy h3{font-size:26px;}
+ .project-card-copy p{font-size:14px;}
+ .project-card .project-logo{width:60px;height:54px;}
+ .project-card-foot{grid-template-columns:1fr;gap:14px;margin:0 20px 20px;font-size:14px;}
+ .project-card-foot>span.project-card-cta{width:100%;font-size:14px;}
+ .project-card .location-label{top:14px;left:14px;font-size:11px;padding:7px 11px;}
+ .project-card .image-note{top:16px;right:14px;font-size:10px;padding:3px 6px;}
+}
+@media(max-width:360px){
+ .project-card-copy h3{font-size:24px;}
+}
