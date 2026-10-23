@@ -512,3 +512,31 @@ h3.title-reveal{--title-duration:900ms;--title-depth:14deg;--title-skew:2deg;--t
 @media(max-width:360px){
  .project-card-copy h3{font-size:24px;}
 }
+
+/* Presentación original de la marca sobre fondo blanco. */
+.site-loader{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:#fff;clip-path:inset(0);transition:clip-path .85s cubic-bezier(.76,0,.24,1);animation:loader-safety .01s linear 5.5s forwards!important;}
+.site-loader.done{clip-path:inset(0 0 100% 0);pointer-events:none;}
+.loader__box{text-align:center;}
+.carga{display:flex;flex-direction:column;align-items:center;gap:22px;}
+.carga__svg{width:min(200px,44vw);height:auto;display:block;}
+.carga__pluma{fill:none;stroke:#fff;stroke-width:460;stroke-dasharray:1445;stroke-dashoffset:1445;transform-origin:310px 311px;transform:rotate(-108deg);animation:carga-trazar .95s cubic-bezier(.55,.06,.3,1) forwards;}
+.carga__pluma--2{animation-delay:.32s;animation-duration:.88s;}
+.carga__cuadros{opacity:0;transform-origin:310px 311px;animation:carga-cuadros .45s var(--ease) 1.12s forwards;}
+.carga__nombre{width:min(200px,44vw);opacity:0;animation:carga-nombre .6s var(--ease) 1.3s forwards;}
+.carga__nombre>img{width:100%;height:auto;}
+.carga__inmobiliaria{display:block;margin-top:8px;padding-left:.43em;font-family:var(--body);font-size:9px;letter-spacing:.43em;line-height:1.4;color:var(--gray);}
+.loader__bar{width:min(220px,50vw);height:1px;margin:28px auto 0;overflow:hidden;background:#21184f20;}
+.loader__bar>span{display:block;width:100%;height:100%;background:var(--blue);transform:scaleX(0);transform-origin:left;animation:carga-barra 2.6s cubic-bezier(.25,.6,.3,1) forwards;}
+@keyframes carga-trazar{to{stroke-dashoffset:0;}}
+@keyframes carga-cuadros{from{opacity:0;transform:scale(.55);}60%{opacity:1;transform:scale(1.06);}to{opacity:1;transform:scale(1);}}
+@keyframes carga-nombre{from{opacity:0;transform:translateY(16px) scale(.96);}to{opacity:1;transform:none;}}
+@keyframes carga-barra{to{transform:scaleX(1);}}
+/* Si el script no llega a ejecutarse, la pantalla tampoco bloquea la página. */
+@keyframes loader-safety{to{opacity:0;visibility:hidden;pointer-events:none;clip-path:inset(0 0 100% 0);}}
+@media(prefers-reduced-motion:reduce){
+ .site-loader{transition:none;animation-delay:1.5s!important;}
+ .carga__pluma{animation:none;stroke-dashoffset:0;}
+ .carga__cuadros,.carga__nombre{animation:none;opacity:1;transform:none;}
+ .loader__bar>span{animation:none;transform:scaleX(1);}
+}
+@media print{.site-loader{display:none!important;}}

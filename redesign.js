@@ -8,6 +8,38 @@
   const arrow = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.6"/></svg>';
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+  // La presentación de marca se muestra en Inicio y siempre deja paso al contenido.
+  const loader = $('#site-loader');
+  let pageReady = !loader;
+  if (loader) {
+    let finishing = false;
+    let finishTimer;
+    let safetyTimer;
+    const finishLoader = () => {
+      if (finishing) return;
+      finishing = true;
+      clearTimeout(finishTimer);
+      clearTimeout(safetyTimer);
+      loader.classList.add('done');
+      loader.setAttribute('aria-hidden', 'true');
+      setTimeout(() => {
+        loader.remove();
+        pageReady = true;
+        document.dispatchEvent(new Event('cg:page-ready'));
+      }, motionPreference.matches ? 0 : 900);
+    };
+    const loaded = () => {
+      if (finishing) return;
+      finishTimer = setTimeout(finishLoader, Math.max(0, (motionPreference.matches ? 0 : 2950) - performance.now()));
+    };
+    if (document.readyState === 'complete') loaded();
+    else addEventListener('load', loaded, { once: true });
+    safetyTimer = setTimeout(finishLoader, Math.max(0, (reduced ? 1500 : 4200) - performance.now()));
+    motionPreference.addEventListener('change', event => {
+      if (event.matches) finishLoader();
+    });
+  }
+
   // Revelado tipográfico por líneas y palabras. Al terminar se restaura el texto
   // original para conservar su composición, selección y lectura habitual.
   if (!reduced && 'IntersectionObserver' in window) {
@@ -78,15 +110,16 @@
     reveals.forEach((element, index) => {
       element.classList.add('will-reveal');
       element.style.setProperty('--reveal-delay', (index % 3) * 65 + 'ms');
-      observer.observe(element);
     });
     titles.forEach(element => {
       const group = element.closest('.project-cards,.experience-grid,.assurance-row,.values-grid');
       const position = group ? [...group.querySelectorAll('h1,h2,h3')].indexOf(element) : 0;
       prepareTitle(element);
       element.style.setProperty('--title-delay', (group ? position % 3 * 120 : 60) + 'ms');
-      observer.observe(element);
     });
+    const startReveals = () => targets.forEach(element => observer.observe(element));
+    if (pageReady) startReveals();
+    else document.addEventListener('cg:page-ready', startReveals, { once: true });
     motionPreference.addEventListener('change', event => {
       if (!event.matches) return;
       observer.disconnect();
