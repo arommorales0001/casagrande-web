@@ -263,37 +263,41 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
   .home-experience .experience-about{justify-self:center;}
 }
 
-/* Pie compartido: lectura uniforme, tres columnas y espacio para WhatsApp. */
-.site-footer{--footer-text:15px;background:var(--blue);color:#e1dfeb;padding:36px 0 26px;}
-.footer-top{grid-template-columns:minmax(260px,1fr) auto minmax(200px,1fr);align-items:start;gap:36px;padding-bottom:0;}
-.footer-top .footer-brand{display:flex;flex-direction:column;align-items:flex-start;justify-self:start;width:270px;max-width:100%;text-align:justify;}
-.site-footer .brand{width:270px;gap:12px;}
-.site-footer .brand-symbol{width:58px;height:58px;}
-.site-footer .brand-name>img{width:200px;}
-.site-footer .brand-name>span{font-size:8px;}
+/* Pie institucional compacto: separadores, contacto con iconos y navegación centrada. */
+.site-footer{--footer-text:15px;background:var(--blue);color:#f1eef8;padding:28px 0 20px;}
+.footer-top{grid-template-columns:minmax(270px,1fr) auto minmax(200px,1fr);align-items:start;gap:36px;padding-bottom:0;}
+.footer-top .footer-brand{display:flex;flex-direction:column;align-items:flex-start;justify-self:start;width:270px;max-width:100%;text-align:left;}
+.footer-brand-link{display:block;width:100%;padding-bottom:12px;border-bottom:1px solid #ffffff70;}
+.site-footer .brand{width:246px;gap:10px;}
+.site-footer .brand-symbol{width:54px;height:54px;}
+.site-footer .brand-name>img{width:182px;}
+.site-footer .brand-name>span{font-size:9px;letter-spacing:0;line-height:1.2;}
 .footer-top .footer-navigation{min-width:0;grid-column:2;grid-row:1;}
-.footer-top .footer-links{flex-direction:row;align-items:center;justify-content:center;gap:26px;padding-top:12px;font-size:17px;font-weight:500;line-height:1.6;color:#fff;}
-.footer-navigation .footer-promotions{flex-direction:row;align-items:center;justify-content:center;gap:24px;margin-top:24px;}
+.footer-top .footer-links{flex-direction:row;align-items:center;justify-content:center;gap:30px;padding-top:34px;font-size:18px;font-weight:600;line-height:1.6;color:#fff;}
+.footer-navigation .footer-promotions{flex-direction:row;align-items:center;justify-content:center;gap:28px;margin-top:24px;}
 .footer-navigation .footer-promotions .footer-secondary{font-size:var(--footer-text);line-height:1.6;color:inherit;white-space:nowrap;}
-.footer-copyright{display:block;max-width:100%;margin-top:18px;}
+.footer-copyright{display:block;max-width:100%;margin-top:10px;}
 .footer-ruc{display:block;white-space:nowrap;}
-.footer-brand .footer-contact{margin-top:16px;align-self:stretch;justify-self:auto;grid-column:auto;grid-row:auto;}
-.footer-brand .footer-contact p{margin:0 0 10px;}
-.footer-brand .footer-copyright,.footer-brand .footer-contact{width:100%;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.65;color:inherit;text-align:justify;}
-.footer-brand .footer-contact p,.footer-brand .footer-contact>a{font:inherit;color:inherit;text-align:justify;}
-.footer-brand .footer-contact>a{display:block;}
-.footer-brand .footer-contact>a svg{display:inline-block;width:15px;height:15px;margin-left:10px;vertical-align:-2px;}
-.footer-legal{display:flex;flex-direction:column;align-items:center;justify-self:end;grid-column:3;grid-row:1;gap:16px;padding-top:4px;margin-right:64px;width:180px;max-width:100%;}
-.footer-complaints img{width:126px;}
-.footer-legal-links{display:flex;align-items:center;justify-content:center;gap:22px;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.65;color:inherit;}
+.footer-brand .footer-contact{margin-top:12px;align-self:stretch;justify-self:auto;grid-column:auto;grid-row:auto;}
+.footer-brand .footer-copyright,.footer-brand .footer-contact{width:100%;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.5;color:inherit;text-align:left;}
+.footer-brand .footer-contact p,.footer-brand .footer-contact>a{font:inherit;color:inherit;text-align:left;}
+.footer-brand .footer-contact p{display:flex;align-items:flex-start;gap:10px;margin:0 0 8px;}
+.footer-brand .footer-contact>a{display:inline-flex;align-items:center;gap:10px;}
+.footer-brand .footer-contact svg{display:block;width:20px;height:20px;flex:none;margin:0;}
+.footer-brand .footer-address>svg{margin-top:2px;}
+.footer-address>span{min-width:0;}
+.footer-legal{display:flex;flex-direction:column;align-items:center;justify-self:end;grid-column:3;grid-row:1;gap:24px;padding-top:12px;margin-right:64px;width:184px;max-width:100%;}
+.footer-complaints img{width:132px;}
+.footer-legal-links{display:flex;align-items:center;justify-content:center;gap:24px;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.5;color:inherit;}
 .footer-legal-links a:hover,.footer-contact a:hover{color:#fff;}
+.footer-rule{width:min(1400px,calc(100% - 64px));height:1px;margin:18px auto 0;background:#ffffff80;}
 @media(max-width:1150px){
- .footer-top{gap:26px;}
- .footer-top .footer-links{font-size:16px;gap:20px;}
- .footer-top .footer-brand,.site-footer .brand{width:252px;}
- .site-footer .brand{gap:10px;}
- .site-footer .brand-symbol{width:54px;height:54px;}
- .site-footer .brand-name>img{width:188px;}
+ .footer-top{gap:28px;}
+ .footer-top .footer-links{font-size:17px;gap:22px;}
+ .footer-top .footer-brand{width:252px;}
+ .site-footer .brand{width:230px;gap:10px;}
+ .site-footer .brand-symbol{width:50px;height:50px;}
+ .site-footer .brand-name>img{width:170px;}
  .footer-legal{margin-right:44px;}
 }
 @media(max-width:1100px){
@@ -305,15 +309,19 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
  .footer-legal{grid-column:2;grid-row:1;}
 }
 @media(max-width:640px){
- .site-footer{--footer-text:16px;padding:32px 0 80px;}
+ .site-footer{--footer-text:16px;padding:30px 0 88px;}
  .footer-top{grid-template-columns:minmax(0,1fr);gap:28px;}
  .footer-top .footer-brand{justify-self:center;width:280px;}
- .site-footer .brand{width:252px;}
+ .site-footer .brand{width:246px;}
+ .site-footer .brand-symbol{width:54px;height:54px;}
+ .site-footer .brand-name>img{width:182px;}
  .footer-top .footer-navigation{grid-column:1;grid-row:2;}
  .footer-top .footer-links{font-size:var(--footer-text);gap:14px;}
  .footer-navigation .footer-promotions{gap:22px;margin-top:20px;}
- .footer-legal{grid-column:1;grid-row:3;justify-self:center;margin:0;padding:0;}
+ .footer-legal{grid-column:1;grid-row:3;justify-self:center;margin:0;padding:0;gap:20px;}
+ .footer-complaints img{width:126px;}
  .footer-legal-links{gap:22px;}
+ .footer-rule{width:calc(100% - 40px);margin-top:24px;}
 }
 @media(max-width:360px){
  .site-footer{--footer-text:15px;}
