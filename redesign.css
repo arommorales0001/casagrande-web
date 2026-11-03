@@ -540,3 +540,6 @@ h3.title-reveal{--title-duration:900ms;--title-depth:14deg;--title-skew:2deg;--t
  .loader__bar>span{animation:none;transform:scaleX(1);}
 }
 @media print{.site-loader{display:none!important;}}
+
+/* La foto horizontal del equipo conserva el encuadre completo en Somos. */
+.about-image--team>img{aspect-ratio:4/3;object-fit:contain;}
