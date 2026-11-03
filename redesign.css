@@ -89,9 +89,9 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 .published-hero .btn--ghost:hover{background:#ffffff24}
 @media(max-width:600px){.published-hero .hero__cta--strip{gap:8px}.published-hero .btn{flex:1 1 0;min-width:0;min-height:44px;padding:8px 4px;font-size:13px}.published-hero .btn>span{gap:4px}.published-hero .btn__ico{width:14px;height:14px}}
 
-/* Consulta flotante: se reabre 15 segundos después de cerrarse. */
-.wa-chat{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:80;display:flex;flex-direction:column;align-items:flex-end;gap:14px;width:380px;max-width:calc(100vw - 32px)}
-.wa-chat__panel{width:100%;max-height:calc(100dvh - 126px - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;overflow:hidden;background:#f7f8fb;border:1px solid #e4e6ef;border-radius:22px;box-shadow:0 18px 55px #1812362b}
+/* Consulta flotante: se reabre 45 segundos después de cerrarse. */
+.wa-chat{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:80;pointer-events:none;display:flex;flex-direction:column;align-items:flex-end;gap:14px;width:380px;max-width:calc(100vw - 32px)}
+.wa-chat__panel{pointer-events:auto;width:100%;max-height:calc(100dvh - 126px - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;overflow:hidden;background:#f7f8fb;border:1px solid #e4e6ef;border-radius:22px;box-shadow:0 18px 55px #1812362b}
 .wa-chat__header{display:flex;align-items:center;gap:12px;padding:18px 18px 18px 20px;background:#21184f;color:white;flex:none}
 .wa-chat__avatar{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:50%;background:#00bd86;color:white}
 .wa-chat__avatar svg{width:25px;height:25px}
@@ -112,7 +112,7 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 .wa-chat__send{display:grid;place-items:center;width:46px;height:46px;flex:none;padding:11px;border-radius:11px;background:#009f70;color:white;transition:background .2s}
 .wa-chat__send svg{width:24px;height:24px}
 .wa-chat__send:hover{background:#00895f}
-.wa-chat__launcher{position:relative;display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#00bd86;color:white;box-shadow:0 8px 26px #00895f35;transition:transform .2s,background .2s}
+.wa-chat__launcher{pointer-events:auto;position:relative;display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#00bd86;color:white;box-shadow:0 8px 26px #00895f35;transition:transform .2s,background .2s}
 .wa-chat__launcher>svg{width:35px;height:35px}
 .wa-chat__launcher::before,.wa-chat__launcher::after{content:"";position:absolute;inset:-4px;border:2px solid #00bd8699;border-radius:50%;pointer-events:none;opacity:0;animation:wa-heartbeat 2.8s ease-out infinite}
 .wa-chat__launcher::after{animation-delay:.38s}
@@ -290,9 +290,9 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 .footer-complaints img{width:132px;}
 .footer-legal-links{display:flex;align-items:center;justify-content:center;gap:24px;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.5;color:inherit;}
 .footer-legal-links a:hover,.footer-contact a:hover{color:#fff;}
-.footer-credit{display:flex;flex-direction:column;align-items:center;gap:3px;margin:0;font-family:var(--body);font-size:11px;font-weight:400;line-height:1.5;text-align:center;color:#d4cfe5;}
-.footer-credit a{font-size:13px;font-weight:600;color:#fff;text-underline-offset:4px;}
-.footer-credit a:hover,.footer-credit a:focus-visible{text-decoration:underline;}
+.footer-credit{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;min-height:44px;margin:0;font-family:var(--body);font-size:11px;font-weight:400;line-height:1.5;text-align:center;color:#d4cfe5;cursor:pointer;}
+.footer-credit strong{font-size:13px;font-weight:600;color:#fff;text-underline-offset:4px;}
+.footer-credit:hover strong,.footer-credit:focus-visible strong{text-decoration:underline;}
 .footer-rule{width:min(1400px,calc(100% - 64px));height:1px;margin:18px auto 0;background:#ffffff80;}
 @media(max-width:1150px){
  .footer-top{gap:28px;}
