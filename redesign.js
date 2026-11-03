@@ -334,7 +334,7 @@
     const previous = $('[data-gallery-prev]', gallery);
     const next = $('[data-gallery-next]', gallery);
     const open = $('[data-gallery-open]', gallery);
-    const image = $('.carousel-image img', gallery);
+    let image = $('.carousel-image img', gallery);
     const viewport = $('.carousel-image', gallery);
     const thumbs = $$('[data-gallery-go]', gallery);
     const caption = $('[data-gallery-caption]', gallery);
@@ -345,11 +345,31 @@
     let galleryInView = !('IntersectionObserver' in window);
     let autoplayTimer;
     let index = 0;
-    function render(target) {
+    const familyGallery = gallery.classList.contains('gallery-widget--family');
+    const preparedPhotos = new Map();
+    let renderRequest = 0;
+    function preparePhoto(photo) {
+      if (!preparedPhotos.has(photo.src)) {
+        const preview = new Image();
+        preview.src = photo.src;
+        preparedPhotos.set(photo.src, {image: preview, ready: preview.decode().catch(() => {})});
+      }
+      return preparedPhotos.get(photo.src).ready;
+    }
+    function showPhoto(target) {
       index = Math.max(0, Math.min(data.length - 1, target));
       const photo = data[index];
+      if (familyGallery) {
+        const prepared = preparedPhotos.get(photo.src).image;
+        if (prepared !== image) { image.replaceWith(prepared); image = prepared; }
+      }
       image.src = photo.src;
       image.alt = photo.alt;
+      if (familyGallery) {
+        image.style.setProperty('--family-zoom', photo.crop?.zoom || 1);
+        image.style.setProperty('--family-focus-x', (photo.crop?.x ?? 50) + '%');
+        image.style.setProperty('--family-focus-y', (photo.crop?.y ?? 50) + '%');
+      }
       viewport.classList.toggle('is-event', Boolean(photo.event));
       viewport.classList.toggle('is-render', Boolean(photo.render));
       if (caption) caption.textContent = photo.caption;
@@ -364,6 +384,16 @@
         if (left < row.scrollLeft) row.scrollTo({left, behavior:'auto'});
         else if (left + thumb.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollTo({left:left + thumb.offsetWidth - row.clientWidth, behavior:'auto'});
       }
+    }
+    function render(target) {
+      const desired = Math.max(0, Math.min(data.length - 1, target));
+      if (!familyGallery) { showPhoto(desired); return; }
+      const request = ++renderRequest;
+      preparePhoto(data[desired]).then(() => {
+        if (request !== renderRequest) return;
+        showPhoto(desired);
+        preparePhoto(data[(desired + 1) % data.length]);
+      });
     }
     function restartAutoplay() {
       clearInterval(autoplayTimer);
