@@ -290,6 +290,9 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 .footer-complaints img{width:132px;}
 .footer-legal-links{display:flex;align-items:center;justify-content:center;gap:24px;font-family:var(--body);font-size:var(--footer-text);font-weight:400;line-height:1.5;color:inherit;}
 .footer-legal-links a:hover,.footer-contact a:hover{color:#fff;}
+.footer-credit{display:flex;flex-direction:column;align-items:center;gap:3px;margin:0;font-family:var(--body);font-size:11px;font-weight:400;line-height:1.5;text-align:center;color:#d4cfe5;}
+.footer-credit a{font-size:13px;font-weight:600;color:#fff;text-underline-offset:4px;}
+.footer-credit a:hover,.footer-credit a:focus-visible{text-decoration:underline;}
 .footer-rule{width:min(1400px,calc(100% - 64px));height:1px;margin:18px auto 0;background:#ffffff80;}
 @media(max-width:1150px){
  .footer-top{gap:28px;}
