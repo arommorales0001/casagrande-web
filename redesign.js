@@ -346,6 +346,19 @@
     let autoplayTimer;
     let index = 0;
     const familyGallery = gallery.classList.contains('gallery-widget--family');
+    const thumbRail = $('.gallery-thumbs--vertical', gallery);
+    let galleryInteracting = false;
+    if (thumbRail) {
+      const syncRailSize = () => gallery.style.setProperty('--family-stage-height', viewport.offsetHeight + 'px');
+      if ('ResizeObserver' in window) new ResizeObserver(syncRailSize).observe(viewport);
+      else addEventListener('resize', syncRailSize, {passive:true});
+      syncRailSize();
+      const updateInteraction = () => {
+        galleryInteracting = thumbRail.matches(':hover') || thumbRail.contains(document.activeElement);
+        restartAutoplay();
+      };
+      ['pointerenter','pointerleave','focusin','focusout'].forEach(type => thumbRail.addEventListener(type, updateInteraction));
+    }
     const preparedPhotos = new Map();
     let renderRequest = 0;
     function preparePhoto(photo) {
@@ -380,9 +393,15 @@
       thumbs.forEach((thumb, i) => thumb.setAttribute('aria-current', String(i === index)));
       const thumb = thumbs[index], row = $('.gallery-thumbs', gallery);
       if (thumb && row) {
-        const left = thumb.offsetLeft - row.offsetLeft;
-        if (left < row.scrollLeft) row.scrollTo({left, behavior:'auto'});
-        else if (left + thumb.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollTo({left:left + thumb.offsetWidth - row.clientWidth, behavior:'auto'});
+        if (row.dataset.orientation === 'vertical') {
+          const top = thumb.offsetTop;
+          if (top < row.scrollTop) row.scrollTo({top, behavior:'auto'});
+          else if (top + thumb.offsetHeight > row.scrollTop + row.clientHeight) row.scrollTo({top:top + thumb.offsetHeight - row.clientHeight, behavior:'auto'});
+        } else {
+          const left = thumb.offsetLeft - row.offsetLeft;
+          if (left < row.scrollLeft) row.scrollTo({left, behavior:'auto'});
+          else if (left + thumb.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollTo({left:left + thumb.offsetWidth - row.clientWidth, behavior:'auto'});
+        }
       }
     }
     function render(target) {
@@ -397,7 +416,7 @@
     }
     function restartAutoplay() {
       clearInterval(autoplayTimer);
-      if (!autoplayDelay || autoplayPaused || !galleryInView || document.hidden || data.length < 2) return;
+      if (!autoplayDelay || autoplayPaused || galleryInteracting || !galleryInView || document.hidden || data.length < 2) return;
       autoplayTimer = setInterval(() => {
         if (!$('dialog[open]')) render((index + 1) % data.length);
       }, autoplayDelay);
@@ -435,7 +454,14 @@
       openPhoto(data, index);
     });
     gallery.addEventListener('keydown', event => {
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      if (thumbRail?.contains(event.target) && ['ArrowUp','ArrowDown','Home','End'].includes(event.key)) {
+        event.preventDefault();
+        const current = Number(event.target.closest('[data-gallery-go]')?.dataset.galleryGo ?? index);
+        const desired = event.key === 'Home' ? 0 : event.key === 'End' ? data.length - 1 : current + (event.key === 'ArrowUp' ? -1 : 1);
+        const target = Math.max(0, Math.min(data.length - 1, desired));
+        changePhoto(target);
+        thumbs[target].focus({preventScroll:true});
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault(); changePhoto(index + (event.key === 'ArrowLeft' ? -1 : 1));
       } else if (event.key === 'Home') { event.preventDefault(); changePhoto(0); }
       else if (event.key === 'End') { event.preventDefault(); changePhoto(data.length - 1); }

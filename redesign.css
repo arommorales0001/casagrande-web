@@ -219,13 +219,20 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 
 .families-note .signature{font-size:calc(var(--text-caption) + 2px);}
 
-/* Familias: foto compacta y texto agrupado en dos columnas próximas. */
+/* Familias: foto principal, miniaturas verticales y texto a su derecha. */
 .families-intro{padding-bottom:72px;}
 .families-intro .section-heading{display:block;margin-bottom:40px;}
 .families-intro .section-heading>div{min-width:0;max-width:880px;}
 .families-intro .section-heading h1{font-size:48px;line-height:1.16;}
-.families-editorial{grid-template-columns:minmax(0,336px) minmax(0,1fr);gap:56px;align-items:center;}
-.families-editorial .gallery-widget--family{width:100%;max-width:336px;margin:0;}
+.families-editorial{grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:56px;align-items:center;}
+.families-editorial .gallery-widget--family{--family-stage-height:426.667px;display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:14px;width:100%;max-width:318px;margin:0;}
+.gallery-widget--family .gallery-stage{min-width:0;}
+.gallery-widget--family .gallery-thumbs--vertical{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;width:64px;height:var(--family-stage-height);margin:0;padding:0 2px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#c6c0d5 transparent;}
+.gallery-widget--family .gallery-thumb{flex:0 0 auto;width:60px;height:max(44px,calc((var(--family-stage-height) - 32px)/5));min-height:44px;padding:3px;border:2px solid transparent;border-radius:8px;opacity:.62;transition:opacity .2s,border-color .2s,background .2s;}
+.gallery-widget--family .gallery-thumb>img{width:100%;height:100%;object-fit:cover;object-position:center 38%;border-radius:4px;}
+.gallery-widget--family .gallery-thumb[aria-current=true]{border-color:var(--blue);background:#eeebf5;opacity:1;}
+.gallery-widget--family .gallery-thumb:hover{opacity:1;background:#f5f3f8;}
+.gallery-widget--family .gallery-thumb:focus-visible{outline:2px solid #8d85ba;outline-offset:-2px;}
 .families-note{max-width:560px;padding:0;container-type:normal;}
 .families-note h2{font-size:38px;line-height:1.22;margin-bottom:20px;}
 .families-note p{max-width:none;font-size:18px;line-height:1.8;text-align:left;}
@@ -233,24 +240,23 @@ body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-
 .families-note>.text-link{margin-top:22px;font-size:14px;gap:20px;}
 @media(max-width:1150px){
  .families-intro .section-heading h1{font-size:42px;}
- .families-editorial{grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:40px;}
+ .families-editorial{grid-template-columns:minmax(0,318px) minmax(0,1fr);gap:40px;}
  .families-note h2{font-size:34px;}
+ .families-note h2>span{white-space:normal;}
  .families-note p{font-size:17px;}
 }
-@media(max-width:900px){
- .families-editorial{grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:32px;}
- .families-note h2{font-size:30px;}
- .families-note p{font-size:16px;line-height:1.8;}
-}
-@media(max-width:800px){
+@media(max-width:1000px){
  .families-editorial{grid-template-columns:minmax(0,1fr);gap:30px;max-width:552px;margin-inline:auto;}
- .families-editorial .gallery-widget--family{width:80%;margin-inline:auto;}
+ .families-editorial .gallery-widget--family{margin-inline:auto;}
  .families-intro .section-heading{margin-bottom:32px;}
  .families-note{max-width:none;}
  .families-note h2{font-size:34px;}
  .families-note h2>span{white-space:normal;}
 }
 @media(max-width:640px){
+ .families-editorial .gallery-widget--family{grid-template-columns:minmax(0,1fr) 56px;gap:12px;max-width:308px;}
+ .gallery-widget--family .gallery-thumbs--vertical{width:56px;gap:6px;}
+ .gallery-widget--family .gallery-thumb{width:52px;height:max(44px,calc((var(--family-stage-height) - 24px)/5));padding:2px;}
  .families-intro{padding-bottom:48px;}
  .families-intro .section-heading h1{font-size:34px;line-height:1.2;}
  .families-note h2{font-size:29px;margin-bottom:20px;}
