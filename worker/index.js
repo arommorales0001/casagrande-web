@@ -277,7 +277,11 @@ function reescribir(resp, datos, proyecto) {
     .on('[data-cms]', { element(el) { const v = datos.textos[el.getAttribute('data-cms')]; if (v != null) el.setInnerContent(textoRico(v), { html: true }); } })
     .on('[data-cms-img]', { element(el) { const v = datos.imagenes[el.getAttribute('data-cms-img')]; if (v?.src) { el.setAttribute('src', v.src); el.removeAttribute('srcset'); if (v.alt) el.setAttribute('alt', v.alt); } } })
     .on('[data-cms-cuenta="proyectos"]', { element(el) { el.setInnerContent(String(nProyectos).padStart(2, '0')); } })
-    .on('.project-cards', { element(el) { el.setInnerContent(tarjetas(datos), { html: true }); } })
+    .on('.project-cards', { element(el) {
+      el.setInnerContent(tarjetas(datos), { html: true });
+      // Con tres o más proyectos, van de tres en tres por fila (ver redesign.css).
+      if (nProyectos >= 3) el.setAttribute('class', el.getAttribute('class') + ' project-cards--tres');
+    } })
     .on('[data-finder-choices]', { element(el) { el.setInnerContent(opcionesBuscador(datos), { html: true }); } })
     .on('script#project-data', { element(el) { el.setInnerContent(datosProyectos(datos), { html: true }); } })
     .on('form[data-consult-form] select[name="proyecto"]', { element(el) { el.setInnerContent(opcionesFormulario(datos), { html: true }); } })

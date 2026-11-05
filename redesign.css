@@ -582,3 +582,19 @@ h3.title-reveal{--title-duration:900ms;--title-depth:14deg;--title-skew:2deg;--t
 
 /* La foto horizontal del equipo conserva el encuadre completo en Somos. */
 .about-image--team>img{aspect-ratio:4/3;object-fit:contain;}
+
+/* Tres o más proyectos: tres por fila en pantallas grandes, con la tarjeta un
+   poco más compacta para que entren sin apretarse. La clase la pone el
+   servidor según cuántos proyectos estén visibles. */
+@media(min-width:1001px){
+.project-cards.project-cards--tres{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.project-cards--tres .project-card .location-label{top:14px;left:14px;padding:6px 11px;font-size:11px}
+.project-cards--tres .project-card .image-note{top:14px;right:14px;font-size:10px}
+.project-cards--tres .project-card-copy{grid-template-columns:minmax(0,1fr) 62px;gap:14px;padding:20px 20px 16px}
+.project-cards--tres .project-card-copy h3{font-size:25px;margin-bottom:6px}
+.project-cards--tres .project-card-copy p{font-size:14px;line-height:1.55}
+.project-cards--tres .project-card .project-logo{width:62px;height:54px}
+.project-cards--tres .project-card-foot{gap:12px;margin:0 20px 18px;padding-top:14px;font-size:12.5px}
+.project-cards--tres .project-card-foot>span.project-card-cta{gap:12px;min-height:42px;padding:10px 14px;font-size:13px}
+.project-cards--tres .project-card-foot .project-card-cta svg{width:16px;height:16px}
+}
