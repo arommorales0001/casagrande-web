@@ -278,7 +278,9 @@
     const data = projectData.find(item => item.key === button.dataset.finder);
     if (!data) return;
     const result = $('[data-finder-result]', finder);
-    result.innerHTML = '<img class="finder-result-image" src="img/' + escape(data.cover) + '" alt="Render referencial de ' + escape(data.name) + '"><span class="eyebrow">' + escape(data.city) + ' · LAMBAYEQUE</span><h3>' + escape(data.name) + '</h3><p>' + escape(data.desc) + '</p><a class="button button-blue" href="' + escape(data.slug) + '.html">Conocer el proyecto ' + arrow + '</a><button class="finder-result-contact" type="button">Quiero coordinar una visita ↗</button><button class="text-button finder-back" type="button">← Ver todas las opciones</button>';
+    // Las fotos subidas desde el panel ya traen su ruta completa (/media/...).
+    const cover = String(data.cover).includes('/') ? data.cover : 'img/' + data.cover;
+    result.innerHTML = '<img class="finder-result-image" src="' + escape(cover) + '" alt="Render referencial de ' + escape(data.name) + '"><span class="eyebrow">' + escape(data.city) + ' · ' + escape(String(data.region || 'Lambayeque').toUpperCase()) + '</span><h3>' + escape(data.name) + '</h3><p>' + escape(data.desc) + '</p><a class="button button-blue" href="/' + escape(data.slug) + '">Conocer el proyecto ' + arrow + '</a><button class="finder-result-contact" type="button">Quiero coordinar una visita ↗</button><button class="text-button finder-back" type="button">← Ver todas las opciones</button>';
     $('[data-finder-choices]', finder).hidden = true;
     result.hidden = false;
     $('.finder-back', result).addEventListener('click', () => {

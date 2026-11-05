@@ -1,5 +1,23 @@
 name = "casagrande-web"
-compatibility_date = "2024-09-25"
+main = "worker/index.js"
+compatibility_date = "2025-06-01"
 
+# La web son los archivos de esta carpeta. El servidor (worker/index.js) va
+# delante para aplicar lo que se edita en el panel administrativo.
 [assets]
 directory = "./"
+binding = "ASSETS"
+# Las fotos, estilos y la app de la ruleta salen directo, sin pasar por el
+# servidor: así no se gastan las solicitudes gratuitas del plan.
+run_worker_first = ["/*", "!/img/*", "!/ruleta-app/*", "!/admin/*", "!/*.css", "!/*.png", "!/*.ico", "!/*.svg", "!/robots.txt"]
+
+[vars]
+# Los únicos correos que pueden entrar al panel (Ctrl + E).
+ADMINS = "casagrandesac.grupoinmobiliario@gmail.com,arommorales0001@gmail.com"
+# ID de cliente de "Iniciar sesión con Google" (Google Cloud → Credenciales).
+GOOGLE_CLIENT_ID = ""
+
+# Donde se guarda lo que se edita en el panel: textos, proyectos y fotos subidas.
+[[kv_namespaces]]
+binding = "CMS"
+id = "2e49d02def9449fca6eef6b56191cfe5"

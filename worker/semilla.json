@@ -1,0 +1,291 @@
+{
+ "version": 1,
+ "proyectos": [
+  {
+   "key": "alameda",
+   "slug": "alameda-real",
+   "rutaOriginal": "alameda-real",
+   "visible": true,
+   "name": "Alameda Real",
+   "city": "Pimentel",
+   "region": "Lambayeque",
+   "tipo": "LOTES EN VENTA",
+   "tagline": "Cerca de todo lo que importa.",
+   "desc": "Un espacio para tu próximo proyecto de vida en Pimentel, a filo de pista y frente a la Universidad de Chiclayo.",
+   "facts": [
+    [
+     "90 m²",
+     "Lotes desde"
+    ],
+    [
+     "A filo de pista",
+     "Acceso"
+    ],
+    [
+     "3 minutos",
+     "De Chiclayo"
+    ]
+   ],
+   "benefits": [
+    "A filo de pista, frente a la Universidad de Chiclayo.",
+    "A metros del Hospital Luis Heysen.",
+    "Cerca de colegios y universidades.",
+    "A 12 minutos de la playa de Pimentel."
+   ],
+   "logo": "img/logo-alameda.png",
+   "cover": "img/alameda-real-portada-20261015.png",
+   "resumen": "Lotes desde 90 m²",
+   "opcionFormulario": "Alameda Real · Pimentel",
+   "photos": [
+    {
+     "src": "img/alameda-real-r1-realista-20261015.png",
+     "alt": "Visualización de la fachada de Alameda Real en Pimentel, retocada para mayor realismo",
+     "caption": "Fachada · render referencial retocado",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/alameda-real-r3-realista-20261021.png",
+     "alt": "Vista frontal del edificio y del ingreso de Alameda Real en Pimentel · render referencial",
+     "caption": "Fachada principal · render referencial",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/alameda-real-r8-realista-20261021.png",
+     "alt": "Vista de una vía interior con viviendas de Alameda Real · render referencial",
+     "caption": "Vía interior · render referencial",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/alameda-real-r11-realista-20261021.png",
+     "alt": "Intersección y calles interiores de Alameda Real · render referencial",
+     "caption": "Calles interiores · render referencial",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/alameda-real-r13-realista-20261021.png",
+     "alt": "Vista del edificio residencial de Alameda Real · render referencial",
+     "caption": "Edificio residencial · render referencial",
+     "render": false,
+     "event": false
+    }
+   ],
+   "videos": [
+    {
+     "src": "img/alameda-real-video-principal-20261021.mp4#t=0.001",
+     "width": 1920,
+     "height": 1080,
+     "label": "Video principal de Alameda Real",
+     "boton": "Video principal"
+    },
+    {
+     "src": "img/alameda-clip.mp4",
+     "width": 720,
+     "height": 1280,
+     "poster": "img/alameda-clip-poster.jpg",
+     "label": "Recorrido aéreo del terreno de Alameda Real",
+     "boton": "Recorrido aéreo",
+     "muted": true
+    }
+   ],
+   "ubicacion": {
+    "eyebrow": "PIMENTEL, LAMBAYEQUE",
+    "titulo": "A filo de pista.<br>Cerca de lo que importa.",
+    "subtitulo": "",
+    "imagen": "img/alameda-aerea.jpg",
+    "imagenAlt": "Vista aérea del terreno de Alameda Real",
+    "fotoAlt": "Vista aérea del terreno de Alameda Real",
+    "aria": "Ampliar vista aérea de Alameda Real",
+    "boton": "Ampliar imagen",
+    "ancho": 0,
+    "alto": 0,
+    "mapa": "",
+    "parrafos": [
+     "Frente a la Universidad de Chiclayo (UDCH), a metros del Hospital Luis Heysen.",
+     "Coordina un recorrido con nuestro equipo para conocer el acceso y las referencias del lugar."
+    ]
+   }
+  },
+  {
+   "key": "gaviotas",
+   "slug": "las-gaviotas-de-reque",
+   "rutaOriginal": "las-gaviotas-de-reque",
+   "visible": true,
+   "name": "Las Gaviotas de Reque",
+   "city": "Reque",
+   "region": "Lambayeque",
+   "tipo": "LOTES EN VENTA",
+   "tagline": "Dale lugar a tus nuevos planes.",
+   "desc": "Lotes para vivienda, comercio o uso mixto. Descubre el proyecto y su conexión con los principales puntos de Reque.",
+   "facts": [
+    [
+     "90 m²",
+     "Lotes desde"
+    ],
+    [
+     "Independizados",
+     "Lotes"
+    ],
+    [
+     "15 minutos",
+     "De Chiclayo"
+    ]
+   ],
+   "benefits": [
+    "A 4 minutos de la ciudad de Reque.",
+    "Cerca del Centro de Salud y del nuevo mercado.",
+    "Colegio Diego Ferré Sosa y Escuela Técnica PNP.",
+    "Cerca del nuevo puerto de Etén y de la playa."
+   ],
+   "logo": "img/logo-gaviotas.png",
+   "cover": "img/gaviotas-render-portada.jpg",
+   "resumen": "Lotes desde 90 m²",
+   "opcionFormulario": "Las Gaviotas de Reque",
+   "photos": [
+    {
+     "src": "img/gaviotas-render-portada.jpg",
+     "alt": "Render de la portada de ingreso del proyecto",
+     "caption": "Portada de ingreso · render",
+     "render": true,
+     "event": false
+    },
+    {
+     "src": "img/gaviotas-recorrido-01-realista-20261021.png",
+     "alt": "Vía interior con viviendas y palmeras de Las Gaviotas de Reque · render referencial",
+     "caption": "Vía interior · render referencial",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/gaviotas-recorrido-02-realista-20261021.png",
+     "alt": "Intersección y losa deportiva de Las Gaviotas de Reque · render referencial",
+     "caption": "Losa deportiva · render referencial",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/gaviotas-recorrido-03-realista-20261021.png",
+     "alt": "Viviendas y juegos infantiles de Las Gaviotas de Reque · render referencial",
+     "caption": "Juegos infantiles · render referencial",
+     "render": false,
+     "event": false
+    },
+    {
+     "src": "img/gaviotas-recorrido-04-realista-20261021.png",
+     "alt": "Calle y áreas comunes con palmeras de Las Gaviotas de Reque · render referencial",
+     "caption": "Áreas comunes · render referencial",
+     "render": false,
+     "event": false
+    }
+   ],
+   "videos": [],
+   "ubicacion": {
+    "eyebrow": "",
+    "titulo": "Ubicación",
+    "subtitulo": "Reque, Lambayeque",
+    "imagen": "img/gaviotas-mapa.jpg",
+    "imagenAlt": "Mapa de ubicación del proyecto y sus puntos de referencia",
+    "fotoAlt": "Mapa de ubicación de Las Gaviotas de Reque",
+    "aria": "Ampliar mapa de Reque",
+    "boton": "Ampliar mapa",
+    "ancho": 900,
+    "alto": 626,
+    "mapa": "https://www.google.com/maps/place/Las+gaviotas+de+reque/@-6.8753531,-79.8297115,17z/",
+    "parrafos": [
+     "<strong>Reque, Lambayeque.</strong><br>A 4 minutos de la ciudad de Reque y a 15 minutos de Chiclayo.",
+     "Conoce las referencias del entorno y coordina una visita para recorrer el proyecto."
+    ]
+   }
+  }
+ ],
+ "familias": [
+  {
+   "src": "img/familias-vertical-01-20261103.png",
+   "alt": "Encuentro de una clienta con el equipo de Casa Grande",
+   "caption": "Encuentro de una clienta con el equipo de Casa Grande",
+   "crop": {
+    "zoom": 1.65,
+    "x": 61,
+    "y": 37
+   }
+  },
+  {
+   "src": "img/familias-vertical-02-20261103.png",
+   "alt": "Entrega de documentación a una clienta de Las Gaviotas de Reque",
+   "caption": "Entrega de documentación a una clienta de Las Gaviotas de Reque",
+   "crop": {
+    "zoom": 1.08,
+    "x": 50,
+    "y": 100
+   }
+  },
+  {
+   "src": "img/familias-vertical-03-20261103.png",
+   "alt": "Cliente junto al equipo de Casa Grande frente a la notaría",
+   "caption": "Cliente junto al equipo de Casa Grande frente a la notaría",
+   "crop": {
+    "zoom": 1.65,
+    "x": 35,
+    "y": 78
+   }
+  },
+  {
+   "src": "img/familias-vertical-04-20261103.png",
+   "alt": "Atención y entrega de documentación a un cliente",
+   "caption": "Atención y entrega de documentación a un cliente",
+   "crop": {
+    "zoom": 1,
+    "x": 50,
+    "y": 50
+   }
+  },
+  {
+   "src": "img/familias-vertical-05-20261103.png",
+   "alt": "Clienta junto a su asesor de Casa Grande",
+   "caption": "Clienta junto a su asesor de Casa Grande",
+   "crop": {
+    "zoom": 1.25,
+    "x": 40,
+    "y": 95
+   }
+  },
+  {
+   "src": "img/familias-vertical-06-20261103.png",
+   "alt": "Entrega de documentación a un cliente frente a la notaría",
+   "caption": "Entrega de documentación a un cliente frente a la notaría",
+   "crop": {
+    "zoom": 1.2,
+    "x": 66,
+    "y": 100
+   }
+  },
+  {
+   "src": "img/familias-vertical-07-20261103.png",
+   "alt": "Encuentro de una familia con el equipo de Casa Grande",
+   "caption": "Encuentro de una familia con el equipo de Casa Grande",
+   "crop": {
+    "zoom": 1,
+    "x": 44,
+    "y": 50
+   }
+  }
+ ],
+ "contacto": {
+  "whatsapp": "51986498284",
+  "telefono": "986 498 284",
+  "dias": "Lunes a domingo",
+  "horas": "9 a. m. a 6 p. m.",
+  "correo": "casagrandesac.grupoinmobiliario@gmail.com",
+  "direccion": "Av. Nicolás de Piérola 690",
+  "ciudad": "Chiclayo, Lambayeque",
+  "facebook": "https://www.facebook.com/casagrandesac.inmobiliaria",
+  "instagram": "https://www.instagram.com/casagrande_inmobiliaria",
+  "tiktok": "https://www.tiktok.com/@casa.grande.inmob",
+  "mensajeChat": "¡Hola! 👋<br>Te damos la bienvenida a <strong>Inmobiliaria Casa Grande</strong>.<br><br>Cuéntanos qué estás buscando y uno de nuestros asesores te ayudará a encontrar el proyecto ideal para ti."
+ },
+ "textos": {},
+ "imagenes": {}
+}

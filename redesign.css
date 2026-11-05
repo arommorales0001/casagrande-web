@@ -71,7 +71,7 @@ dialog{border:0;padding:0;color:var(--ink);background:white}dialog::backdrop{bac
 @media(min-width:901px){.location-panel{grid-template-columns:1.25fr .75fr}}
 .gallery-widget--family .carousel-image>img{max-width:452px}
 /* Mantener las pestañas a la vista al cambiar la altura de su contenido. */
-body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"]{overflow-anchor:none}
+body[data-page="alameda-real"],body[data-page="las-gaviotas-de-reque"],body[data-plantilla="proyecto"]{overflow-anchor:none}
 @media(max-width:640px){.gallery-widget:not(.gallery-widget--family) .carousel-image{height:auto;aspect-ratio:4/3}}
 
 /* Portada publicada: la imagen aprobada completa y sus acciones debajo. */
