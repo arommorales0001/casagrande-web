@@ -15,7 +15,7 @@ run_worker_first = ["/*", "!/img/*", "!/ruleta-app/*", "!/admin/*", "!/*.css", "
 # Los únicos correos que pueden entrar al panel (Ctrl + E).
 ADMINS = "casagrandesac.grupoinmobiliario@gmail.com,arommorales0001@gmail.com"
 # ID de cliente de "Iniciar sesión con Google" (Google Cloud → Credenciales).
-GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_ID = "730034256927-qssvqpimeuki4gsa24ksqrivrfo4f8ho.apps.googleusercontent.com"
 
 # Donde se guarda lo que se edita en el panel: textos, proyectos y fotos subidas.
 [[kv_namespaces]]
