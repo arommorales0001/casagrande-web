@@ -278,7 +278,7 @@
     const data = projectData.find(item => item.key === button.dataset.finder);
     if (!data) return;
     const result = $('[data-finder-result]', finder);
-    result.innerHTML = '<img class="finder-result-image" src="img/' + escape(data.cover) + '" alt="Render referencial de ' + escape(data.name) + '"><span class="eyebrow">' + escape(data.city) + ' · LAMBAYEQUE</span><h3>' + escape(data.name) + '</h3><p>' + escape(data.desc) + '</p><a class="button button-blue" href="' + escape(data.slug) + '.html">Conocer el proyecto ' + arrow + '</a><button class="finder-result-contact" type="button">Quiero coordinar una visita ↗</button><button class="text-button finder-back" type="button">← Ver las dos opciones</button>';
+    result.innerHTML = '<img class="finder-result-image" src="img/' + escape(data.cover) + '" alt="Render referencial de ' + escape(data.name) + '"><span class="eyebrow">' + escape(data.city) + ' · LAMBAYEQUE</span><h3>' + escape(data.name) + '</h3><p>' + escape(data.desc) + '</p><a class="button button-blue" href="' + escape(data.slug) + '.html">Conocer el proyecto ' + arrow + '</a><button class="finder-result-contact" type="button">Quiero coordinar una visita ↗</button><button class="text-button finder-back" type="button">← Ver todas las opciones</button>';
     $('[data-finder-choices]', finder).hidden = true;
     result.hidden = false;
     $('.finder-back', result).addEventListener('click', () => {

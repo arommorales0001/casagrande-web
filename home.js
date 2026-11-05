@@ -44,7 +44,7 @@
   });
   questionButtons.forEach(button => button.addEventListener('click',syncQuestions)); syncQuestions();
   const journeySteps = [
-    {title:'Elige tu proyecto', copy:'Conoce Alameda Real y Las Gaviotas de Reque. Elige cuál quieres visitar.', link:'Ver proyectos', href:'#proyectos'},
+    {title:'Elige tu proyecto', copy:'Conoce nuestros proyectos y elige el que quieres visitar.', link:'Ver proyectos', href:'#proyectos'},
     {title:'Resuelve tus dudas', copy:'Consulta la documentación, disponibilidad y condiciones de pago con nuestro equipo.', link:'Hacer una consulta', href:'#contacto'},
     {title:'Conoce el lugar en persona', copy:'Coordina una visita para conocer el proyecto y su entorno antes de decidir.', link:'Agendar visita', href:'#contacto'}
   ];
