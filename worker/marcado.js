@@ -15,15 +15,54 @@ const PAUSA = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="
 /** Texto plano dentro de HTML. */
 export const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+/** De un style="..." deja solo lo que el panel permite: color, tamaño,
+    negrita, cursiva y subrayado. Así nadie puede colar otra cosa. */
+function estiloSeguro(css) {
+  const ok = [];
+  for (const parte of String(css || '').split(';')) {
+    const [prop, ...resto] = parte.split(':');
+    const p = (prop || '').trim().toLowerCase(), v = resto.join(':').trim().toLowerCase();
+    if (p === 'color' && /^(#[0-9a-f]{3,8}|rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\))$/.test(v)) ok.push(`color:${v}`);
+    else if (p === 'font-size' && /^(0?\.\d+|[0-3](\.\d+)?)em$/.test(v)) ok.push(`font-size:${v}`);
+    else if (p === 'font-weight' && /^(400|700|bold|normal)$/.test(v)) ok.push(`font-weight:${v}`);
+    else if (p === 'font-style' && /^(italic|normal)$/.test(v)) ok.push(`font-style:${v}`);
+    else if ((p === 'text-decoration' || p === 'text-decoration-line') && /^(underline|none)$/.test(v)) ok.push(`text-decoration:${v}`);
+  }
+  return ok.join(';');
+}
+
 /**
- * Texto con formato mínimo: solo saltos de línea, negrita y cursiva. Todo lo
- * demás se escapa, para que un texto pegado no rompa el diseño ni meta código.
+ * Texto con formato: saltos de línea, negrita, cursiva, subrayado y trozos
+ * con color o tamaño. Todo lo demás se escapa, para que un texto pegado no
+ * rompa el diseño ni meta código.
  */
 export function textoRico(v) {
-  return esc(v)
-    .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
-    .replace(/&lt;(\/?)(strong|em|b|i)&gt;/gi, '<$1$2>')
-    .replace(/\n/g, '<br>');
+  const s = String(v ?? '');
+  const etiqueta = /<(\/?)(br|strong|em|b|i|u|span)((?:\s+style\s*=\s*"[^"<>]*")?)\s*\/?>/gi;
+  const abiertas = [];
+  let salida = '', desde = 0, m;
+  const texto = t => esc(t).replace(/\n/g, '<br>');
+  while ((m = etiqueta.exec(s))) {
+    salida += texto(s.slice(desde, m.index));
+    desde = etiqueta.lastIndex;
+    const cierra = m[1] === '/', nombre = m[2].toLowerCase();
+    if (nombre === 'br') { salida += '<br>'; continue; }
+    const t = nombre === 'b' ? 'strong' : nombre === 'i' ? 'em' : nombre;
+    if (cierra) {
+      const i = abiertas.lastIndexOf(t);
+      if (i === -1) continue;
+      while (abiertas.length > i) salida += `</${abiertas.pop()}>`;
+      continue;
+    }
+    if (t === 'span') {
+      const estilo = estiloSeguro((m[3].match(/"([^"]*)"/) || [])[1]);
+      salida += estilo ? `<span style="${estilo}">` : '<span>';
+    } else salida += `<${t}>`;
+    abiertas.push(t);
+  }
+  salida += texto(s.slice(desde));
+  while (abiertas.length) salida += `</${abiertas.pop()}>`;
+  return salida;
 }
 
 /** JSON dentro de un <script>: que nunca pueda cerrar la etiqueta. */

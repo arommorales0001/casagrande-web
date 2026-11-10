@@ -21,7 +21,7 @@ const CLAVE_CONTENIDO = 'contenido';
 const MAX_HISTORIAL = 30;
 const MAX_ARCHIVO = 25 * 1024 * 1024;        // límite de un valor en KV
 const DURACION_SESION = 12 * 60 * 60;          // 12 horas
-const VERSION_PANEL = '20261105-1';
+const VERSION_PANEL = '20261110-1';
 /* Las páginas de proyecto que existen como archivo (sirven de plantilla). */
 const PAGINAS_PROYECTO = new Set(['alameda-real', 'las-gaviotas-de-reque']);
 /* Direcciones que no pueden usarse como nombre de un proyecto nuevo. */
@@ -48,6 +48,7 @@ function completar(c) {
   c.contacto = { ...SEMILLA.contacto, ...(c.contacto || {}) };
   c.textos ||= {};
   c.imagenes ||= {};
+  c.estilos ||= {};
   c.version ||= 1;
   return c;
 }
@@ -273,11 +274,33 @@ function reemplazosContacto(c) {
 
 const aplicarReemplazos = (texto, pares) => pares.reduce((t, [a, b]) => t.split(a).join(b), texto);
 
+/** Suma reglas al style="" de un elemento sin borrar las que ya tenía. */
+function agregarEstilo(el, css) {
+  const antes = (el.getAttribute('style') || '').trim().replace(/;$/, '');
+  el.setAttribute('style', antes ? `${antes};${css}` : css);
+}
+
 function reescribir(resp, datos, proyecto) {
   const nProyectos = visibles(datos).length;
   let r = new HTMLRewriter()
-    .on('[data-cms]', { element(el) { const v = datos.textos[el.getAttribute('data-cms')]; if (v != null) el.setInnerContent(textoRico(v), { html: true }); } })
-    .on('[data-cms-img]', { element(el) { const v = datos.imagenes[el.getAttribute('data-cms-img')]; if (v?.src) { el.setAttribute('src', v.src); el.removeAttribute('srcset'); if (v.alt) el.setAttribute('alt', v.alt); } } })
+    .on('[data-cms]', { element(el) {
+      const clave = el.getAttribute('data-cms');
+      const v = datos.textos[clave];
+      if (v != null) el.setInnerContent(textoRico(v), { html: true });
+      const alinear = datos.estilos?.[clave]?.align;
+      if (['left', 'center', 'right'].includes(alinear)) agregarEstilo(el, `text-align:${alinear}`);
+    } })
+    .on('[data-cms-img]', { element(el) {
+      const v = datos.imagenes[el.getAttribute('data-cms-img')];
+      if (!v) return;
+      if (v.src) { el.setAttribute('src', v.src); el.removeAttribute('srcset'); if (v.alt) el.setAttribute('alt', v.alt); }
+      // El encuadre: qué parte de la foto queda en el recuadro y cuánto se acerca.
+      const num = (n, min, max, porDefecto) => Number.isFinite(Number(n)) ? Math.min(max, Math.max(min, Number(n))) : porDefecto;
+      const x = num(v.x, 0, 100, 50), y = num(v.y, 0, 100, 50), z = num(v.zoom, 1, 3, 1);
+      if (x !== 50 || y !== 50 || z !== 1) {
+        agregarEstilo(el, `object-position:${x}% ${y}%;transform-origin:${x}% ${y}%${z !== 1 ? `;scale:${z}` : ''}`);
+      }
+    } })
     .on('[data-cms-cuenta="proyectos"]', { element(el) { el.setInnerContent(String(nProyectos).padStart(2, '0')); } })
     .on('.project-cards', { element(el) {
       el.setInnerContent(tarjetas(datos), { html: true });

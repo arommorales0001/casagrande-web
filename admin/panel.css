@@ -118,3 +118,24 @@
 .cgp-acciones--fin{justify-content:flex-end}
 .cgp-btn--rojo{background:var(--cgp-rojo);border-color:var(--cgp-rojo)}
 .cgp-btn--rojo:hover{background:#a32626}
+
+/* Barra de formato de textos y de fotos (flota encima de lo que se edita) */
+.cgp-barra-texto{position:fixed;z-index:2147483002;display:flex;flex-wrap:wrap;align-items:center;gap:4px;max-width:calc(100vw - 16px);padding:6px;border:1px solid var(--cgp-borde);border-radius:12px;background:#fff;box-shadow:0 10px 30px #1a153d2e}
+.cgp-barra-texto[hidden]{display:none}
+.cgp-bt{display:grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border:0;border-radius:8px;background:transparent;color:var(--cgp-tinta);font-size:15px;line-height:1}
+.cgp-bt:hover{background:var(--cgp-fondo)}
+.cgp-bt--texto{font-size:12.5px;font-weight:600;white-space:nowrap}
+.cgp-bt-sep{width:1px;height:22px;margin:0 3px;background:var(--cgp-borde)}
+.cgp-bt-select{height:32px;padding:0 6px;border:1px solid var(--cgp-borde);border-radius:8px;background:#fff;color:var(--cgp-tinta);font:inherit;font-size:12.5px}
+.cgp-bt-muestra{width:22px;height:22px;padding:0;border:1px solid #0002;border-radius:50%;cursor:pointer}
+.cgp-bt-muestra:hover{transform:scale(1.15)}
+.cgp-bt-color{width:28px;height:28px;padding:0;border:0;border-radius:50%;background:none;cursor:pointer}
+.cgp-al{display:block;width:16px;height:12px;background:linear-gradient(currentColor 0 0) 0 0/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 5px/60% 2px no-repeat,linear-gradient(currentColor 0 0) 0 10px/100% 2px no-repeat}
+.cgp-al--cen{background:linear-gradient(currentColor 0 0) 0 0/100% 2px no-repeat,linear-gradient(currentColor 0 0) 50% 5px/60% 2px no-repeat,linear-gradient(currentColor 0 0) 0 10px/100% 2px no-repeat}
+.cgp-al--der{background:linear-gradient(currentColor 0 0) 0 0/100% 2px no-repeat,linear-gradient(currentColor 0 0) 100% 5px/60% 2px no-repeat,linear-gradient(currentColor 0 0) 0 10px/100% 2px no-repeat}
+.cgp-bt-nota{padding:0 6px;font-size:12px;color:var(--cgp-suave)}
+.cgp-bt-zoom{display:flex;align-items:center;gap:6px;padding:0 6px;font-size:12px;color:var(--cgp-suave)}
+.cgp-bt-zoom input{width:110px;accent-color:var(--cgp-azul)}
+.cgp-editando img.cgp-foto-activa{outline:3px solid #6c63c7!important;outline-offset:-3px;cursor:grab;touch-action:none;filter:none!important}
+.cgp-editando img.cgp-foto-activa:active{cursor:grabbing}
+.cgp-miniatura--vacia{display:inline-block}

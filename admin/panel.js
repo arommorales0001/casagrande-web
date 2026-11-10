@@ -437,22 +437,26 @@
 
   /* ── Pestaña: Textos y fotos ─────────────────────────────── */
   function pintarTextos() {
-    const claves = Object.keys(borrador.textos), fotos = Object.keys(borrador.imagenes);
+    const estilos = borrador.estilos ||= {};
+    const claves = [...new Set([...Object.keys(borrador.textos), ...Object.keys(estilos)])], fotos = Object.keys(borrador.imagenes);
     cuerpo.append(
       h('div', { class: 'cgp-intro' },
-        h('p', { text: 'Para cambiar un texto o una foto, ve a la página donde está y pulsa "Editar esta página". Luego haz clic en el texto para escribir encima, o en la foto para reemplazarla.' }),
+        h('p', { text: 'Para cambiar un texto o una foto, ve a la página donde está y pulsa "Editar esta página". Haz clic en un texto para escribir y darle formato (tamaño, color, negrita…), o en una foto para cambiarla o moverla dentro de su recuadro.' }),
         h('button', { class: 'cgp-btn', text: 'Editar esta página', onclick: () => alternarModoPagina(true) })),
       h('h4', { class: 'cgp-subtitulo', text: `Textos cambiados (${claves.length})` }),
       claves.length ? null : h('p', { class: 'cgp-suave', text: 'Todavía no se cambió ningún texto.' }),
       ...claves.map(k => h('div', { class: 'cgp-cambio' },
-        h('div', {}, h('small', { text: nombreClave(k) }), h('p', { html: limpiarVista(borrador.textos[k]) })),
-        h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Volver al original', onclick: () => { delete borrador.textos[k]; pintar(); } }))),
+        h('div', {}, h('small', { text: nombreClave(k) }), h('p', { html: borrador.textos[k] != null ? limpiarVista(borrador.textos[k]) : 'Solo cambió la alineación' })),
+        h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Volver al original', onclick: () => { delete borrador.textos[k]; delete estilos[k]; pintar(); } }))),
       h('h4', { class: 'cgp-subtitulo', text: `Fotos cambiadas (${fotos.length})` }),
       fotos.length ? null : h('p', { class: 'cgp-suave', text: 'Todavía no se cambió ninguna foto.' }),
-      ...fotos.map(k => h('div', { class: 'cgp-cambio' },
-        h('img', { src: borrador.imagenes[k].src, alt: '', class: 'cgp-miniatura' }),
-        h('small', { text: nombreClave(k) }),
-        h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Volver a la original', onclick: () => { delete borrador.imagenes[k]; pintar(); } }))));
+      ...fotos.map(k => {
+        const d = borrador.imagenes[k];
+        const img = d.src ? h('img', { src: d.src, alt: '', class: 'cgp-miniatura' }) : h('span', { class: 'cgp-miniatura cgp-miniatura--vacia' });
+        return h('div', { class: 'cgp-cambio' }, img,
+          h('div', {}, h('small', { text: nombreClave(k) }), h('p', { text: [d.src ? 'Foto nueva' : '', d.x != null || d.zoom != null ? 'Encuadre ajustado' : ''].filter(Boolean).join(' · ') || 'Cambiada' })),
+          h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Volver a la original', onclick: () => { delete borrador.imagenes[k]; pintar(); } }));
+      }));
   }
 
   const PAGINAS = { index: 'Inicio', proyectos: 'Proyectos', familias: 'Familias', somos: 'Somos', contacto: 'Contacto', terminos: 'Términos', 'politica-privacidad': 'Privacidad', 'libro-reclamaciones': 'Libro de Reclamaciones' };
@@ -464,13 +468,41 @@
     const p = Object.keys(PAGINAS).sort((a, b) => b.length - a.length).find(x => c.startsWith(x + '-'));
     return p ? `Página ${PAGINAS[p]}` : c;
   }
-  const limpiarVista = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/&lt;br&gt;/g, ' · ').replace(/&lt;\/?(strong|em|b|i|span)&gt;/g, '');
+  /** Vista previa en la lista de cambios: solo el texto, sin etiquetas. */
+  const limpiarVista = t => String(t).replace(/<br\s*\/?>/gi, ' · ').replace(/<[^>]*>/g, '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
   /* ── Editar directamente sobre la página ─────────────────── */
   let originales = {};
-  let insignia;
+  let insignia, barraTexto, barraFoto;
+  let elActivo = null;        // el texto que se está editando
+  let rangoGuardado = null;   // lo seleccionado, para no perderlo al pulsar la barra
+  let fotoActiva = null;      // la foto que se está encuadrando
 
-  /** El texto de un elemento editado, con solo saltos, negrita y cursiva. */
+  /* Colores de la marca, para que todo combine. */
+  const COLORES = [
+    ['#21184f', 'Azul Casa Grande'], ['#C6A253', 'Dorado'], ['#FC7A05', 'Naranja Gaviotas'],
+    ['#1B2C21', 'Verde Alameda'], ['#676664', 'Gris'], ['#ffffff', 'Blanco'], ['#111111', 'Negro'],
+  ];
+  const TAMANOS = [['0.8em', 'Pequeño'], ['', 'Normal'], ['1.2em', 'Grande'], ['1.45em', 'Más grande'], ['1.75em', 'Muy grande']];
+
+  const aHex = c => {
+    const m = String(c).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    return m ? '#' + [m[1], m[2], m[3]].map(n => Number(n).toString(16).padStart(2, '0')).join('') : c;
+  };
+
+  /** El estilo que se conserva de un texto: color, tamaño, negrita, cursiva y subrayado. */
+  function estiloDe(n) {
+    const st = n.style, partes = [];
+    if (st.color && /^(#|rgb)/.test(st.color)) partes.push('color:' + aHex(st.color));
+    if (/^\d*\.?\d+em$/.test(st.fontSize)) partes.push('font-size:' + st.fontSize);
+    if (/^(700|bold|400|normal)$/.test(st.fontWeight)) partes.push('font-weight:' + st.fontWeight);
+    if (/^(italic|normal)$/.test(st.fontStyle)) partes.push('font-style:' + st.fontStyle);
+    const deco = st.textDecorationLine || st.textDecoration;
+    if (/underline/.test(deco)) partes.push('text-decoration:underline');
+    return partes.join(';');
+  }
+
+  /** El texto de un elemento editado, con su formato (y nada más). */
   function aTexto(nodo) {
     let s = '';
     nodo.childNodes.forEach(n => {
@@ -480,7 +512,14 @@
         if (t === 'BR') s += '<br>';
         else if (t === 'STRONG' || t === 'B') s += `<strong>${aTexto(n)}</strong>`;
         else if (t === 'EM' || t === 'I') s += `<em>${aTexto(n)}</em>`;
-        else if (t === 'SPAN' && !n.attributes.length) s += `<span>${aTexto(n)}</span>`;
+        else if (t === 'U') s += `<u>${aTexto(n)}</u>`;
+        else if (t === 'SPAN' || t === 'FONT') {
+          const st = estiloDe(n);
+          if (t === 'FONT' && n.color) s += `<span style="color:${aHex(n.color)}">${aTexto(n)}</span>`;
+          else if (st) s += `<span style="${st}">${aTexto(n)}</span>`;
+          else if (t === 'SPAN' && !n.attributes.length) s += `<span>${aTexto(n)}</span>`;
+          else s += aTexto(n);
+        }
         else if (t === 'DIV' || t === 'P') s += (s && !s.endsWith('<br>') ? '<br>' : '') + aTexto(n);
         else s += aTexto(n);
       }
@@ -511,7 +550,7 @@
       $('.cgp-barra', raiz).replaceChildren(
         h('span', { class: 'cgp-punto' }),
         h('strong', { text: 'Editando esta página' }),
-        h('span', { class: 'cgp-suave', text: 'Clic en un texto para escribir · clic en una foto para cambiarla' }),
+        h('span', { class: 'cgp-suave', text: 'Clic en un texto para escribir y darle formato · clic en una foto para cambiarla o moverla' }),
         h('button', { class: 'cgp-btn cgp-modo-guardar', text: 'Guardar y publicar', disabled: !haySinGuardar(), onclick: guardar }),
         h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Terminar', onclick: () => alternarModoPagina(false) }));
       document.addEventListener('click', clicEditando, true);
@@ -519,14 +558,28 @@
       document.addEventListener('keydown', teclaEditando, true);
       document.addEventListener('paste', pegarPlano, true);
       document.addEventListener('mouseover', mostrarInsignia, true);
+      document.addEventListener('focusin', alEnfocar, true);
+      document.addEventListener('selectionchange', guardarSeleccion);
+      document.addEventListener('mouseup', guardarSeleccion, true);
+      document.addEventListener('keyup', guardarSeleccion, true);
+      addEventListener('scroll', ubicarBarras, { passive: true, capture: true });
+      addEventListener('resize', ubicarBarras, { passive: true });
     } else {
+      cerrarFoto();
       $$('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
       document.removeEventListener('click', clicEditando, true);
       document.removeEventListener('input', alEscribir, true);
       document.removeEventListener('keydown', teclaEditando, true);
       document.removeEventListener('paste', pegarPlano, true);
       document.removeEventListener('mouseover', mostrarInsignia, true);
+      document.removeEventListener('focusin', alEnfocar, true);
+      document.removeEventListener('selectionchange', guardarSeleccion);
+      document.removeEventListener('mouseup', guardarSeleccion, true);
+      document.removeEventListener('keyup', guardarSeleccion, true);
+      removeEventListener('scroll', ubicarBarras, true);
+      removeEventListener('resize', ubicarBarras);
       insignia?.remove(); insignia = null;
+      barraTexto?.remove(); barraTexto = null; elActivo = null;
       $('.cgp-barra', raiz).replaceChildren(
         h('span', { class: 'cgp-punto' }),
         h('strong', { text: 'Panel Casa Grande' }),
@@ -536,17 +589,22 @@
     }
   }
 
+  /** Anota el cambio de un texto (contenido, formato o alineación). */
+  function registrarTexto(el) {
+    const clave = el.dataset.cms;
+    const valor = aTexto(el);
+    const original = originales[clave];
+    const base = original != null ? aTexto(Object.assign(document.createElement('div'), { innerHTML: original })) : null;
+    if (valor === base && guardado.textos[clave] == null) delete borrador.textos[clave];
+    else borrador.textos[clave] = valor;
+    // El mismo texto puede estar repetido en la página (p. ej. el pie).
+    $$(`[data-cms="${clave}"]`).forEach(o => { if (o !== el) { o.innerHTML = el.innerHTML; o.style.textAlign = el.style.textAlign; } });
+    pintarPie();
+  }
+
   function alEscribir(e) {
     const el = e.target.closest?.('[data-cms]');
-    if (!el) return;
-    const valor = aTexto(el);
-    const original = originales[el.dataset.cms];
-    const base = original != null ? aTexto(Object.assign(document.createElement('div'), { innerHTML: original })) : null;
-    if (valor === base && guardado.textos[el.dataset.cms] == null) delete borrador.textos[el.dataset.cms];
-    else borrador.textos[el.dataset.cms] = valor;
-    // El mismo texto puede estar repetido en la página (p. ej. el pie).
-    $$(`[data-cms="${el.dataset.cms}"]`).forEach(o => { if (o !== el) o.innerHTML = el.innerHTML; });
-    pintarPie();
+    if (el) registrarTexto(el);
   }
 
   function teclaEditando(e) {
@@ -561,31 +619,292 @@
     document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
   }
 
+  /* ── Barra de formato de los textos ──────────────────────── */
+
+  function alEnfocar(e) {
+    const el = e.target.closest?.('[data-cms]');
+    if (!el) return;
+    elActivo = el;
+    cerrarFoto();
+    mostrarBarraTexto();
+  }
+
+  function guardarSeleccion() {
+    const sel = getSelection();
+    if (!sel.rangeCount) return;
+    const donde = sel.getRangeAt(0).commonAncestorContainer;
+    const el = (donde.nodeType === 1 ? donde : donde.parentElement)?.closest?.('[data-cms]');
+    if (el && el !== elActivo) elActivo = el;
+    if (!elActivo) return;
+    const r = sel.getRangeAt(0);
+    if (elActivo.contains(r.commonAncestorContainer)) rangoGuardado = r.cloneRange();
+  }
+
+  /** Lo que se va a formatear: lo seleccionado o, si no hay nada, todo el texto. */
+  function rangoATrabajar() {
+    const r = document.createRange();
+    if (rangoGuardado && !rangoGuardado.collapsed && elActivo.contains(rangoGuardado.commonAncestorContainer)) return rangoGuardado.cloneRange();
+    r.selectNodeContents(elActivo);
+    return r;
+  }
+
+  function seleccionar(r) {
+    const sel = getSelection();
+    sel.removeAllRanges(); sel.addRange(r);
+    rangoGuardado = r.cloneRange();
+  }
+
+  /** Pone (o quita, con valor vacío) un estilo en lo seleccionado. */
+  function aplicarEstilo(prop, valor) {
+    if (!elActivo) return;
+    const r = rangoATrabajar();
+    const trozo = r.extractContents();
+    // Lo de adentro pierde ese mismo estilo, así no se acumulan tamaños.
+    trozo.querySelectorAll('span, font').forEach(n => {
+      if (n.style) { n.style[prop] = ''; if (prop === 'textDecoration') n.style.textDecorationLine = ''; }
+      if (prop === 'color' && n.tagName === 'FONT') n.removeAttribute('color');
+    });
+    let nodo = trozo;
+    if (valor) { nodo = document.createElement('span'); nodo.style[prop] = valor; nodo.append(trozo); }
+    const marcaIni = document.createComment('i'), marcaFin = document.createComment('f');
+    r.insertNode(marcaFin); r.insertNode(nodo); r.insertNode(marcaIni);
+    limpiarVacios(elActivo);
+    const nr = document.createRange(); nr.setStartAfter(marcaIni); nr.setEndBefore(marcaFin);
+    marcaIni.remove(); marcaFin.remove();
+    if (!nr.collapsed) seleccionar(nr);
+    registrarTexto(elActivo);
+  }
+
+  /** Quita los <span> que quedaron sin estilo ni contenido. */
+  function limpiarVacios(raizTexto) {
+    raizTexto.querySelectorAll('span').forEach(n => {
+      if (!n.textContent && !n.querySelector('br')) { n.remove(); return; }
+      if (!n.getAttribute('style') && n.attributes.length === 1 && n.hasAttribute('style')) n.replaceWith(...n.childNodes);
+      else if (n.getAttribute('style') === '') { n.replaceWith(...n.childNodes); }
+    });
+    raizTexto.normalize();
+  }
+
+  /** El elemento donde empieza lo seleccionado (para saber cómo se ve ahora). */
+  function nodoInicio() {
+    const r = rangoATrabajar();
+    let n = r.startContainer;
+    if (n.nodeType === 1 && n.childNodes[r.startOffset]) n = n.childNodes[r.startOffset];
+    if (n.nodeType === 3 && r.startOffset >= n.length && n.nextSibling) n = n.nextSibling;
+    return n.nodeType === 1 ? n : n.parentElement;
+  }
+
+  /**
+   * Negrita, cursiva y subrayado. Se hacen a mano y no con el navegador: los
+   * títulos ya vienen medio gruesos y el navegador los creía "en negrita",
+   * así que el botón los adelgazaba en vez de engrosarlos.
+   */
+  function comando(nombre) {
+    if (!elActivo) return;
+    const actual = getComputedStyle(nodoInicio());
+    if (nombre === 'bold') {
+      if (parseInt(actual.fontWeight, 10) >= 650) {
+        aplicarEstilo('fontWeight', '');
+        if (parseInt(getComputedStyle(nodoInicio()).fontWeight, 10) >= 650) aplicarEstilo('fontWeight', '400');
+      } else aplicarEstilo('fontWeight', '700');
+    } else if (nombre === 'italic') {
+      if (actual.fontStyle === 'italic') {
+        aplicarEstilo('fontStyle', '');
+        if (getComputedStyle(nodoInicio()).fontStyle === 'italic') aplicarEstilo('fontStyle', 'normal');
+      } else aplicarEstilo('fontStyle', 'italic');
+    } else if (nombre === 'underline') {
+      let n = nodoInicio(), subrayado = false;
+      while (n && n !== elActivo.parentElement) { if (/underline/.test(n.style?.textDecorationLine || n.style?.textDecoration || '') || n.tagName === 'U') subrayado = true; n = n.parentElement; }
+      if (subrayado) { elActivo.querySelectorAll('u').forEach(u => u.replaceWith(...u.childNodes)); aplicarEstilo('textDecoration', ''); }
+      else aplicarEstilo('textDecoration', 'underline');
+    }
+  }
+
+  function alinear(valor) {
+    if (!elActivo) return;
+    const clave = elActivo.dataset.cms;
+    elActivo.style.textAlign = valor;
+    borrador.estilos ||= {};
+    if (valor) borrador.estilos[clave] = { ...(borrador.estilos[clave] || {}), align: valor };
+    else if (borrador.estilos[clave]) { delete borrador.estilos[clave].align; if (!Object.keys(borrador.estilos[clave]).length) delete borrador.estilos[clave]; }
+    registrarTexto(elActivo);
+  }
+
+  function quitarFormato() {
+    if (!elActivo) return;
+    const r = rangoATrabajar();
+    const texto = r.toString();
+    r.deleteContents();
+    r.insertNode(document.createTextNode(texto));
+    elActivo.normalize();
+    registrarTexto(elActivo);
+  }
+
+  function mostrarBarraTexto() {
+    if (!barraTexto) {
+      // mousedown sin seguir: así pulsar la barra no le quita la selección al texto.
+      // Al tocar la barra, primero se anota lo seleccionado (antes de que el
+      // navegador lo pierda) y luego se evita que la barra se lleve el foco.
+      const sinFoco = { onmousedown: e => { guardarSeleccion(); if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') e.preventDefault(); } };
+      const boton = (html, titulo, accion) => h('button', { type: 'button', class: 'cgp-bt', title: titulo, 'aria-label': titulo, html, onclick: accion });
+      const tamano = h('select', { class: 'cgp-bt-select', title: 'Tamaño de letra', 'aria-label': 'Tamaño de letra' },
+        h('option', { value: '__', text: 'Tamaño' }), ...TAMANOS.map(([v, t]) => h('option', { value: v, text: t })));
+      tamano.addEventListener('change', () => { const v = tamano.value; tamano.value = '__'; if (v !== '__') aplicarEstilo('fontSize', v); });
+      const libre = h('input', { type: 'color', class: 'cgp-bt-color', title: 'Otro color', 'aria-label': 'Otro color', value: '#21184f' });
+      libre.addEventListener('input', () => aplicarEstilo('color', libre.value));
+      barraTexto = h('div', { class: 'cgp-barra-texto', role: 'toolbar', 'aria-label': 'Formato del texto', ...sinFoco },
+        boton('<b>B</b>', 'Negrita', () => comando('bold')),
+        boton('<i>I</i>', 'Cursiva', () => comando('italic')),
+        boton('<u>U</u>', 'Subrayado', () => comando('underline')),
+        h('span', { class: 'cgp-bt-sep' }),
+        tamano,
+        h('span', { class: 'cgp-bt-sep' }),
+        ...COLORES.map(([c, n]) => h('button', { type: 'button', class: 'cgp-bt-muestra', title: n, 'aria-label': 'Color ' + n, style: `background:${c}`, onclick: () => aplicarEstilo('color', c) })),
+        libre,
+        h('button', { type: 'button', class: 'cgp-bt', title: 'Color original', 'aria-label': 'Color original', text: '↺', onclick: () => aplicarEstilo('color', '') }),
+        h('span', { class: 'cgp-bt-sep' }),
+        boton('<span class="cgp-al cgp-al--izq"></span>', 'Alinear a la izquierda', () => alinear('left')),
+        boton('<span class="cgp-al cgp-al--cen"></span>', 'Centrar', () => alinear('center')),
+        boton('<span class="cgp-al cgp-al--der"></span>', 'Alinear a la derecha', () => alinear('right')),
+        h('span', { class: 'cgp-bt-sep' }),
+        h('button', { type: 'button', class: 'cgp-bt cgp-bt--texto', title: 'Quitar formato', text: 'Quitar formato', onclick: quitarFormato }));
+      raiz.append(barraTexto);
+    }
+    barraTexto.hidden = false;
+    ubicarBarras();
+  }
+
+  function ubicarBarras() {
+    const colocar = (barra, ancla) => {
+      if (!barra || barra.hidden || !ancla) return;
+      const r = ancla.getBoundingClientRect();
+      const alto = barra.offsetHeight || 44, ancho = barra.offsetWidth || 400;
+      let top = r.top - alto - 10;
+      if (top < 8) top = Math.min(innerHeight - alto - 8, r.bottom + 10);
+      barra.style.top = top + 'px';
+      barra.style.left = Math.max(8, Math.min(innerWidth - ancho - 8, r.left)) + 'px';
+    };
+    colocar(barraTexto, elActivo);
+    colocar(barraFoto, fotoActiva);
+  }
+
+  /* ── Fotos: cambiarlas y encuadrarlas ────────────────────── */
+
+  /**
+   * La foto editable que está bajo el puntero. Muchas fotos tienen encima una
+   * capa (degradado, enlace, texto), así que el clic no le llega a la foto:
+   * se busca lo que hay debajo de ese punto.
+   */
+  function fotoEn(e) {
+    const directa = e.target.closest?.('[data-cms-img]');
+    if (directa) return directa;
+    if (e.target.closest?.('[data-cms], .cgp-raiz')) return null;
+    return document.elementsFromPoint(e.clientX, e.clientY).find(n => n.matches?.('[data-cms-img]')) || null;
+  }
+
   function mostrarInsignia(e) {
-    const img = e.target.closest?.('[data-cms-img]');
-    if (!img) return;
+    const img = fotoEn(e);
+    if (!img || img === fotoActiva) return;
     const r = img.getBoundingClientRect();
-    insignia ||= h('div', { class: 'cgp-insignia', text: 'Cambiar foto' });
+    insignia ||= h('div', { class: 'cgp-insignia', text: 'Cambiar o mover foto' });
     if (!insignia.isConnected) raiz.append(insignia);
     insignia.style.top = Math.max(8, r.top + 12) + 'px';
     insignia.style.left = Math.max(8, r.left + 12) + 'px';
   }
 
+  const datosFoto = img => (borrador.imagenes[img.dataset.cmsImg] ||= {});
+
+  function aplicarEncuadre(img) {
+    const d = borrador.imagenes[img.dataset.cmsImg] || {};
+    const x = d.x ?? 50, y = d.y ?? 50, z = d.zoom ?? 1;
+    img.style.objectPosition = `${x}% ${y}%`;
+    img.style.transformOrigin = `${x}% ${y}%`;
+    img.style.scale = z === 1 ? '' : String(z);
+  }
+
+  /** Si una foto vuelve a quedar como estaba, deja de contar como cambio. */
+  function depurarFoto(clave) {
+    const d = borrador.imagenes[clave];
+    if (!d) return;
+    if ((d.x ?? 50) === 50 && (d.y ?? 50) === 50 && (d.zoom ?? 1) === 1) { delete d.x; delete d.y; delete d.zoom; }
+    if (!Object.keys(d).length && guardado.imagenes[clave] == null) delete borrador.imagenes[clave];
+  }
+
+  function abrirFoto(img) {
+    cerrarFoto();
+    fotoActiva = img;
+    insignia?.remove();
+    barraTexto && (barraTexto.hidden = true);
+    img.classList.add('cgp-foto-activa');
+    const d = datosFoto(img);
+    const zoom = h('input', { type: 'range', min: '1', max: '2.5', step: '0.05', value: String(d.zoom ?? 1), 'aria-label': 'Acercar o alejar' });
+    zoom.addEventListener('input', () => { datosFoto(img).zoom = Number(zoom.value); aplicarEncuadre(img); depurarFoto(img.dataset.cmsImg); pintarPie(); });
+    barraFoto = h('div', { class: 'cgp-barra-texto cgp-barra-foto', role: 'toolbar', 'aria-label': 'Foto' },
+      h('button', { type: 'button', class: 'cgp-bt cgp-bt--texto', text: 'Cambiar foto', onclick: async () => {
+        const [f] = await elegirArchivo('image/*');
+        if (!f) return;
+        try {
+          const src = await subir(f);
+          img.src = src; img.removeAttribute('srcset');
+          Object.assign(datosFoto(img), { src, x: 50, y: 50, zoom: 1 });
+          zoom.value = '1'; aplicarEncuadre(img); depurarFoto(img.dataset.cmsImg); pintarPie();
+        } catch (err) { avisar(err.message, 'error'); }
+      } }),
+      h('span', { class: 'cgp-bt-sep' }),
+      h('span', { class: 'cgp-bt-nota', text: 'Arrastra la foto para moverla' }),
+      h('label', { class: 'cgp-bt-zoom' }, h('span', { text: 'Acercar' }), zoom),
+      h('button', { type: 'button', class: 'cgp-bt cgp-bt--texto', text: 'Centrar', onclick: () => {
+        Object.assign(datosFoto(img), { x: 50, y: 50, zoom: 1 }); zoom.value = '1'; aplicarEncuadre(img); depurarFoto(img.dataset.cmsImg); pintarPie();
+      } }),
+      h('span', { class: 'cgp-bt-sep' }),
+      h('button', { type: 'button', class: 'cgp-btn', text: 'Listo', onclick: cerrarFoto }));
+    raiz.append(barraFoto);
+    document.addEventListener('pointerdown', arrastrarFoto, true);
+    ubicarBarras();
+  }
+
+  function cerrarFoto() {
+    if (!fotoActiva) return;
+    fotoActiva.classList.remove('cgp-foto-activa');
+    document.removeEventListener('pointerdown', arrastrarFoto, true);
+    depurarFoto(fotoActiva.dataset.cmsImg);
+    fotoActiva = null;
+    barraFoto?.remove(); barraFoto = null;
+    pintarPie();
+  }
+
+  /** Arrastrar mueve el punto de la foto que queda al centro del recuadro. */
+  function arrastrarFoto(e) {
+    const img = fotoActiva;
+    if (!img || e.target.closest('.cgp-raiz')) return;
+    const r = img.getBoundingClientRect();
+    // Solo se arrastra si el puntero cae sobre la foto que se está encuadrando.
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return;
+    e.preventDefault(); e.stopPropagation();
+    const d = datosFoto(img);
+    const ini = { px: e.clientX, py: e.clientY, x: d.x ?? 50, y: d.y ?? 50 };
+    const mover = ev => {
+      // Arrastrar a la derecha muestra lo que estaba a la izquierda, como en el celular.
+      d.x = Math.round(Math.max(0, Math.min(100, ini.x - (ev.clientX - ini.px) / r.width * 100)));
+      d.y = Math.round(Math.max(0, Math.min(100, ini.y - (ev.clientY - ini.py) / r.height * 100)));
+      aplicarEncuadre(img);
+    };
+    const soltar = () => { removeEventListener('pointermove', mover, true); removeEventListener('pointerup', soltar, true); removeEventListener('pointercancel', soltar, true); depurarFoto(img.dataset.cmsImg); pintarPie(); };
+    addEventListener('pointermove', mover, true);
+    addEventListener('pointerup', soltar, true);
+    addEventListener('pointercancel', soltar, true);
+  }
+
   async function clicEditando(e) {
     if (e.target.closest('.cgp-raiz')) return;
-    const img = e.target.closest('[data-cms-img]');
+    const img = fotoEn(e);
     if (img) {
       e.preventDefault(); e.stopPropagation();
-      const [f] = await elegirArchivo('image/*');
-      if (!f) return;
-      try {
-        const src = await subir(f);
-        img.src = src; img.removeAttribute('srcset');
-        borrador.imagenes[img.dataset.cmsImg] = { src };
-        pintarPie();
-      } catch (err) { avisar(err.message, 'error'); }
+      if (img !== fotoActiva) abrirFoto(img);
       return;
     }
+    if (fotoActiva && !e.target.closest('[data-cms]')) cerrarFoto();
+    if (!e.target.closest('[data-cms]') && barraTexto) { barraTexto.hidden = true; elActivo = null; }
     // Mientras se edita, los enlaces y botones no navegan ni abren ventanas.
     if (e.target.closest('a, button, [data-contact], summary, label')) { e.preventDefault(); e.stopPropagation(); }
   }
