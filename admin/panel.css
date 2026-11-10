@@ -110,3 +110,11 @@
   .cgp-barra .cgp-suave{display:none}
   .cgp-fila--2,.cgp-fila--3{grid-template-columns:1fr}
 }
+
+/* Ventana de confirmación */
+.cgp-pregunta{z-index:2147483004}
+.cgp-pregunta .cgp-tarjeta{align-items:stretch;text-align:left;gap:18px;padding:24px}
+.cgp-pregunta-texto{font-size:15px;line-height:1.55;color:var(--cgp-tinta)}
+.cgp-acciones--fin{justify-content:flex-end}
+.cgp-btn--rojo{background:var(--cgp-rojo);border-color:var(--cgp-rojo)}
+.cgp-btn--rojo:hover{background:#a32626}

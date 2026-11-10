@@ -22,6 +22,8 @@ const MAX_HISTORIAL = 30;
 const MAX_ARCHIVO = 25 * 1024 * 1024;        // límite de un valor en KV
 const DURACION_SESION = 12 * 60 * 60;          // 12 horas
 const VERSION_PANEL = '20261105-1';
+/* Las páginas de proyecto que existen como archivo (sirven de plantilla). */
+const PAGINAS_PROYECTO = new Set(['alameda-real', 'las-gaviotas-de-reque']);
 /* Direcciones que no pueden usarse como nombre de un proyecto nuevo. */
 const RESERVADAS = new Set(['', 'index', 'proyectos', 'familias', 'somos', 'contacto', 'terminos',
   'politica-privacidad', 'libro-reclamaciones', 'refiere', 'ruleta', 'ruleta-app', '404', 'admin',
@@ -318,6 +320,9 @@ async function pagina(request, env, url) {
     if (viejo && viejo.visible === false) return noEncontrada(request, env, datos);
     // Un proyecto oculto no se ve aunque alguien tenga el enlace.
     if ((datos.proyectos || []).some(p => p.slug === nombre)) return noEncontrada(request, env, datos);
+    // Las páginas de proyecto escritas a mano (Alameda, Gaviotas) tampoco se
+    // ven si ese proyecto se eliminó desde el panel.
+    if (PAGINAS_PROYECTO.has(nombre)) return noEncontrada(request, env, datos);
   }
 
   let resp;

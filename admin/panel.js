@@ -54,6 +54,27 @@
 
   const haySinGuardar = () => borrador && guardado && JSON.stringify(borrador) !== JSON.stringify(guardado);
 
+  /**
+   * Pregunta antes de algo que no se puede deshacer. Es una ventana del propio
+   * panel: la ventana de confirmación del navegador algunos navegadores la
+   * bloquean, y entonces el botón parecía no hacer nada.
+   */
+  function preguntar(texto, si = 'Sí, continuar', peligro = false) {
+    return new Promise(ok => {
+      const cerrar = v => { fondo.remove(); removeEventListener('keydown', tecla, true); ok(v); };
+      const tecla = e => { if (e.key === 'Escape') { e.stopPropagation(); cerrar(false); } };
+      const fondo = h('div', { class: 'cgp-raiz cgp-fondo cgp-pregunta', onclick: e => { if (e.target === fondo) cerrar(false); } },
+        h('div', { class: 'cgp-tarjeta', role: 'alertdialog', 'aria-modal': 'true' },
+          h('p', { class: 'cgp-pregunta-texto', text: texto }),
+          h('div', { class: 'cgp-acciones cgp-acciones--fin' },
+            h('button', { class: 'cgp-btn cgp-btn--claro', type: 'button', text: 'Cancelar', onclick: () => cerrar(false) }),
+            h('button', { class: 'cgp-btn' + (peligro ? ' cgp-btn--rojo' : ''), type: 'button', text: si, onclick: () => cerrar(true) }))));
+      document.body.append(fondo);
+      addEventListener('keydown', tecla, true);
+      $('.cgp-btn:last-child', fondo).focus();
+    });
+  }
+
   function avisar(texto, tipo = 'ok') {
     if (!aviso) return;
     aviso.textContent = texto;
@@ -110,7 +131,7 @@
   }
 
   async function salir() {
-    if (haySinGuardar() && !confirm('Tienes cambios sin guardar. ¿Salir igual?')) return;
+    if (haySinGuardar() && !await preguntar('Tienes cambios sin guardar. Si sales ahora se pierden. ¿Salir igual?', 'Salir sin guardar', true)) return;
     await llamar('salir', { method: 'POST' }).catch(() => {});
     location.reload();
   }
@@ -158,7 +179,7 @@
   function pintarPie() {
     pie.replaceChildren(
       h('span', { class: 'cgp-estado', text: haySinGuardar() ? 'Tienes cambios sin guardar' : 'Todo guardado' }),
-      h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Descartar', disabled: !haySinGuardar(), onclick: () => { if (confirm('¿Descartar todos los cambios sin guardar?')) { borrador = clonar(guardado); location.reload(); } } }),
+      h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Descartar', disabled: !haySinGuardar(), onclick: async () => { if (await preguntar('¿Descartar todos los cambios sin guardar?', 'Descartar', true)) { borrador = clonar(guardado); location.reload(); } } }),
       h('button', { class: 'cgp-btn', text: 'Guardar y publicar', disabled: !haySinGuardar(), onclick: guardar }));
     $('.cgp-barra', raiz)?.classList.toggle('cgp-sucia', haySinGuardar());
     const contador = $('.cgp-modo-guardar', raiz);
@@ -286,7 +307,7 @@
           h('div', { class: 'cgp-orden' },
             h('button', { type: 'button', title: 'Subir', text: '↑', disabled: i === 0, onclick: () => { [fotos[i - 1], fotos[i]] = [fotos[i], fotos[i - 1]]; repintar(); cambio(); } }),
             h('button', { type: 'button', title: 'Bajar', text: '↓', disabled: i === fotos.length - 1, onclick: () => { [fotos[i + 1], fotos[i]] = [fotos[i], fotos[i + 1]]; repintar(); cambio(); } }),
-            h('button', { type: 'button', title: 'Quitar', text: '✕', class: 'cgp-peligro', onclick: () => { if (confirm('¿Quitar esta foto?')) { fotos.splice(i, 1); repintar(); cambio(); } } })));
+            h('button', { type: 'button', title: 'Quitar', text: '✕', class: 'cgp-peligro', onclick: async () => { if (await preguntar('¿Quitar esta foto?', 'Quitar', true)) { fotos.splice(i, 1); repintar(); cambio(); } } })));
         return fila;
       }));
     };
@@ -345,7 +366,7 @@
         campo('Descripción del video', v.label, x => { v.label = x; })),
       h('div', { class: 'cgp-orden' },
         h('button', { text: '↑', disabled: i === 0, onclick: () => { [videos[i - 1], videos[i]] = [videos[i], videos[i - 1]]; pintarVideos(); cambio(); } }),
-        h('button', { text: '✕', class: 'cgp-peligro', onclick: () => { if (confirm('¿Quitar este video?')) { videos.splice(i, 1); pintarVideos(); cambio(); } } })))));
+        h('button', { text: '✕', class: 'cgp-peligro', onclick: async () => { if (await preguntar('¿Quitar este video?', 'Quitar', true)) { videos.splice(i, 1); pintarVideos(); cambio(); } } })))));
     pintarVideos();
 
     cuerpo.append(
@@ -402,9 +423,15 @@
 
       h('div', { class: 'cgp-acciones' },
         p.slug && p.visible !== false && !esNuevo ? h('a', { class: 'cgp-btn cgp-btn--claro', href: '/' + p.slug, target: '_blank', text: 'Ver página publicada ↗' }) : null,
-        h('button', { class: 'cgp-btn cgp-btn--peligro', text: 'Eliminar proyecto', onclick: () => {
-          if (!confirm(`¿Eliminar "${p.name}" de la web? Si solo quieres esconderlo, desmarca "Mostrar este proyecto".`)) return;
+        h('button', { class: 'cgp-btn cgp-btn--peligro', text: 'Eliminar proyecto', onclick: async () => {
+          const otros = haySinGuardar();
+          const ok = await preguntar(`¿Eliminar "${p.name}" de la web? Se quita al instante de todas las páginas.`
+            + (otros ? ' Los otros cambios sin guardar también se publicarán.' : '')
+            + ' Si solo quieres esconderlo, mejor desmarca "Mostrar este proyecto". Si te arrepientes, puedes recuperarlo desde Historial.', 'Sí, eliminar', true);
+          if (!ok) return;
           borrador.proyectos.splice(editandoProyecto, 1); editandoProyecto = null; pintar();
+          // Eliminar es una acción completa: se publica de una vez, no queda a medias.
+          await guardar();
         } })));
   }
 
@@ -599,7 +626,7 @@
       caja.replaceChildren(...(lista.length ? lista.map(v => h('div', { class: 'cgp-cambio' },
         h('div', {}, h('strong', { text: `Versión ${v.version}` }), h('small', { text: `${v.por}${v.el ? ' · ' + new Date(v.el).toLocaleString('es-PE') : ''}` })),
         h('button', { class: 'cgp-btn cgp-btn--claro', text: 'Restaurar', onclick: async () => {
-          if (!confirm(`¿Volver a publicar la versión ${v.version}? Lo que está ahora queda guardado en el historial.`)) return;
+          if (!await preguntar(`¿Volver a publicar la versión ${v.version}? Lo que está ahora queda guardado en el historial.`, 'Restaurar')) return;
           try { await llamar('restaurar', { method: 'POST', body: JSON.stringify({ id: v.id }) }); avisar('Versión restaurada.'); setTimeout(() => location.reload(), 600); }
           catch (e) { avisar(e.message, 'error'); }
         } }))) : [h('p', { class: 'cgp-suave', text: 'Todavía no hay versiones guardadas.' })]));
